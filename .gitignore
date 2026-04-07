@@ -6,3 +6,6 @@ out/
 *.log
 players.csv
 .DS_Store
+node_modules/
+.next/
+players.csv
