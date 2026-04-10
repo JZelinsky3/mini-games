@@ -33,6 +33,8 @@ const games = [
   { id: 'penalty-flag',     title: 'Penalty Flag',      icon: FlagIcon,    desc: 'Spot the foul buried in real play descriptions',   color: 'from-red-600 to-rose-500',       tag: 'Rules'    },
   { id: 'rivalry-chain',    title: 'Rivalry Chain',     icon: LinkIcon,    desc: 'Build the longest rival connection chain',         color: 'from-emerald-600 to-teal-500',   tag: 'History'  },
   { id: 'draft-room',       title: 'Draft Room',        icon: StarIcon,    desc: 'Guess the draft pick from combine stats alone',    color: 'from-violet-600 to-fuchsia-500', tag: 'History'  },
+  { id: 'draft-game',       title: 'Draft Game',        icon: GridIcon,    desc: 'Build your own team with random packs',    color: 'from-violet-600 to-green-500', tag: 'Strategy'  },
+  { id: 'nfl-redraft',      title: 'NFL Redraft',       icon: FootballIcon, desc: 'Redraft ....',    color: 'from-violet-600 to-green-500', tag: 'Strategy'  },
 ];
 
 const DAILY_CHALLENGES = [
