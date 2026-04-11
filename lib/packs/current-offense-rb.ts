@@ -46,7 +46,7 @@ function pl(
    RUNNING BACKS — 20 entries
    Rarity split: 13 common · 6 rare · 1 epic
 ══════════════════════════════════════════════════════════════════════ */
-export const RB_POOL_V4: NFLPlayer[] = [
+export const RB_POOL_V1: NFLPlayer[] = [
   pl('jkd','J.K. Dobbins','RB','Los Angeles Chargers', 820, [
     'Pro Bowl (2024 candidate)','55th Pick (2020)',
     '2020: 805 rush yards in 8 games — 6.0 YPC (highest among active RBs)',
@@ -120,10 +120,6 @@ export const RB_POOL_V4: NFLPlayer[] = [
     '186th Pick (2023)','2024: Depth role in Rams system',
     'Ole Miss: 1,000+ yards in 2022 before draft slide',
   ]),
-  pl('jho','Jameis Winston (note)','RB','Cleveland Browns', 140, [
-    'Actually QB — listed as depth note',
-    'Jamaal Hardeman - UDFA RB depth',
-  ]),
   pl('lfo','Leonard Fournette','RB','Free Agent', 780, [
     '4th Overall Pick (2017)','Super Bowl LV Champion',
     '2020: 1,266 scrimmage yards','2020 Playoffs: 3 TDs in 3 games',
@@ -134,12 +130,6 @@ export const RB_POOL_V4: NFLPlayer[] = [
     '2018 Playoffs: 336 rush yards — Patriots postseason record',
     '2021 (LAR): Super Bowl LVI appearance — 845 yards regular season',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   RUNNING BACKS — 20 new entries
-══════════════════════════════════════════════════════════════════════ */
-export const RB_POOL_V3: NFLPlayer[] = [
   pl('jma','Jordan Mason','RB','San Francisco 49ers', 480, [
     'Pro Bowl (2024)','232nd Pick (2023)',
     '2024: 1,032 rush yards filling in for injured McCaffrey',
@@ -219,12 +209,6 @@ export const RB_POOL_V3: NFLPlayer[] = [
     '171st Pick (2022)','2024: Starter-level production as complement to Cook replacement',
     'Special teams ace turned offensive contributor',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   RUNNING BACKS — 20 entries  |  13 common · 6 rare · 1 epic
-══════════════════════════════════════════════════════════════════════ */
-export const RB_POOL_V6: NFLPlayer[] = [
   pl('dha2','AJ Dillon',           'RB', 'Green Bay Packers',     460, [
     '62nd Pick 2020', '2021: 803 yards as Jones\'s complement back',
     'Boston College: Punishing runner — 247 lbs with 4.39 speed',
@@ -242,10 +226,6 @@ export const RB_POOL_V6: NFLPlayer[] = [
     'Pro Bowl 2019', 'Undrafted 2015',
     '2019: 772 yards + 8 TDs in NFC title game run',
     '2023 (MIA): 1,012 yards, 11 TDs — best season at age 31',
-  ]),
-  pl('qgu', 'Quentin Burks',       'RB', 'Dallas Cowboys',        200, [
-    'Undrafted 2024 — picked up off waiver wire',
-    'Texas: 2-year contributor in Big 12 — scrappy runner',
   ]),
   pl('kne', 'Kimani Vidal',        'RB', 'Los Angeles Chargers',  260, [
     '248th Pick 2024', '2024: Depth back in Chargers system',
@@ -302,13 +282,6 @@ export const RB_POOL_V6: NFLPlayer[] = [
     '190th Pick 2019', 'Special teams ace + elite pass blocker',
     '2022: Key third-down back in Seahawks playoff push',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   RUNNING BACKS  — 20 entries
-   Rarity: 13 common · 6 rare · 1 epic
-══════════════════════════════════════════════════════════════════════ */
-export const RB_POOL_V5: NFLPlayer[] = [
   pl('dha', 'D\'Andre Swift',     'RB', 'Chicago Bears',            940, [
     '2× Pro Bowl', 'AP 2nd-Team 2023',
     '2023: 1,049 rush yards (Eagles) + 1,000+ total scrimmage yards',
@@ -389,12 +362,6 @@ export const RB_POOL_V5: NFLPlayer[] = [
     '86th Pick 2020', '2023 (IND): 891 yards, 9 TDs as starter',
     'Utah: 2019 Pac-12 Offensive Newcomer of Year',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   RUNNING BACKS  — 20 new entries
-══════════════════════════════════════════════════════════════════════ */
-export const RB_POOL_V2: NFLPlayer[] = [
   pl('ete','Travis Etienne Jr.','RB','Jacksonville Jaguars', 880, [
     '2× Pro Bowl','25th Pick (2021)',
     '2022: 1,125 rush yards after missing entire rookie season to injury',
@@ -447,10 +414,6 @@ export const RB_POOL_V2: NFLPlayer[] = [
     '32nd Pick (2020)','Super Bowl LV Ring','Super Bowl LVII Ring',
     '2020: 803 rush yards as a rookie — franchise\'s first RB with 800+ since 2006',
   ]),
-  pl('joh3','Josh Johnson','RB','Carolina Panthers', 200, [
-    'Chuba Hubbard','38th Pick (2021)',
-    '2023: 726 rush yards in limited role — capable starter',
-  ]),
   pl('hub','Chuba Hubbard','RB','Carolina Panthers', 200, [
     '69th Pick (2021)','726 rush yards (2023) filling for Miles Sanders',
   ]),
@@ -464,13 +427,6 @@ export const RB_POOL_V2: NFLPlayer[] = [
     'Super Bowl LX Champion (2026)',
     'Super Bowl LX MVP — 135 rush yards + 26 rec yards in championship game',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   RUNNING BACKS  (pool: RB)
-   Target spread → 2 legendary · 4 epic · 6 rare · 6 common
-══════════════════════════════════════════════════════════════════════ */
-export const RB_POOL: NFLPlayer[] = [
   pl('mcc','Christian McCaffrey','RB','San Francisco 49ers', 2860, [
     '3× Pro Bowl','AP 1st-Team','2023 Offensive Player of Year',
     '2,023 scrimmage yards (2019) — 2nd all-time single season',
@@ -553,7 +509,7 @@ export const RB_POOL: NFLPlayer[] = [
 ══════════════════════════════════════════════════════════════════════ */
 export const ALL_PLAYERS_V2: Record<PositionGroup, NFLPlayer[]> = {
   QB: [],
-  RB: RB_POOL_V2,
+  RB: RB_POOL_V1,
   WR: [],
   TE: [],
   OT: [],

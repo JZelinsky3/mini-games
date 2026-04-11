@@ -28,7 +28,7 @@ function pl(
 /* ══════════════════════════════════════════════════════════════════════
    OFFENSIVE GUARDS  — 16 new entries
 ══════════════════════════════════════════════════════════════════════ */
-export const OG_POOL_V2: NFLPlayer[] = [
+export const OG_POOL_V1: NFLPlayer[] = [
   pl('dot','Kevin Dotson','OG','Los Angeles Rams', 880, [
     '2× Pro Bowl','AP 2nd-Team (2023)',
     '129th Pick (2020)','2023: Highest-graded guard in NFC per PFF',
@@ -50,13 +50,9 @@ export const OG_POOL_V2: NFLPlayer[] = [
     'Played C & G across career; 2× Pro Bowl at C (vol 1 eligible)',
     'Bears franchise O-Line leader 2016–2023',
   ]),
-  pl('new','Xavier Newman','OG','San Francisco 49ers', 380, [
+  pl('new','Xavier Newman-Johnson','OG','San Francisco 49ers', 380, [
     '148th Pick (2021)','Key reserve piece for 49ers\' run-dominant O-Line',
     '2023: Super Bowl LVIII appearance',
-  ]),
-  pl('run','Jon Runyan Jr.','OG','Green Bay Packers', 380, [
-    '173rd Pick (2020)','2023: Starting RG for NFC North champion Packers',
-    'Son of NFL veteran Jon Runyan Sr.',
   ]),
   pl('ber2','Matthew Bergeron','OG','Atlanta Falcons', 260, [
     '38th Pick (2023)','2023: Immediate starter as rookie LG',
@@ -72,12 +68,6 @@ export const OG_POOL_V2: NFLPlayer[] = [
     '189th Pick (2020)','Super Bowl LVIII appearance',
     'Powerful run blocker — key depth in 49ers\' system',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   OFFENSIVE GUARDS — 16 entries  |  12 common · 4 rare · 0 epic
-══════════════════════════════════════════════════════════════════════ */
-export const OG_POOL_V6: NFLPlayer[] = [
   pl('gba', 'Germain Ifedi',       'OG', 'Free Agent',            420, [
     '31st Pick 2016', '2021: Starting RG for Bears playoff team',
     'Texas A&M: 2-year OL starter in SEC',
@@ -124,13 +114,6 @@ export const OG_POOL_V6: NFLPlayer[] = [
     'Undrafted 2013', 'Veteran journeyman backup across 6 teams',
     'Georgia: 2-year guard on elite SEC line',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   OFFENSIVE GUARDS  (pool: OG — feeds LG & RG slots)
-   Target spread → 2 legendary · 3 epic · 5 rare · 4 common
-══════════════════════════════════════════════════════════════════════ */
-export const OG_POOL: NFLPlayer[] = [
   pl('zma','Zack Martin','OG','Dallas Cowboys', 3160, [
     '9× Pro Bowl','7× AP 1st-Team (most ever by a guard)',
     'Only player named to Pro Bowl in all of first 9 NFL seasons',
@@ -175,10 +158,6 @@ export const OG_POOL: NFLPlayer[] = [
     '2× Pro Bowl','2× Super Bowl Champion (NE)',
     'Undrafted-level pick (4th round, 2015) — massive overperformer',
   ]),
-  pl('onw','Michael Onwenu','OG','New England Patriots', 560, [
-    'Pro Bowl (2023)','6th Round Pick (2020) — one of biggest steals',
-    '2020: Filled in at 4 positions, allowed 0 sacks',
-  ]),
   pl('sea','Isaac Seumalo','OG','Pittsburgh Steelers', 640, [
     '2× Pro Bowl','Super Bowl LVII appearance (PHI)',
     '3rd Round (2016)','Anchored Eagles\' 2022 Super Bowl run',
@@ -193,13 +172,6 @@ export const OG_POOL: NFLPlayer[] = [
   pl('cro','Dalton Risner','OG','Free Agent', 300, [
     '41st Pick (2019)','Starting guard for multiple Denver playoff seasons',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   OFFENSIVE GUARDS  — 16 entries
-   Rarity: 12 common · 4 rare · 0 epic
-══════════════════════════════════════════════════════════════════════ */
-export const OG_POOL_V5: NFLPlayer[] = [
   pl('hhu', 'Hakeem Adeniji',     'OG', 'Cleveland Browns',         280, [
     '163rd Pick 2020', '2022: Started 11 games at guard for Browns',
     'Kansas: 3-year starter — versatile guard/tackle',
@@ -266,13 +238,30 @@ export const OG_POOL_V5: NFLPlayer[] = [
     '93rd Pick 2021', '2× Pro Bowl (alternate)', '2023: Starting RT/RG for Bills',
     'Northern Iowa (FCS): Record-setting DI-to-NFL development story',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   OFFENSIVE GUARDS — 16 entries
-   Rarity split: 12 common · 4 rare · 0 epic
-══════════════════════════════════════════════════════════════════════ */
-export const OG_POOL_V4: NFLPlayer[] = [
+  pl('bre', 'Aaron Brewer', 'OG', 'Miami Dolphins', 980, [
+    'High PFF grades in recent seasons','Versatile interior lineman — strong run blocker',
+    'Key contributor to Dolphins\' O-Line'
+  ]),
+  pl('tan', 'Tanor Bortolini', 'OG', 'Indianapolis Colts', 920, [
+    'Breakout 2025 season','Improved dramatically as starter',
+    'High-upside young interior player'
+  ]),
+  pl('neu', 'Ryan Neuzil', 'OG', 'Atlanta Falcons', 880, [
+    'Strong replacement/starting play','Reliable run blocker in Falcons system',
+    'Consistent contributor'
+  ]),
+  pl('sim', 'John Simpson', 'OG', 'Baltimore Ravens', 850, [
+    'Recent high-value signing','Physical guard with starting experience',
+    'Helped stabilize interior lines'
+  ]),
+  pl('smi5', 'Emmanuel Pregnon', 'OG', 'Drafted / early career riser', 820, [
+    'High draft buzz / strong college-to-NFL transition','Elite athleticism and power',
+    'Projected day-one contributor'
+  ]),
+  pl('ioa', 'Olaivavega Ioane', 'OG', 'Penn State / early NFL', 790, [
+    'Top interior prospect traits','Powerful and scheme-versatile',
+    'Immediate impact potential'
+  ]),
   pl('aba2','Aaron Banks','OG','San Francisco 49ers', 380, [
     '48th Pick (2021)','Super Bowl LVIII appearance',
     '2023: Key interior piece of 49ers\' dominant run-blocking O-Line',
@@ -345,12 +334,38 @@ export const OG_POOL_V4: NFLPlayer[] = [
     '2023: Highest-graded guard in NFC West per PFF',
     '2024: Signed with Rams; key piece of Stafford\'s protection',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   OFFENSIVE GUARDS — 16 new entries
-══════════════════════════════════════════════════════════════════════ */
-export const OG_POOL_V3: NFLPlayer[] = [
+  pl('smi3', 'Peter Skoronski', 'OG', 'Tennessee Titans', 2180, [
+    'Pro Bowl alternate / consideration','Rising star guard with elite pass-blocking metrics',
+    'High football IQ and technique — immediate impact since draft',
+    'Key protector in Titans\' offensive scheme'
+  ]),
+  pl('vor', 'Andrew Vorhees', 'OG', 'Baltimore Ravens', 1920, [
+    'Strong recent starter','Versatile and powerful interior lineman',
+    'Key contributor to Ravens\' run-heavy attack',
+    'Developing into a top-tier guard'
+  ]),
+  pl('edw', 'David Edwards', 'OG', 'Free Agent / recent high-value signing', 1850, [
+    'Multiple seasons as reliable starter','Pro Bowl alternate level play',
+    'Versatile guard with experience across systems',
+    'Solid veteran anchor'
+  ]),
+  pl('joh2', 'Zion Johnson', 'OG', 'Cleveland Browns', 1780, [
+    'High draft pedigree','Athletic and powerful — rising in 2025–2026',
+    'Key piece in Browns\' interior rebuild',
+    'Strong run blocker with improving pass pro'
+  ]),
+  pl('smi4', 'Braden Smith', 'OG', 'Indianapolis Colts', 1720, [
+    'Pro Bowl level play in recent seasons','Consistent starter with good PFF grades',
+    'Physical presence on the interior'
+  ]),
+  pl('str2', 'Cole Strange', 'OG', 'Los Angeles Chargers', 1580, [
+    'Recent starter with upside','Athletic guard with good mobility',
+    'Contributed to strong offensive lines'
+  ]),
+  pl('onw2', 'Mike Onwenu', 'OG', 'New England Patriots', 1540, [
+    'Pro Bowl (2023) + strong follow-up seasons','Versatile multi-position starter',
+    'Big steal in the draft — reliable anchor'
+  ]),
   pl('avi','Steve Avila','OG','Los Angeles Rams', 660, [
     '2× Pro Bowl','57th Pick (2023)',
     '2023: Highest-graded rookie OG by PFF — ever recorded',
@@ -420,12 +435,24 @@ export const OG_POOL_V3: NFLPlayer[] = [
     '2024: Starting OG for Titans\' rebuilt interior',
     'Undrafted (2021) — earned starting role through sheer consistency',
   ]),
+  pl('smi', 'Trey Smith', 'OG', 'Kansas City Chiefs', 3120, [
+    'Multiple Pro Bowl selections','Consistent AP All-Pro consideration (2024–2025)',
+    'Key piece of Chiefs\' multiple Super Bowl O-Lines (LVII, LVIII, and beyond)',
+    'Elite run blocker and pass protector — anchors KC\'s interior for Patrick Mahomes',
+    'One of the most dominant young guards in the NFL'
+  ]),
+  pl('smi2', 'Tyler Smith', 'OG', 'Dallas Cowboys', 2950, [
+    'Multiple Pro Bowl selections','AP 2nd-Team All-Pro nods',
+    'Young superstar guard — dominant in both run and pass game',
+    'Cornerstone of Cowboys\' offensive line for years',
+    'High-impact player with massive upside still in his prime'
+  ])
 ];
 
 /* ══════════════════════════════════════════════════════════════════════
    CENTERS — 13 new entries
 ══════════════════════════════════════════════════════════════════════ */
-export const C_POOL_V3: NFLPlayer[] = [
+export const C_POOL_V1: NFLPlayer[] = [
   pl('tip','Joe Tippmann','C','New York Jets', 560, [
     '2× Pro Bowl','57th Pick (2023)',
     '2024: One of highest-graded centers in AFC per PFF',
@@ -479,13 +506,20 @@ export const C_POOL_V3: NFLPlayer[] = [
   pl('dco','Drew Dalman (note)','C','Atlanta Falcons', 120, [
     'Backup C depth on multiple rosters',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   CENTERS — 13 entries
-   Rarity split: 11 common · 2 rare · 0 epic
-══════════════════════════════════════════════════════════════════════ */
-export const C_POOL_V4: NFLPlayer[] = [
+  pl('bre2', 'Aaron Brewer', 'C', 'Miami Dolphins', 2850, [
+    'Career-high PFF grades (top run blocker in 2025)','Multiple Pro Bowl / All-Pro consideration',
+    'Elite anchor for Dolphins\' interior',
+    'Standout 2025–2026 performer'
+  ]),
+  pl('lin4', 'Tyler Linderbaum', 'C', 'Baltimore Ravens', 2650, [
+    'Multiple Pro Bowl selections','AP 2nd-Team level play',
+    'One of the best young centers in the league',
+    'High-graded in both run and pass'
+  ]),
+  pl('dal', 'Drew Dalman', 'C', 'Chicago Bears', 2520, [
+    'Pro Bowl selections (including 2025–2026)','Key to Bears\' resurgent line and run game',
+  'Top vote-getter / high-impact starter'
+  ]),
   pl('lft','Luke Fortner','C','Jacksonville Jaguars', 340, [
     '72nd Pick (2022)','2022–24: Full-time starter for Jaguars',
     'Kentucky: 2-year captain; 2021 team MVP',
@@ -519,21 +553,28 @@ export const C_POOL_V4: NFLPlayer[] = [
     'Versatile G/C across GB, DEN, MIA — reliable multi-year starter',
     'North Dakota State: 3× FCS Champion',
   ]),
-  pl('smu2','Sam Mustipher (note)','C','Minnesota Vikings', 200, [
+  pl('smu2','Sam Mustipher','C','Minnesota Vikings', 200, [
     'Undrafted (2019)','3-year starter for Chicago Bears',
     '2021–22: Full-time starting C; cerebral interior anchor',
   ]),
-  pl('jfe','Joel Feeney (backup)','C','Free Agent', 140, [
+  pl('jfe','Joel Feeney','C','Free Agent', 140, [
     'Long-tenured backup across multiple AFC systems',
     'Undrafted find who earned roster spot through sheer consistency',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   CENTERS  — 13 entries
-   Rarity: 11 common · 2 rare · 0 epic
-══════════════════════════════════════════════════════════════════════ */
-export const C_POOL_V5: NFLPlayer[] = [
+  pl('bor', 'Tanor Bortolini', 'C', 'Indianapolis Colts', 1180, [
+    'Breakout 2025 season — big improvement','Strong PFF grades as full-time starter',
+    'Versatile and smart interior player'
+  ]),
+  pl('neu2', 'Ryan Neuzil', 'C', 'Atlanta Falcons', 950, [
+    ' Reliable starter / high run-block grades','Steady contributor in Falcons system'
+  ]),
+  pl('kel2', 'Ryan Kelly', 'C', 'Minnesota Vikings', 920, [
+    'Long-time Pro Bowl alternate / veteran anchor','Solid 2025 play after move to Vikings'
+  ]),
+  pl('cam2', 'Cam Jurgens', 'C', 'Philadelphia Eagles', 880, [
+    'Pro Bowl consideration','Seamless high-level play replacing veterans',
+    'Consistent starter'
+  ]),
   pl('bha2','Ben Bredeson',       'C', 'New York Giants',           220, [
     '117th Pick 2020', '2022: Starting G/C for Giants playoff team',
     'Michigan: 2-year starter in Big Ten — athletic interior lineman',
@@ -589,13 +630,6 @@ export const C_POOL_V5: NFLPlayer[] = [
     '2022: Full-time starter — highest-graded C on Broncos line',
     'LSU: National Champion 2019 — won in SEC biggest games',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   CENTERS  (pool: C)
-   Target spread → 2 legendary · 2 epic · 4 rare · 3 common
-══════════════════════════════════════════════════════════════════════ */
-export const C_POOL: NFLPlayer[] = [
   pl('hum','Creed Humphrey','C','Kansas City Chiefs', 2420, [
     '3× Pro Bowl','AP 1st-Team (2022)','AP 2nd-Team',
     '2× Super Bowl Champion (LVII, LVIII)',
@@ -639,12 +673,6 @@ export const C_POOL: NFLPlayer[] = [
     'Long-time starter in NYJ / BUF / DAL system',
     '3rd Round (2016) — durable, smart center',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   CENTERS  — 12 new entries
-══════════════════════════════════════════════════════════════════════ */
-export const C_POOL_V2: NFLPlayer[] = [
   pl('lin3','Tyler Linderbaum','C','Baltimore Ravens', 1080, [
     '2× Pro Bowl','AP 2nd-Team (2023)','25th Pick (2022)',
     '2023: Highest-graded rookie C by PFF — ever',
@@ -684,20 +712,11 @@ export const C_POOL_V2: NFLPlayer[] = [
     '51st Pick (2022)','2024: Seamlessly replaced Jason Kelce',
     '2024 AP 2nd-Team consideration — immediate impact starter',
   ]),
-  pl('mck2','Sam McKinnis','C','Tennessee Titans', 180, [
-    'Reliable backup / swing center across multiple rosters',
-  ]),
   pl('mei','Quinn Meinerz','C','Denver Broncos', 300, [
     '98th Pick (2021) — out of Division III Wisconsin-Whitewater',
     '2022: Full-time starter, one of best small-school success stories',
     '2023: Graded as top-15 C by PFF in strong run-block year',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   CENTERS — 13 entries  |  10 common · 3 rare · 0 epic
-══════════════════════════════════════════════════════════════════════ */
-export const C_POOL_V6: NFLPlayer[] = [
   pl('bwa', 'Billy Price',         'C', 'Free Agent',             280, [
     '21st Pick 2018', '2021: Starting C for Giants in several games',
     'Ohio State: Rimington Award finalist — named best center in Big Ten',
@@ -759,8 +778,8 @@ export const ALL_PLAYERS_V6: Record<PositionGroup, NFLPlayer[]> = {
   WR: [],
   TE: [],
   OT: [],
-  OG: OG_POOL_V6,
-  C:  C_POOL_V6,
+  OG: OG_POOL_V1,
+  C:  C_POOL_V1,
 };
 
 /*

@@ -31,7 +31,7 @@ function pl(
 /* ══════════════════════════════════════════════════════════════════════
    OFFENSIVE TACKLES — 16 entries  |  11 common · 4 rare · 1 epic
 ══════════════════════════════════════════════════════════════════════ */
-export const OT_POOL_V6: NFLPlayer[] = [
+export const OT_POOL_V1: NFLPlayer[] = [
   pl('mba', 'Marcus Cannon',       'OT', 'Free Agent',            440, [
     '2× Super Bowl Champion (XLIX, LI)', '172nd Pick 2011',
     '2018: Starting RT for 11-5 Patriots — excellent in run game',
@@ -104,13 +104,6 @@ export const OT_POOL_V6: NFLPlayer[] = [
     '210th Pick 2023', '2024: Competing for swing tackle role',
     'Purdue: 4-year contributor in Big Ten interior/exterior',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   OFFENSIVE TACKLES  (pool: OT — feeds LT & RT slots)
-   Target spread → 2 legendary · 4 epic · 5 rare · 5 common
-══════════════════════════════════════════════════════════════════════ */
-export const OT_POOL: NFLPlayer[] = [
   pl('twi','Trent Williams','OT','San Francisco 49ers', 3040, [
     '11× Pro Bowl (most ever by an OT)','4× AP 1st-Team',
     'Unanimous All-Pro 2021 & 2022','AP 2nd-Team ×2',
@@ -168,13 +161,6 @@ export const OT_POOL: NFLPlayer[] = [
   pl('dw','Darnell Wright','OT','Chicago Bears', 140, [
     '10th Pick (2023)','Immediate starter — highest-drafted Bears OT in decades',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   OFFENSIVE TACKLES  — 16 entries
-   Rarity: 11 common · 4 rare · 1 epic
-══════════════════════════════════════════════════════════════════════ */
-export const OT_POOL_V5: NFLPlayer[] = [
   pl('lla', 'Laken Tomlinson','OT','Free Agent',               400, [
     '28th Pick 2015', 'Started at LT, LG across 9-year career',
     'Duke: 2-year starter — athletic enough to play both tackle and guard',
@@ -235,13 +221,6 @@ export const OT_POOL_V5: NFLPlayer[] = [
     '10-year starter; most consecutive starts among active OTs (2023)',
     'Underappreciated veteran who anchors any O-Line he joins',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   OFFENSIVE TACKLES — 16 entries
-   Rarity split: 10 common · 5 rare · 1 epic
-══════════════════════════════════════════════════════════════════════ */
-export const OT_POOL_V4: NFLPlayer[] = [
   pl('psk','Peter Skoronski','OT','Tennessee Titans', 760, [
     'Pro Bowl (2024)','11th Overall Pick (2023)',
     '2024: Highest-graded OT on Tennessee\'s line per PFF',
@@ -312,12 +291,6 @@ export const OT_POOL_V4: NFLPlayer[] = [
     '2020: Pro Bowl trajectory before injury derailed 3 seasons',
     'Switched to guard role 2023; versatile and imposing at 363 lbs',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   OFFENSIVE TACKLES — 18 new entries
-══════════════════════════════════════════════════════════════════════ */
-export const OT_POOL_V3: NFLPlayer[] = [
   pl('rst','Ronnie Stanley','OT','Baltimore Ravens', 1020, [
     '3× Pro Bowl','AP 1st-Team (2019)','6th Pick (2016)',
     '2019: Highest-graded LT in NFL per PFF — 87.3',
@@ -390,12 +363,6 @@ export const OT_POOL_V3: NFLPlayer[] = [
   pl('fmi','Fred Miller','OT','Chicago Bears', 140, [
     'Veteran swing tackle in system — 2024 depth piece',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   OFFENSIVE TACKLES  — 18 new entries
-══════════════════════════════════════════════════════════════════════ */
-export const OT_POOL_V2: NFLPlayer[] = [
   pl('wir','Tristan Wirfs','OT','Tampa Bay Buccaneers', 1860, [
     '4× Pro Bowl','2× AP 1st-Team (2022, 2023)','AP 2nd-Team',
     '13th Pick (2020)','Super Bowl LV Champion',
@@ -472,7 +439,7 @@ export const ALL_PLAYERS_V5: Record<PositionGroup, NFLPlayer[]> = {
   RB: [],
   WR: [],
   TE: [],
-  OT: OT_POOL_V5,
+  OT: OT_POOL_V1,
   OG: [],
   C:  [],
 };

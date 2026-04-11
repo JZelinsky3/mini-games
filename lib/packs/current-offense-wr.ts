@@ -40,7 +40,7 @@ function pl(
 /* ══════════════════════════════════════════════════════════════════════
    WIDE RECEIVERS — 24 entries  |  15 common · 7 rare · 2 epic
 ══════════════════════════════════════════════════════════════════════ */
-export const WR_POOL_V6: NFLPlayer[] = [
+export const WR_POOL_V1: NFLPlayer[] = [
   pl('hro', 'Hollywood Brown',     'WR', 'Kansas City Chiefs',    640, [
     'Pro Bowl 2019 (alternate)', '25th Pick 2019',
     '2019 (BAL): 1,008 yards — first 1,000-yard season in Ravens franchise history',
@@ -65,7 +65,7 @@ export const WR_POOL_V6: NFLPlayer[] = [
     '169th Pick 2020', '2022: 839 yards — became WR1 for Browns',
     'Michigan: 2018 Big Ten freshman of the year',
   ]),
-  pl('csa', 'Chris Godwin',        'WR', 'Philadelphia Eagles',   960, [
+  pl('csa', 'Chris Godwin Jr.',        'WR', 'Tampa Bay Buccaneers',   960, [
     '3× Pro Bowl', '84th Pick 2017',
     '2019: 1,333 yards, 9 TDs — Super Bowl LV Champion',
     'Comeback from torn ACL — 2022: 1,103 yards recovery season',
@@ -84,10 +84,6 @@ export const WR_POOL_V6: NFLPlayer[] = [
     '149th Pick 2019', '2× Pro Bowl',
     '2021: 1,038 yards — led Raiders in receptions (103)',
     'Clemson: 2× National Champion — slot master',
-  ]),
-  pl('dba', 'Darius Byrd',         'WR', 'Free Agent',            160, [
-    'Depth piece across multiple NFC rosters',
-    'Prairie View A&M (HBCU): Standout receiver with developmental upside',
   ]),
   pl('ken3','Kendall Hinton',      'WR', 'Denver Broncos',        240, [
     '152nd Pick 2020', '2022: 421 yards in Broncos\' lean year',
@@ -147,18 +143,6 @@ export const WR_POOL_V6: NFLPlayer[] = [
   pl('aad', 'Alec Pierce',         'WR', 'Indianapolis Colts',    320, [
     '53rd Pick 2022', '2023: 592 yards in developing WR2 role',
     'Cincinnati: 2022 AAC First-Team — deep threat with 4.41 speed',
-  ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   WIDE RECEIVERS — 24 entries
-   Rarity split: 16 common · 7 rare · 1 epic
-══════════════════════════════════════════════════════════════════════ */
-export const WR_POOL_V4: NFLPlayer[] = [
-  pl('nel2','Nelson Agholor','WR','Baltimore Ravens', 580, [
-    'Pro Bowl (2020)','198th Pick (2015)',
-    '2020 (LV): 896 yards, 8 TDs — career year','2018 Super Bowl run (PHI)',
-    'Super Bowl LII Champion — key in Eagles\' championship offense',
   ]),
   pl('dpa','Davante Parker','WR','Los Angeles Rams', 720, [
     '2× Pro Bowl','14th Pick (2014)',
@@ -260,12 +244,6 @@ export const WR_POOL_V4: NFLPlayer[] = [
     '131st Pick (2023)','2024: WR2/3 role for Jaguars',
     'Penn State: Led Big Ten in catches (2022)',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   WIDE RECEIVERS  — 26 new entries
-══════════════════════════════════════════════════════════════════════ */
-export const WR_POOL_V2: NFLPlayer[] = [
   pl('rid','Calvin Ridley','WR','Tennessee Titans', 1280, [
     '3× Pro Bowl','AP 2nd-Team (2020)','26th Pick (2018)',
     '2020: 1,374 yards, 9 TD — AP 2nd-Team despite suspension concerns',
@@ -352,17 +330,6 @@ export const WR_POOL_V2: NFLPlayer[] = [
     '2022: 7 TDs in final 10 games — Jordan Love\'s go-to',
     '4.36 speed at 6\'4" — rare size/speed combo',
   ]),
-  pl('jac2','Romeo Doubs','WR','Green Bay Packers', 220, [
-    '132nd Pick (2022)','2022: 42 catches, 425 yards as rookie',
-    '2023: 1,089 yards, 8 TDs — breakout year',
-  ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   WIDE RECEIVERS  — 24 entries
-   Rarity: 16 common · 6 rare · 2 epic
-══════════════════════════════════════════════════════════════════════ */
-export const WR_POOL_V5: NFLPlayer[] = [
   pl('jam', 'Jamison Crowder',    'WR', 'Free Agent',               380, [
     '105th Pick 2015', '2020 (NYJ): 699 yards, 6 TDs despite limited QB play',
     'Slot specialist — 500+ career receptions across 9 seasons',
@@ -386,13 +353,6 @@ export const WR_POOL_V5: NFLPlayer[] = [
   pl('tnx', 'Tutu Atwell',        'WR', 'Los Angeles Rams',         280, [
     '57th Pick 2021', '2024: Breakout slot role with Stafford',
     'Louisville: 5.88 time in 3-cone drill — among fastest WRs in 2021 class',
-  ]),
-  pl('kst', 'Kevin Stablinski',   'WR', 'Free Agent',               140, [
-    'Veteran depth piece', 'Reliable camp body across multiple AFC rosters',
-  ]),
-  pl('dcr', 'Darius Slayton',     'WR', 'New York Giants',          420, [
-    '171st Pick 2019', '2019: 740 yards, 8 TDs as 5th-round rookie',
-    '2020: 751 yards — NYG\'s leading receiver for 2 seasons',
   ]),
   pl('twa', 'Trent Sherfield',    'WR', 'Free Agent',               220, [
     '239th Pick 2018', '2021 (MIA): 4 TDs in limited role',
@@ -420,12 +380,6 @@ export const WR_POOL_V5: NFLPlayer[] = [
     '2023: 858 yards as rookie; 47.8% of team\'s targets — instant starter',
     '2023 AFC Wild Card: 102 rec yards in OT thriller',
     '2024: 903 yards, 7 TDs — breakout sophomore season',
-  ]),
-  pl('jre3','Jaxon Smith-Njigba','WR','Seattle Seahawks', 1090, [
-    '20th Pick 2023', '2024: 1,130 yards, 7 TDs — first 1,000-yard season',
-    'Ohio State: 2021 Rose Bowl MVP — 347 yards (Big Ten bowl record)',
-    '2025 AP Offensive Player of the Year — led NFL with 1,793 receiving yards',
-    'Super Bowl LX Champion (2026)',
   ]),
   pl('qjn', 'Quentin Johnston',   'WR', 'Los Angeles Chargers',     380, [
     '21st Pick 2023', '2024: Emerging as Herbert\'s WR1',
@@ -461,115 +415,17 @@ export const WR_POOL_V5: NFLPlayer[] = [
     '2018: 1,373 yards — led NFL in receiving TDs (14)',
     '2017–18: 2 consecutive 1,000-yard seasons as UDFA gem',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   WIDE RECEIVERS  (pool: WR — feeds WR1, WR2, WR3 slots)
-   Target spread → 3 legendary · 6 epic · 8 rare · 8 common
-══════════════════════════════════════════════════════════════════════ */
-export const WR_POOL: NFLPlayer[] = [
-  pl('hil','Tyreek Hill','WR','Miami Dolphins', 2980, [
-    '7× Pro Bowl','3× AP 1st-Team','Super Bowl LIV Champion',
-    '2022 single-season receiving yards record (1,799)',
-    'Fastest 40 time (4.29) ever by a WR at combine',
-  ]),
-  pl('jef','Justin Jefferson','WR','Minnesota Vikings', 2840, [
-    '4× Pro Bowl','3× AP 1st-Team','2022 OPOY','2020 OROTY',
-    '2022: 1,809 receiving yards — NFL single-season record at time',
-    '8,000+ career receiving yards in fewest games ever',
-  ]),
-  pl('kup','Cooper Kupp','WR','Los Angeles Rams', 2640, [
-    '4× Pro Bowl','3× AP 1st-Team','2021 Offensive POY',
-    'Super Bowl LVI Champion & MVP','2021 Receiving Triple Crown',
-    '2021: 1,947 yards — 2nd most in single season (all-time)',
-  ]),
-  pl('ada','Davante Adams','WR','Las Vegas Raiders', 2480, [
-    '6× Pro Bowl','4× AP 1st-Team','Super Bowl LV finalist (Green Bay run)',
-    '5× 1,000-yard seasons','2020: 18 TD — tied GB single-season record',
-  ]),
-  pl('cdl','CeeDee Lamb','WR','Dallas Cowboys', 2100, [
-    '3× Pro Bowl','AP 1st-Team (2023)','2023: 1,749 yards — 3rd most ever',
-    '100+ catches in 3 consecutive seasons','17th pick (2020 Draft)',
-  ]),
-  pl('hop','DeAndre Hopkins','WR','Tennessee Titans', 1960, [
-    '5× Pro Bowl','3× AP 1st-Team','Most receiving yards without a Pro Bowl (2016)',
-    'No drops in 2018 entire regular season','9,000+ career receiving yards',
-  ]),
-  pl('dig','Stefon Diggs','WR','Houston Texans', 1740, [
-    '4× Pro Bowl','AP 1st-Team','Minneapolis Miracle (2018 playoffs)',
-    '2020: 1,535 yards — tied Bills single-season record',
-  ]),
-  pl('chs','Ja\'Marr Chase','WR','Cincinnati Bengals', 1620, [
-    '3× Pro Bowl','2021 OROTY','AP 1st-Team',
-    '2021: 1,455 yards — most by a WR in debut season (history)',
-    'Super Bowl LVI appearance as rookie',
-  ]),
-  pl('bro','A.J. Brown','WR','Philadelphia Eagles', 1540, [
-    '3× Pro Bowl','AP 1st-Team (2022)','5× 1,000-yard seasons',
-    '2022: 1,496 yards — 5th most in Eagles history',
-  ]),
-  pl('met','D.K. Metcalf','WR','Pittsburgh Steelers', 1120, [
-    '3× Pro Bowl','1,000+ yards in 5 seasons',
-    'Fastest WR in NFL per Next Gen Stats (22.64 mph chase play)',
-  ]),
   pl('sam','Deebo Samuel','WR','San Francisco 49ers', 960, [
     '2× Pro Bowl','2021: 1,405 yards + 8 rush TDs — "wide receiver / RB hybrid"',
     '2022 Super Bowl appearance',
-  ]),
-  pl('EvO','Mike Evans','WR','Tampa Bay Buccaneers', 1880, [
-    '7× Pro Bowl','AP 2nd-Team','Super Bowl LV Champion',
-    '10 consecutive 1,000-yard seasons to open career (NFL record)',
-    '9th Pick (2014 Draft)',
   ]),
   pl('all2','Keenan Allen','WR','Chicago Bears', 1380, [
     '5× Pro Bowl','AP 2nd-Team',
     '1,000+ yards in 7 seasons','2022: 108 catches at age 30',
   ]),
-  pl('std','Amon-Ra St. Brown','WR','Detroit Lions', 760, [
-    '2× Pro Bowl','2022: 106 catches, 1,161 yards',
-    'Most catches by a WR in their first 16 games (record)',
-  ]),
-  pl('wad','Jaylen Waddle','WR','Miami Dolphins', 640, [
-    '2× Pro Bowl','2021: 104 catches — most by a rookie WR ever',
-    'Combine 40-yard dash: 4.37 (fastest among WR that year)',
-  ]),
-  pl('wil2','Garrett Wilson','WR','New York Jets', 580, [
-    '2× Pro Bowl','2022 OROTY','10th Pick (2022 Draft)',
-    '2023: 95 catches, 1,042 yards despite poor QB play',
-  ]),
   pl('aiy','Brandon Aiyuk','WR','San Francisco 49ers', 780, [
     'Pro Bowl','AP 2nd-Team (2023)','2023: 1,342 yards, 7 TDs',
     'Super Bowl LVIII appearance',
-  ]),
-  pl('hig','Tee Higgins','WR','Cincinnati Bengals', 560, [
-    'Pro Bowl','3× 1,000-yard seasons','Super Bowl LVI appearance',
-  ]),
-  pl('ter','Terry McLaurin','WR','Washington Commanders', 720, [
-    '3× Pro Bowl','5× 1,000-yard seasons (in weak QB situations)',
-    '2020: 1,118 yards — most ever by a CMDs WR in first 2 seasons',
-  ]),
-  pl('coo3','Amari Cooper','WR','Cleveland Browns', 820, [
-    '4× Pro Bowl','Super Bowl LIII ring (with New England as later trade)',
-    '5× 1,000-yard seasons','2021: 1,104 yards for Browns',
-  ]),
-  pl('goo','Chris Godwin','WR','Tampa Bay Buccaneers', 680, [
-    '2× Pro Bowl','Super Bowl LV Champion',
-    '2019: 1,333 yards, 9 TDs — set Bucs single-season record',
-  ]),
-  pl('nac','Puka Nacua','WR','Los Angeles Rams', 380, [
-    'Pro Bowl (2023)','2023: 105 catches — most ever by a rookie WR (record)',
-    'Undrafted/late round — 5th round pick',
-  ]),
-  pl('lon','Drake London','WR','Atlanta Falcons', 320, [
-    '8th Overall Pick (2022)','2023: 905 yards, 8 TDs',
-  ]),
-  pl('add','Jordan Addison','WR','Minnesota Vikings', 280, [
-    '23rd Pick (2023)','2023: 911 yards, 10 TDs as rookie',
-    'Biletnikoff Award winner (college)',
-  ]),
-  pl('odz','Rome Odunze','WR','Chicago Bears', 120, [
-    '9th Overall Pick (2024)','Biletnikoff Award winner (2023)',
-    'Expected to pair with Caleb Williams long-term',
   ]),
   pl('jeu','Jerry Jeudy','WR','Cleveland Browns', 280, [
     '15th Pick (2020)','2023: 1,000+ receiving yards (first of career)',
@@ -577,12 +433,110 @@ export const WR_POOL: NFLPlayer[] = [
   pl('mcl','Rashod Bateman','WR','Baltimore Ravens', 160, [
     '27th Pick (2021)','Injury-limited career — showed promise in 2022',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   WIDE RECEIVERS — 26 new entries
-══════════════════════════════════════════════════════════════════════ */
-export const WR_POOL_V3: NFLPlayer[] = [
+  pl('odz','Rome Odunze','WR','Chicago Bears', 680, [
+'9th Overall Pick (2024)','Biletnikoff Award winner (2023)',
+'2025: Strong sophomore growth alongside Caleb Williams — emerging deep threat',
+'Long-term cornerstone of Bears\' young offense with elite size/speed combo'
+]),
+pl('nac','Puka Nacua','WR','Los Angeles Rams', 2150, [
+'2× Pro Bowl','AP 1st-Team All-Pro (2025)',
+'2025: 129 catches, 1,715 yards, 10 TDs in 16 games — led NFL in receptions',
+'2023 rookie record: 105 catches — one of the greatest WR starts in NFL history',
+'Undrafted/late-round gem (5th round) turned superstar'
+]),
+pl('lon','Drake London','WR','Atlanta Falcons', 980, [
+'8th Overall Pick (2022)','Multiple 1,000-yard seasons',
+'Consistent alpha WR for Falcons — strong target share and red-zone presence',
+'2025: Reliable 1,000+ yard contributor despite QB changes'
+]),
+pl('add','Jordan Addison','WR','Minnesota Vikings', 720, [
+'23rd Pick (2023)','Biletnikoff Award winner (college)',
+'2023 rookie: 911 yards, 10 TDs','Solid complementary piece next to Justin Jefferson'
+]),
+pl('hig','Tee Higgins','WR','Cincinnati Bengals', 940, [
+'Multiple Pro Bowl consideration','4× 1,000-yard seasons',
+'Big-bodied red-zone threat — key piece in Bengals\' high-powered offense',
+'Super Bowl LVI appearance'
+]),
+pl('ter','Terry McLaurin','WR','Washington Commanders', 880, [
+'Multiple Pro Bowl selections','6× 1,000-yard seasons (in varying QB situations)',
+'2020: 1,118 yards — most ever by a Commanders WR in first 2 seasons combined',
+'Franchise leader and consistent deep threat'
+]),
+pl('coo3','Amari Cooper','WR','Cleveland Browns', 980, [
+'4× Pro Bowl','5× 1,000-yard seasons',
+'Super Bowl LIII ring (Patriots)','Veteran alpha with reliable production'
+]),
+pl('std','Amon-Ra St. Brown','WR','Detroit Lions', 1680, [
+'4× Pro Bowl','2025: 117 catches, 1,401 yards, 11 TDs',
+'Multiple 100+ catch seasons — slot superstar and chain-mover',
+'Most catches by a WR in first 16 games (record)'
+]),
+pl('wad','Jaylen Waddle','WR','Miami Dolphins', 820, [
+'Multiple Pro Bowl selections','2021: 104 catches — most by a rookie WR at the time',
+'Combine 40-yard dash: 4.37 (elite speed)','Explosive deep threat in Dolphins\' offense'
+]),
+pl('wil2','Garrett Wilson','WR','New York Jets', 680, [
+'Multiple Pro Bowl selections','2022 OROTY','10th Pick (2022)',
+'2023: 95 catches, 1,042 yards despite poor QB play','Talented young WR battling inconsistency'
+]),
+pl('EvO','Mike Evans','WR','Tampa Bay Buccaneers / Free Agent', 1980, [
+'7× Pro Bowl','AP All-Pro honors','Super Bowl LV Champion',
+'10+ consecutive 1,000-yard seasons (NFL record streak to open career)',
+'9th Pick (2014) — all-time consistent red-zone monster'
+]),
+pl('hil','Tyreek Hill','WR','Miami Dolphins', 3120, [
+'8× Pro Bowl','Multiple AP 1st-Team All-Pro','Super Bowl LIV Champion',
+'2022: 1,799 receiving yards — single-season record',
+'Fastest 40 time (4.29) ever by a WR at the Combine — pure speed demon'
+]),
+pl('jef','Justin Jefferson','WR','Minnesota Vikings', 2980, [
+'5× Pro Bowl','Multiple AP 1st-Team All-Pro','2022 Offensive Player of the Year',
+'2020 OROTY','2022: 1,809 yards — NFL single-season record at the time',
+'Elite route-runner with generational talent'
+]),
+pl('kup','Cooper Kupp','WR','Los Angeles Rams', 2720, [
+'Multiple Pro Bowl','Multiple AP 1st-Team All-Pro','2021 Offensive Player of the Year',
+'Super Bowl LVI Champion & Super Bowl MVP','2021 Receiving Triple Crown',
+'2021: 1,947 yards — one of the greatest single seasons ever'
+]),
+pl('ada','Davante Adams','WR','Las Vegas Raiders', 2560, [
+'6× Pro Bowl','Multiple AP 1st-Team All-Pro',
+'Multiple 1,000-yard + high-TD seasons','2020: 18 TDs — tied franchise record',
+'Elite route technician and red-zone weapon'
+]),
+pl('cdl','CeeDee Lamb','WR','Dallas Cowboys', 2180, [
+'Multiple Pro Bowl','AP 1st-Team All-Pro consideration',
+'Multiple 1,000+ yard and 100+ catch seasons','High-volume alpha for Cowboys'
+]),
+pl('hop','DeAndre Hopkins','WR','Tennessee Titans', 2040, [
+'Multiple Pro Bowl','Multiple AP 1st-Team All-Pro',
+'No drops in entire 2018 regular season','Consistent 1,000-yard producer',
+'One of the most reliable hands in NFL history'
+]),
+pl('dig','Stefon Diggs','WR','Houston Texans', 1820, [
+'Multiple Pro Bowl','AP All-Pro honors','Minneapolis Miracle (2018)',
+'Multiple 1,500-yard type seasons','Elite separator and playmaker'
+]),
+pl('chs','Ja\'Marr Chase','WR','Cincinnati Bengals', 1980, [
+'Multiple Pro Bowl','2021 OROTY','AP All-Pro honors',
+'2021: 1,455 yards — most by a WR in debut season',
+'Super Bowl LVI appearance as rookie — explosive big-play threat'
+]),
+pl('bro','A.J. Brown','WR','Philadelphia Eagles', 1720, [
+'Multiple Pro Bowl','AP 1st-Team All-Pro (2022)',
+'Multiple 1,000-yard + high-yardage seasons','Physical deep-ball and YAC monster'
+]),
+pl('met','D.K. Metcalf','WR','Pittsburgh Steelers', 1280, [
+'Multiple Pro Bowl','Multiple 1,000-yard seasons',
+'Fastest WR in NFL per Next Gen Stats (elite top speed)',
+'Big-bodied contested-catch specialist'
+]),
+pl('jre3','Jaxon Smith-Njigba','WR','Seattle Seahawks', 1940, [
+'20th Pick (2023)','2025: 1,793 receiving yards, 10 TDs — led NFL in yards',
+'Ohio State: 2021 Rose Bowl MVP (347 yards — Big Ten bowl record)',
+'Breakout superstar season with elite production'
+]),
   pl('mtp','Michael Pittman Jr.','WR','Indianapolis Colts', 740, [
     '3× Pro Bowl','34th Pick (2020)',
     '2023: 1,152 yards — franchise WR record','3× 1,000-yard seasons',
@@ -667,11 +621,6 @@ export const WR_POOL_V3: NFLPlayer[] = [
     '2021: 734 yards — reliable WR2 before torn ACL in 2022',
     '2024: Returned from two ACL tears — comeback story',
   ]),
-  pl('ath','Adam Thielen','WR','Carolina Panthers', 780, [
-    '3× Pro Bowl','AP 2nd-Team (2017)','Undrafted (2013)',
-    '2018: 1,373 yards, 9 TDs — Pro Bowl','2017: 1,276 yards',
-    'Best undrafted WR of his generation; 8,000+ career receiving yards',
-  ]),
   pl('bco2','Brandin Cooks','WR','Dallas Cowboys', 860, [
     '4× Pro Bowl','20th Pick (2014)',
     '2022: 1,037 yards — 7th consecutive 1,000-yard season',
@@ -698,7 +647,7 @@ export const WR_POOL_V3: NFLPlayer[] = [
 export const ALL_PLAYERS_V3: Record<PositionGroup, NFLPlayer[]> = {
   QB: [],
   RB: [],
-  WR: WR_POOL_V3,
+  WR: WR_POOL_V1,
   TE: [],
   OT: [],
   OG: [],

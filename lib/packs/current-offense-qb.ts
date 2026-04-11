@@ -55,10 +55,12 @@ function pl(
    QUARTERBACKS — 18 new entries
    Focus: 2024 draft class starters, veterans still active in 2025
 ══════════════════════════════════════════════════════════════════════ */
-export const QB_POOL_V3: NFLPlayer[] = [
-  pl('dma','Drake Maye','QB','New England Patriots', 280, [
-    '3rd Overall Pick (2024)','2024: Immediate starter for rebuilding Patriots',
-    'UNC single-season record 38 TDs (2023)','Considered top QB prospect since Luck',
+export const QB_POOL_V1: NFLPlayer[] = [
+  pl('dma','Drake Maye','QB','New England Patriots', 2480, [
+    '3rd Overall Pick (2024)','2025: Led NFL in completion % (72.0), YPA (8.9), and passer rating (113.5)',
+    '4394 pass yds, 31 TD, 8 INT + 450 rush yds & 4 rush TD','Runner-up for 2025 NFL MVP',
+    'Patriots reached Super Bowl LX in Year 2 — franchise cornerstone',
+    'UNC single-season record 38 TDs (2023) — elite arm talent + mobility'
   ]),
   pl('jjm','J.J. McCarthy','QB','Minnesota Vikings', 240, [
     '10th Overall Pick (2024)','National Championship winner (Michigan 2023)',
@@ -83,10 +85,6 @@ export const QB_POOL_V3: NFLPlayer[] = [
     'Undrafted (2023)','2023: Went viral — 6-2 as starter in feel-good run',
     'Italian-American heritage made him a fan favorite in New York',
   ]),
-  pl('zap','Bailey Zappe','QB','Kansas City Chiefs', 120, [
-    '137th Pick (2022)','2× Super Bowl Champion (backup, LVII & LVIII)',
-    '2022: 2-2 as spot starter for Patriots — efficient caretaker',
-  ]),
   pl('thl','Tyler Huntley','QB','Baltimore Ravens', 180, [
     '257th Pick (2020) — Mr. Irrelevant','Dual-threat backup for Ravens',
     '2021: 2-1 as starter filling in for Lamar — team-first leader',
@@ -95,9 +93,10 @@ export const QB_POOL_V3: NFLPlayer[] = [
     '68th Pick (2023)','2022 (Tennessee): 3,135 yards before torn ACL',
     '2024: Limited action behind Goff — developing behind elite starter',
   ]),
-  pl('mwi','Malik Willis','QB','Green Bay Packers', 180, [
-    '86th Pick (2022)','2024: Started 3 games for Packers — showed legs',
-    'One of the most electric dual-threat backups in the league',
+  pl('mwi','Malik Willis','QB','Miami Dolphins', 420, [
+    '86th Pick (2022)','2025: Electric backup in Green Bay — strong dual-threat play',
+    '2026: Signed as starter for Dolphins after strong backup seasons',
+    'Known for elite athleticism and deep-ball ability — high-upside veteran backup turned starter'
   ]),
   pl('tbr','Tanner McKee','QB','Philadelphia Eagles', 120, [
     '188th Pick (2023)','Backup to Jalen Hurts on Super Bowl-caliber roster',
@@ -107,10 +106,11 @@ export const QB_POOL_V3: NFLPlayer[] = [
     '150th Pick (2024)','2024: Started 3 games after Carr injury — 3 TDs',
     'Former No. 1 overall recruit; found footing as reliable backup',
   ]),
-  pl('kca','Caleb Williams (note)','QB','Chicago Bears', 260, [
+  pl('kca','Caleb Williams','QB','Chicago Bears', 1680, [
     '1st Overall Pick (2024)','Heisman Trophy (2022)',
-    '2024: 3,541 yards as rookie — showed playmaking ability',
-    'Franchise cornerstone; top arm talent of his generation',
+    '2025: Franchise-record 3,942 pass yds, 27 TD, 7 INT — led Bears to NFC North title',
+    'Improved decision-making and mobility under new coaching — franchise QB with elite arm talent',
+    'Multiple Offensive Player of the Week honors'
   ]),
   pl('jdb','Jacoby Brissett','QB','Washington Commanders', 300, [
     'Pro Bowl (2017)','29th Pick (2016)',
@@ -135,28 +135,13 @@ export const QB_POOL_V3: NFLPlayer[] = [
     '2017 MVP pace (33 TD, 7 INT) before torn ACL',
     'Super Bowl LII Champion (backup, PHI)',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   QUARTERBACKS  — 16 entries
-   Rarity: 11 common · 4 rare · 1 epic
-══════════════════════════════════════════════════════════════════════ */
-export const QB_POOL_V5: NFLPlayer[] = [
   pl('rgr', 'Ryan Tannehill',     'QB', 'Free Agent',               480, [
     '2× Pro Bowl', 'AP 2nd-Team All-Pro 2019',
     '2019: 117.5 passer rating (2nd-highest ever for a season)',
   ]),
-  pl('mjo2','Mac Jones',          'QB', 'Jacksonville Jaguars',     260, [
-    '15th Overall Pick 2021', '2021: First rookie since Mahomes with 67%+ completion %',
-    'Alabama: National Champion 2020 — Heisman runner-up',
-  ]),
   pl('zco', 'Zach Wilson',        'QB', 'Denver Broncos',           180, [
     '2nd Overall Pick 2021', 'BYU: 33 TDs / 3 INTs in final college season',
     'Versatile scrambler — still just 25 in 2025',
-  ]),
-  pl('jfi', 'Jimmy Garoppolo',    'QB', 'Free Agent',               420, [
-    '2× Pro Bowl (alternate)', '2019: 69.1 completion % — franchise record for 49ers',
-    'Patriots → 49ers → Raiders — system fits everywhere',
   ]),
   pl('gbr', 'Gardner Minshew',    'QB', 'Las Vegas Raiders',        320, [
     'Pro Bowl 2023 (alternate)', '2023: 20 TDs / 9 INTs as Eagles backup starter',
@@ -174,7 +159,7 @@ export const QB_POOL_V5: NFLPlayer[] = [
     'Undrafted 2023', '2023: Went 4-1 as surprise emergency starter for NYG',
     'Italian-American icon — fan favourite in New York',
   ]),
-  pl('jdo2','Josh Dobbs',         'QB', 'San Francisco 49ers',      240, [
+  pl('jdo2','Joshua Dobbs',         'QB', 'San Francisco 49ers',      240, [
     '135th Pick 2017', '2023: Stunning 5-1 run with Vikings mid-season',
     'NASA-affiliated aerospace engineer — academic + football dual threat',
   ]),
@@ -194,20 +179,10 @@ export const QB_POOL_V5: NFLPlayer[] = [
     '12th Overall Pick 2024', '2024: Full season starter — 29 TDs / 12 INTs',
     'Oregon: 2× Pac-12 OPOY — most experienced QB in 2024 draft class',
   ]),
-  pl('cal2','Caleb Williams',     'QB', 'Chicago Bears',            340, [
-    '1st Overall Pick 2024', '2024: Immediate franchise starter',
-    'USC: 2022 Heisman Trophy winner — 78 TDs in 2 seasons under Lincoln Riley',
-  ]),
   pl('jdx', 'Jacoby Brissett',    'QB', 'Washington Commanders',    360, [
     '91st Pick 2016', '2022 (CLE): 5-7 as starter — led Browns competently',
     '9-year veteran backup — steady presence in every locker room',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   QUARTERBACKS — 15 entries  |  10 common · 4 rare · 1 epic
-══════════════════════════════════════════════════════════════════════ */
-export const QB_POOL_V6: NFLPlayer[] = [
   pl('rwa', 'Russell Wilson',      'QB', 'Pittsburgh Steelers',   980, [
     'Pro Bowl 2012–2015 (4×)', 'Super Bowl XLVIII Champion',
     '2012: Most wins by a rookie QB in NFL history',
@@ -242,10 +217,6 @@ export const QB_POOL_V6: NFLPlayer[] = [
     '163rd Pick 2023 — Texas native', 
     'Houston: 4-year starter, 30+ TD seasons back to back',
   ]),
-  pl('dth', 'Dorian Thompson-Robinson', 'QB', 'Cleveland Browns', 240, [
-    '100th Pick 2023', '2023: Spot starter with 3 TDs in relief of Watson',
-    'UCLA: 2023 All-Pac-12 — sharp improviser',
-  ]),
   pl('elox', 'Easton Stick',         'QB', 'Los Angeles Chargers', 200, [
     '166th Pick 2019', '2023: 2-0 as emergency starter for Chargers',
     'NDSU: 3× FCS Champion — winner built into his DNA',
@@ -274,13 +245,6 @@ export const QB_POOL_V6: NFLPlayer[] = [
     '2016: 4,917 yards — set Washington franchise passing record',
     '2022 (MIN): 4,547 yards, 29 TDs — led Vikings to 13-4',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   QUARTERBACKS — 15 entries
-   Rarity split: 11 common · 4 rare · 0 epic
-══════════════════════════════════════════════════════════════════════ */
-export const QB_POOL_V4: NFLPlayer[] = [
   pl('dtr','Dorian Thompson-Robinson','QB','Cleveland Browns', 140, [
     '100th Pick (2023)','2023: Spot starter — 3 TDs in relief of Watson',
     'UCLA: 2023 All-Pac-12 — sharp off-platform passer',
@@ -293,10 +257,6 @@ export const QB_POOL_V4: NFLPlayer[] = [
     '74th Pick (2022)','2022: Led Falcons to 7-6 record as starter',
     '2023 (ARI): Learning under veteran system',
   ]),
-  pl('tba','Tyson Bagent','QB','Chicago Bears', 180, [
-    'Undrafted (2023)','2023: 2-2 as starter for Bears — composed debut',
-    'Shepherd University (D2) → NFL starter; remarkable journey',
-  ]),
   pl('jha','Jake Haener','QB','New Orleans Saints', 140, [
     '134th Pick (2023)','Emergency starter experience',
     'Fresno State: 2× Mountain West OPOY',
@@ -304,10 +264,6 @@ export const QB_POOL_V4: NFLPlayer[] = [
   pl('nro','Nathan Rourke','QB','Jacksonville Jaguars', 120, [
     'Undrafted (2022) — from Canadian Football League',
     '2022 (CFL): Grey Cup MVP — dominant passer before NFL shot',
-  ]),
-  pl('est','Easton Stick','QB','Los Angeles Chargers', 160, [
-    '166th Pick (2019)','5-year backup; went 2-0 as emergency starter (2023)',
-    'NDSU: 3× FCS champion — winner\'s pedigree',
   ]),
   pl('lpu','Luke Getsy (QB note)','QB','Free Agent', 120, [
     'Veteran camp arm; depth piece across multiple rosters',
@@ -338,12 +294,6 @@ export const QB_POOL_V4: NFLPlayer[] = [
     '2019: 117.5 passer rating — 2nd highest all-time for a season',
     'Note: Returned 2025 as backup after earlier listing; still active',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   QUARTERBACKS  — 20 new entries
-══════════════════════════════════════════════════════════════════════ */
-export const QB_POOL_V2: NFLPlayer[] = [
   pl('rwi','Russell Wilson','QB','Pittsburgh Steelers', 1680, [
     '9× Pro Bowl','AP 1st-Team (2019)','Super Bowl XLVIII Champion',
     '2012: Led Seahawks to back-to-back SB — youngest QB to win (then)',
@@ -379,10 +329,6 @@ export const QB_POOL_V2: NFLPlayer[] = [
     '4th Overall Pick (2023)',
     '2023: 654 rush yards in 7 starts — record pace for a rookie QB',
     'Highest combine score in history for a QB (99.9 RAS)',
-  ]),
-  pl('cal','Caleb Williams','QB','Chicago Bears', 240, [
-    '1st Overall Pick (2024)','Heisman Trophy winner (2022)',
-    '2× Pac-12 OPOY','Expected franchise cornerstone for Chicago',
   ]),
   pl('jda','Jayden Daniels','QB','Washington Commanders', 300, [
     '2nd Overall Pick (2024)','Heisman Trophy winner (2023)',
@@ -427,24 +373,14 @@ export const QB_POOL_V2: NFLPlayer[] = [
   pl('kyr2','Kyren Murray (QB)','QB','Arizona Cardinals', 140, [
     'High-ceiling prospect; dual-threat; limited NFL starts',
   ]),
-  pl('lof','Joshua Dobbs','QB','Atlanta Falcons', 120, [
-    'Viral "Parachute" trade to Minnesota — 4 TDs in first game',
-    'Aerospace engineering degree — one of most intelligent QBs in NFL',
-  ]),
   pl('joh2','Bryce Young (HC)','QB','Carolina Panthers', 160, [
     '1st Overall Pick (2023)','Heisman Trophy (2021)',
     '2023: Led Panthers to several competitive games despite weak support',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   QUARTERBACKS  (pool: QB)
-   Target spread → 3 legendary · 4 epic · 5 rare · 5 common
-══════════════════════════════════════════════════════════════════════ */
-export const QB_POOL: NFLPlayer[] = [
-  pl('mah','Patrick Mahomes','QB','Kansas City Chiefs', 3280, [
-    '3× Super Bowl Champion','2× Super Bowl MVP','2× League MVP',
-    '6× Pro Bowl','3× AP 1st-Team','NFL single-season TD record (2022, 50 TD)',
+  pl('mah','Patrick Mahomes','QB','Kansas City Chiefs', 4120, [
+    '3× Super Bowl Champion','3× Super Bowl MVP','2× League MVP','1× Offensive Player of the Year',
+    '6× Pro Bowl','3× AP 1st-Team All-Pro (plus multiple 2nd-Team)',
+    'NFL single-season TD record (2022, 50 TD)','Still the standard at QB — generational talent'
   ]),
   pl('laj','Lamar Jackson','QB','Baltimore Ravens', 3180, [
     '2× League MVP (unanimous 2019 & 2023)','3× AP 1st-Team All-Pro',
@@ -507,10 +443,11 @@ export const QB_POOL: NFLPlayer[] = [
     '2× Pro Bowl','Super Bowl LIII Appearance',
     '2023: 4,575 yds, 30 TD — franchise records',
   ]),
-  pl('mai','Daniel Jones','QB','New York Giants', 140, [
-    '6th Overall Pick (2019)','2022 playoff run',
+  pl('mai','Daniel Jones','QB','Indianapolis Colts', 920, [
+    '6th Overall Pick (2019)','2025: Career resurgence — efficient starter (68% comp, 8.1 YPA, 100.2 rating)',
+    'Led Colts to strong early-season record before injury','Proven dual-threat veteran with renewed momentum'
   ]),
-  pl('wil','Kyler Murray','QB','Arizona Cardinals', 540, [
+  pl('wil','Kyler Murray','QB','Minnesota Vikings', 540, [
     '2× Pro Bowl','2019 OROTY','1st Overall Pick (2019)',
     '2 Heisman-era dual-threat records entering NFL',
   ]),
@@ -520,7 +457,7 @@ export const QB_POOL: NFLPlayer[] = [
    MASTER EXPORT  —  all pools in one object for easy lookup
 ══════════════════════════════════════════════════════════════════════ */
 export const ALL_PLAYERS: Record<PositionGroup, NFLPlayer[]> = {
-  QB: QB_POOL,
+  QB: QB_POOL_V1,
   RB: [],
   WR: [],
   TE: [],

@@ -98,32 +98,58 @@ function getTier(s: number) { return TIERS.find(t => s >= t.min)!; }
 
 /* ─── Pack weights ───────────────────────────────────────────────────── */
 const WEIGHTS = {
-  normal:  { common: 54, rare: 28, dynasty: 14, transcendent: 3, immortal: 1 },
-  captain: { common: 5,  rare: 28, dynasty: 42, transcendent: 20, immortal: 5 },
+  normal:  { common: 44, rare: 28, dynasty: 17, transcendent: 10, immortal: 1 },
+  captain: { common: 5,  rare: 27, dynasty: 41, transcendent: 22, immortal: 5 },
 };
 
-function weightedDraw(poolKey: string, count: number, isCaptain: boolean, excl: string[]): Player[] {
+function weightedDraw(poolKey: string, count: number = 5, isCaptain: boolean = false, excl: string[] = []): Player[] {
   const avail = (POOL[poolKey] ?? []).filter(p => !excl.includes(p.id));
-  const wm = isCaptain ? WEIGHTS.captain : WEIGHTS.normal;
-  const guaranteedWm = { ...wm, common: 0 };
+  if (avail.length === 0) return [];
 
-  const weighted = avail.map(p => ({ p, w: wm[p.rarity] }));
-  const guaranteedWeighted = avail.map(p => ({ p, w: guaranteedWm[p.rarity] }));
+  const baseWeights = isCaptain ? WEIGHTS.captain : WEIGHTS.normal;
 
-  // random position between 0 and count-1 gets the guaranteed non-common
-  const guaranteedIndex = Math.floor(Math.random() * count);
+  // === ONLY apply boost for normal packs (not captain) ===
+  const useBoosted = !isCaptain;   // ← This is the key line
+
+  const boostedWeights = {
+    ...baseWeights,
+    common: 36,
+    rare:   42,
+    // dynasty, transcendent, immortal stay unchanged
+  };
+
+  // Choose which weights to use for each slot
+  const normalPool = avail.map(p => ({ p, w: baseWeights[p.rarity] ?? 1 }));
+  const boostedPool = avail.map(p => ({ p, w: boostedWeights[p.rarity] ?? 1 }));
+
+  // Pick one random slot to get the boosted weights (only if it's a normal pack)
+  const boostedIndex = useBoosted ? Math.floor(Math.random() * count) : -2;
 
   const used = new Set<string>();
   const result: Player[] = [];
 
-  for (let i = 0; i < Math.min(count, weighted.length); i++) {
-    const pool = i === guaranteedIndex ? guaranteedWeighted : weighted;
-    const el = pool.filter(x => !used.has(x.p.id));
-    const tot = el.reduce((s, x) => s + x.w, 0);
-    let r = Math.random() * tot;
-    for (const item of el) { r -= item.w; if (r <= 0) { result.push(item.p); used.add(item.p.id); break; } }
+  for (let i = 0; i < Math.min(count, avail.length); i++) {
+    // Use boosted weights only on the chosen slot AND only for normal packs
+    const currentPool = (useBoosted && i === boostedIndex) ? boostedPool : normalPool;
+
+    const available = currentPool.filter(x => !used.has(x.p.id));
+    if (available.length === 0) break;
+
+    const totalWeight = available.reduce((sum, x) => sum + x.w, 0);
+    let roll = Math.random() * totalWeight;
+
+    for (const item of available) {
+      roll -= item.w;
+      if (roll <= 0) {
+        result.push(item.p);
+        used.add(item.p.id);
+        break;
+      }
+    }
   }
-  return result;
+
+  // Shuffle final pack so boosted card isn't always in same position
+  return result.sort(() => Math.random() - 0.5);
 }
 
 /* ══════════════════════════════════════════════════════════════════════

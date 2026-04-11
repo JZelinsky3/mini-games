@@ -32,7 +32,7 @@ function pl(
 /* ══════════════════════════════════════════════════════════════════════
    TIGHT ENDS — 13 entries  |  10 common · 3 rare · 0 epic
 ══════════════════════════════════════════════════════════════════════ */
-export const TE_POOL_V6: NFLPlayer[] = [
+export const TE_POOL_V1: NFLPlayer[] = [
   pl('jmg2','Jonnu Smith',         'TE', 'Miami Dolphins',        660, [
     'Pro Bowl 2020 (alternate)', '100th Pick 2017',
     '2020 (TEN): 448 yards, 8 TDs — Pro Bowl caliber season',
@@ -89,12 +89,6 @@ export const TE_POOL_V6: NFLPlayer[] = [
     '194th Pick 2022', '2023: Elite blocking grade 78+ in run game',
     'Minnesota: 3-year starter — devastatingly physical blocker',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   TIGHT ENDS — 13 new entries
-══════════════════════════════════════════════════════════════════════ */
-export const TE_POOL_V3: NFLPlayer[] = [
   pl('hen3','Hunter Henry','TE','New England Patriots', 620, [
     '2× Pro Bowl','35th Pick (2016)',
     '2021: 603 yards, 9 TDs — led all NFL TEs in TDs',
@@ -143,13 +137,6 @@ export const TE_POOL_V3: NFLPlayer[] = [
     '50th Pick (2019)','2023: 519 yards for Bengals post-Hockenson trade',
     '2021: 365 yards before torn meniscus — had star potential',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   TIGHT ENDS — 13 entries
-   Rarity split: 11 common · 2 rare · 0 epic
-══════════════════════════════════════════════════════════════════════ */
-export const TE_POOL_V4: NFLPlayer[] = [
   pl('ngo','Noah Gray','TE','Kansas City Chiefs', 340, [
     '141st Pick (2021)','2× Super Bowl Champion (LVII, LVIII)',
     '2023: 326 yards, 3 TDs complementing Kelce',
@@ -207,12 +194,6 @@ export const TE_POOL_V4: NFLPlayer[] = [
     'Undrafted (2022)','2023: 215 yards in first full NFL season',
     'Western Michigan: MAC Tight End of the Year (2021)',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   TIGHT ENDS  — 14 new entries
-══════════════════════════════════════════════════════════════════════ */
-export const TE_POOL_V2: NFLPlayer[] = [
   pl('ert','Zach Ertz','TE','Washington Commanders', 1180, [
     '4× Pro Bowl','Super Bowl LII Champion',
     '74th Pick (2013)','2018: 116 catches — NFL record for a TE at time',
@@ -262,13 +243,6 @@ export const TE_POOL_V2: NFLPlayer[] = [
     'Pro Bowl (2021 snub)','Super Bowl LV appearance (GB)','139th Pick (2017)',
     '2020: 11 TDs — tied TE single-season record for Green Bay',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   TIGHT ENDS  — 13 entries
-   Rarity: 10 common · 3 rare · 0 epic
-══════════════════════════════════════════════════════════════════════ */
-export const TE_POOL_V5: NFLPlayer[] = [
   pl('cmo', 'Cole Kmet',          'TE', 'Chicago Bears',            640, [
     '43rd Pick 2020', '2023: 719 yards, 8 TDs — career-best season',
     'Notre Dame: All-American — first TE taken in 2020 draft',
@@ -320,13 +294,6 @@ export const TE_POOL_V5: NFLPlayer[] = [
     '2021: 808 yards, 8 TDs — set Cowboys TE single-season TD record',
     '2022 (HOU): 577 yards helping launch Stroud era',
   ]),
-];
-
-/* ══════════════════════════════════════════════════════════════════════
-   TIGHT ENDS  (pool: TE)
-   Target spread → 2 legendary · 3 epic · 4 rare · 4 common
-══════════════════════════════════════════════════════════════════════ */
-export const TE_POOL: NFLPlayer[] = [
   pl('kel','Travis Kelce','TE','Kansas City Chiefs', 3180, [
     '9× Pro Bowl','6× AP 1st-Team','3× Super Bowl Champion',
     'All-Time TE receiving yards leader (11,000+)',
@@ -402,7 +369,7 @@ export const ALL_PLAYERS_V4: Record<PositionGroup, NFLPlayer[]> = {
   QB: [],
   RB: [],
   WR: [],
-  TE: TE_POOL_V4,
+  TE: TE_POOL_V1,
   OT: [],
   OG: [],
   C:  [],
