@@ -208,10 +208,6 @@ export const WR_POOL_V1: NFLPlayer[] = [
     '2024: Spot contributor in Chargers offense',
     '2023 (USC): 768 yards, 8 TDs under Lincoln Riley',
   ]),
-  pl('dtu','D.J. Turner','WR','Cincinnati Bengals', 260, [
-    '60th Pick (2023)','2024: Becoming key slot piece for Burrow',
-    'Michigan: 2023 National Champion',
-  ]),
   pl('mho','Mack Hollins','WR','Atlanta Falcons', 280, [
     '168th Pick (2017)','2021 (LV): 690 yards — career high',
     'Special teams ace + reliable depth piece across 7 seasons',
@@ -264,10 +260,6 @@ export const WR_POOL_V1: NFLPlayer[] = [
     'Fastest to 100 catches in debut season (Giants history)',
     'All-SEC at LSU under Brian Kelly',
   ]),
-  pl('bth','Brian Thomas Jr.','WR','Jacksonville Jaguars', 240, [
-    '23rd Pick (2024)','2024: 1,023 yards as rookie — 2nd most by JAX WR ever',
-    'Rare 6\'3" size/speed combo — 4.33 combine',
-  ]),
   pl('mck','Ladd McConkey','WR','Los Angeles Chargers', 200, [
     '34th Pick (2024)','Immediate starting slot WR for Herbert',
     '2024: 900+ yards and multiple TDs as rookie',
@@ -286,7 +278,7 @@ export const WR_POOL_V1: NFLPlayer[] = [
     '2022: 687 yards including NFC Championship game-winner',
     '5th Round gem; averaged 18.9 yards per catch career',
   ]),
-  pl('gab','Gabriel Davis','WR','Jacksonville Jaguars', 340, [
+  pl('gab','Gabe Davis','WR','Jacksonville Jaguars', 340, [
     'Pro Bowl (2022)','128th Pick (2020)',
     '2022 Divisional: 4 TD in single playoff game — tied NFL record',
     '1,000-yard season in 2023',

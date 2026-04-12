@@ -164,6 +164,20 @@ export const RB_POOL_OLD: NFLPlayer[] = [
     '1975: 23 rushing TDs — NFL record at time',
     '11,236 career rushing yards',
   ]),
+  pl('lfo','Leonard Fournette','RB','Free Agent', 780, [
+    '4th Overall Pick (2017)','Super Bowl LV Champion',
+    '2020: 1,266 scrimmage yards','2020 Playoffs: 3 TDs in 3 games',
+    'Key piece of Buccaneers\' Super Bowl run',
+  ]),
+  pl('son','Sony Michel','RB','Free Agent', 620, [
+    '31st Pick (2018)','Super Bowl LIII Champion',
+    '2018 Playoffs: 336 rush yards — Patriots postseason record',
+    '2021 (LAR): Super Bowl LVI appearance — 845 yards regular season',
+  ]),
+  pl('ell','Ezekiel Elliott','RB','New England Patriots', 860, [
+    '3× Pro Bowl','2× Rushing Title (2016, 2018)','AP 1st-Team',
+    '4th Overall Pick (2016)','2016: 1,631 rush yards as rookie',
+  ]),
 ];
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -370,6 +384,11 @@ export const OT_POOL_OLD: NFLPlayer[] = [
     '6× Pro Bowl', '2× AP 1st-Team', '2× Super Bowl Champion (XII, XII)',
     '"The Big Cat" — 6\'6\" 255 lbs — physically ahead of his era',
     'Dallas Cowboys dynasty RT for their first championship era',
+  ]),
+    pl('cfl','Cam Fleming','OT','New York Giants', 240, [
+    '123rd Pick (2014)','10-year veteran swing tackle across 6 teams',
+    'Patriots: 2× Super Bowl Champion (XLIX, LI)',
+    'Reliable veteran depth — started at both tackle spots in career',
   ]),
 ];
 

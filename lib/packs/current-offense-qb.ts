@@ -265,9 +265,6 @@ export const QB_POOL_V1: NFLPlayer[] = [
     'Undrafted (2022) — from Canadian Football League',
     '2022 (CFL): Grey Cup MVP — dominant passer before NFL shot',
   ]),
-  pl('lpu','Luke Getsy (QB note)','QB','Free Agent', 120, [
-    'Veteran camp arm; depth piece across multiple rosters',
-  ]),
   pl('tre2','Trevor Siemian','QB','Free Agent', 300, [
     '250th Pick (2015)','Started 21 games across DEN/NYJ/CHI/NO',
     '2016: 8-6 as Broncos starter filling for Peyton Manning',
@@ -276,10 +273,6 @@ export const QB_POOL_V1: NFLPlayer[] = [
     'Pro Bowl honorable (2017)','259th Pick (2012)',
     '2017: Led Vikings to 13-3, NFC Championship — "Minneapolis Miracle" connection',
     '2017: 67.6 completion %, 22 TDs, 7 INT — career peak',
-  ]),
-  pl('kmo','Kellen Moore','QB','Free Agent', 140, [
-    'NDSU legend — 4× FCS Champion','257th Pick (2012)',
-    'Current NFL offensive coordinator; veteran backup who shaped a system',
   ]),
   pl('sha','Shane Buechele','QB','Philadelphia Eagles', 120, [
     'Undrafted (2021)','Career backup — 3 roster seasons',

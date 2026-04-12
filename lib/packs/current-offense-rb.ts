@@ -63,14 +63,6 @@ export const RB_POOL_V1: NFLPlayer[] = [
     '2021 Playoffs: 131 yards vs. Cardinals — miraculous comeback',
     'Overcome two major injuries to remain active starter',
   ]),
-  pl('spe2','Samaje Perine','RB','Denver Broncos', 280, [
-    '224th Pick (2017)','2022 (CIN): 572 yards, 6 TDs as complementary back',
-    '2022: Super Bowl LVI appearance','Reliable veteran in multiple offenses',
-  ]),
-  pl('juh','Justice Hill','RB','Baltimore Ravens', 260, [
-    '113th Pick (2019)','2023: 419 yards, 3 TDs as change-of-pace back',
-    'One of fastest RBs on field — blazing 4.40 speed',
-  ]),
   pl('khe','Khalil Herbert','RB','Chicago Bears', 320, [
     '149th Pick (2021)','2022: 731 yards in 9 starts — efficient workhorse',
     '2021: 5.8 YPC — led all rookie RBs in efficiency',
@@ -78,10 +70,6 @@ export const RB_POOL_V1: NFLPlayer[] = [
   pl('kmi','Keaton Mitchell','RB','Baltimore Ravens', 280, [
     '160th Pick (2023)','2023: 5 TDs, 544 yards in 9 games before torn ACL',
     'One of fastest RBs in 2023 class — 4.32 combine speed',
-  ]),
-  pl('zaw','Zamir White','RB','Las Vegas Raiders', 260, [
-    '122nd Pick (2022)','2023: 758 yards as starter after Jacobs holdout',
-    'Georgia: 2× National Champion',
   ]),
   pl('jml2','Jaleel McLaughlin','RB','Denver Broncos', 220, [
     'Undrafted (2023)','2023: 671 rush + rec yards as UDFA surprise',
@@ -120,16 +108,6 @@ export const RB_POOL_V1: NFLPlayer[] = [
     '186th Pick (2023)','2024: Depth role in Rams system',
     'Ole Miss: 1,000+ yards in 2022 before draft slide',
   ]),
-  pl('lfo','Leonard Fournette','RB','Free Agent', 780, [
-    '4th Overall Pick (2017)','Super Bowl LV Champion',
-    '2020: 1,266 scrimmage yards','2020 Playoffs: 3 TDs in 3 games',
-    'Key piece of Buccaneers\' Super Bowl run',
-  ]),
-  pl('son','Sony Michel','RB','Free Agent', 620, [
-    '31st Pick (2018)','Super Bowl LIII Champion',
-    '2018 Playoffs: 336 rush yards — Patriots postseason record',
-    '2021 (LAR): Super Bowl LVI appearance — 845 yards regular season',
-  ]),
   pl('jma','Jordan Mason','RB','San Francisco 49ers', 480, [
     'Pro Bowl (2024)','232nd Pick (2023)',
     '2024: 1,032 rush yards filling in for injured McCaffrey',
@@ -140,11 +118,10 @@ export const RB_POOL_V1: NFLPlayer[] = [
     '2021: 903 rush yards as rookie — efficient workhorse',
     'Returned from torn ACL (2022) to reclaim starter role 2024',
   ]),
-  pl('bro4','Brian Robinson Jr.','RB','Washington Commanders', 440, [
-    '2× Pro Bowl (2023, 2024)','98th Pick (2022)',
-    '2024: 1,031 rush yards — cornerstone of Commanders playoff run',
-    'Shot twice in armed robbery (2022) — returned same season',
-  ]),
+  pl('bro4','Brian Robinson Jr.','RB','Washington Commanders', 680, [
+'2× Pro Bowl','2024: 1,031 rush yards — key to Commanders playoff run',
+'Overcame major off-field adversity — tough, reliable lead back'
+]),
   pl('san','Miles Sanders','RB','Carolina Panthers', 480, [
     '53rd Pick (2019)','2022 Pro Bowl',
     '2022: 1,269 rush yards — Eagles franchise RB record in a single season',
@@ -160,10 +137,10 @@ export const RB_POOL_V1: NFLPlayer[] = [
     '2022: 1,057 rush yards for Bills','2024: 1,000+ yards for Giants',
     '3× 1,000-yard seasons — model of consistency',
   ]),
-  pl('irv','Bucky Irving','RB','Tampa Bay Buccaneers', 320, [
-    '125th Pick (2024)','2024: 1,101 rush yards as rookie — 3rd most by TB RB ever',
-    'Most yards after contact per attempt among 2024 rookie RBs',
-  ]),
+  pl('irv','Bucky Irving','RB','Tampa Bay Buccaneers', 680, [
+'2024: 1,101 rush yards as rookie','Strong 2025 follow-up — efficient power runner',
+'One of the best rookie RB seasons in recent Buccaneers history'
+]),
   pl('tan3','Tank Bigsby','RB','Jacksonville Jaguars', 260, [
     '88th Pick (2023)','2023: 846 yards as rookie backup',
     '2024: Took over as starter — efficient power runner',
@@ -172,44 +149,23 @@ export const RB_POOL_V1: NFLPlayer[] = [
     '128th Pick (2024)','2024: Immediate utility back for Bills',
     '2023 (Kentucky): 1,183 rush yards, 18 TDs — SEC standout',
   ]),
-  pl('bco','Blake Corum','RB','Los Angeles Rams', 220, [
-    '88th Pick (2024)','2× Rose Bowl champion (Michigan)',
-    '2024: Versatile back in Rams committee — contributed in Year 1',
-  ]),
   pl('qju','Quinshon Judkins','RB','Detroit Lions', 200, [
     '37th Pick (2024)','2023 (Ole Miss): 1,158 rush yards, 15 TDs',
     '2024: Immediate contributor in Lions\' playoff-caliber backfield',
-  ]),
-  pl('rob','Roschon Johnson','RB','Chicago Bears', 220, [
-    '115th Pick (2023)','2024: Lead back for Bears behind Caleb Williams',
-    '2023 (Texas): Consistent two-down back — 700+ yards as Bijan backup',
   ]),
   pl('elo','Elijah Mitchell','RB','Jacksonville Jaguars', 260, [
     '188th Pick (2021)','2021: 963 rush yards in limited starts — elite efficiency',
     '5.1 yards per carry — one of highest marks among active backs',
   ]),
-  pl('dem','Emari Demercado','RB','Arizona Cardinals', 160, [
-    'Undrafted (2022)','2023: 588 yards as lead back in Arizona',
-    'Versatile pass-catcher — quality bridge starter',
-  ]),
-  pl('mar2','Marshawn Lloyd','RB','Houston Texans', 180, [
-    '65th Pick (2023)','2024: Solid backup role behind Achane era',
-    '2022 (USC): 1,421 rush yards before injury — elite prospect',
-  ]),
   pl('cre','Craig Reynolds','RB','Detroit Lions', 200, [
     'Undrafted (2020)','3× key spot starts for Lions',
     '2024: 560+ yards as backup — Super Bowl appearance year',
-  ]),
-  pl('gie','Antonio Gibson','RB','New England Patriots', 320, [
-    'Pro Bowl (2021)','66th Pick (2020)',
-    '2020: 795 yards, 11 TDs as rookie — WAS franchise RB record start',
-    '2021: 1,037 rush yards','Transitioned to WR role in 2024',
   ]),
   pl('ant','Ty Chandler','RB','Minnesota Vikings', 140, [
     '171st Pick (2022)','2024: Starter-level production as complement to Cook replacement',
     'Special teams ace turned offensive contributor',
   ]),
-  pl('dha2','AJ Dillon',           'RB', 'Green Bay Packers',     460, [
+  pl('dha2','AJ Dillon',           'RB', 'Carolina Panthers',     460, [
     '62nd Pick 2020', '2021: 803 yards as Jones\'s complement back',
     'Boston College: Punishing runner — 247 lbs with 4.39 speed',
   ]),
@@ -259,7 +215,7 @@ export const RB_POOL_V1: NFLPlayer[] = [
     '156th Pick 2022', '2023: 813 yards, 7 TDs as Chubb\'s fill-in',
     'Cincinnati: 2× Mountain West rushing title',
   ]),
-  pl('ty2', 'Tyjae Spears (v2)',   'RB', 'Tennessee Titans',      720, [
+  pl('ty2', 'Tyjae Spears',   'RB', 'Tennessee Titans',      720, [
     '2× Pro Bowl candidate', '101st Pick 2023',
     '2024: Took over as Henry\'s successor — 1,100+ yards',
     'Tulane: 2022 Cotton Bowl Champion — 4.39 speed',
@@ -291,10 +247,10 @@ export const RB_POOL_V1: NFLPlayer[] = [
     '126th Pick 2021', '2023: Full season starter — 1,023 rush yards',
     'Oklahoma State: 2020 Big 12 Offensive POY',
   ]),
-  pl('cla2','Chase Brown',        'RB', 'Cincinnati Bengals',       640, [
-    '148th Pick 2023', '2024: Primary starter after Mixon trade',
-    'Illinois: 2022 Big Ten rushing champion — 1,643 yards',
-  ]),
+  pl('cla2','Chase Brown','RB','Cincinnati Bengals', 720, [
+'2024: Primary starter after Mixon trade','Multiple strong seasons — vision and burst',
+'Big Ten rushing champion background — rising lead back'
+]),
   pl('rmo', 'Rachaad White',      'RB', 'Tampa Bay Buccaneers',     560, [
     '91st Pick 2022', '2023: 990 total yards + 8 TDs as primary back',
     'Arizona State: Exceptional pass-catcher — 48 receptions as rookie',
@@ -381,17 +337,9 @@ export const RB_POOL_V1: NFLPlayer[] = [
     'Pro Bowl (2022)','120th Pick (2021)',
     '2022: 1,040 rush yards — Patriots best RB performance post-Brady',
   ]),
-  pl('mat','Alexander Mattison','RB','Las Vegas Raiders', 380, [
-    'Pro Bowl (2023)','102nd Pick (2019)',
-    '2023: 1,042 rush yards in first year as starter — filling Dalvin Cook void',
-  ]),
   pl('cha2','Zach Charbonnet','RB','Seattle Seahawks', 260, [
     '52nd Pick (2023)','879 rush yards in rookie season',
     '2023: Averaged 5.0 yards per carry — Seahawks\' workhorse future',
-  ]),
-  pl('dil','A.J. Dillon','RB','Green Bay Packers', 280, [
-    '62nd Pick (2020)','Named "Quadzilla" by fans for his build',
-    '2021: 803 rush yards complementing Aaron Jones — 7.3 YPC in short runs',
   ]),
   pl('all3','Tyler Allgeier','RB','Atlanta Falcons', 220, [
     '151st Pick (2022) — massive steal','1,035 rush yards in 2023',
@@ -414,94 +362,90 @@ export const RB_POOL_V1: NFLPlayer[] = [
     '32nd Pick (2020)','Super Bowl LV Ring','Super Bowl LVII Ring',
     '2020: 803 rush yards as a rookie — franchise\'s first RB with 800+ since 2006',
   ]),
-  pl('hub','Chuba Hubbard','RB','Carolina Panthers', 200, [
-    '69th Pick (2021)','726 rush yards (2023) filling for Miles Sanders',
-  ]),
-  pl('sto','Tony Jones Jr.','RB','Free Agent', 120, [
-    'Undrafted gem; versatile pass-catcher out of Notre Dame',
-  ]),
-  pl('kam2','Kenneth Walker III','RB','Seattle Seahawks', 1090, [
-    '2× Pro Bowl','41st Pick (2022)',
-    '2022: 1,050 rush yards as rookie despite late start',
-    '2023: 905 rush yards — Seahawks\' franchise RB of future',
-    'Super Bowl LX Champion (2026)',
+  pl('kam2','Kenneth Walker III','RB','Kansas City Chiefs', 1280, [
+'2× Pro Bowl','Super Bowl LX Champion (2026)','Super Bowl LX MVP',
+'Multiple 1,000-yard seasons','Explosive big-play runner',
     'Super Bowl LX MVP — 135 rush yards + 26 rec yards in championship game',
   ]),
-  pl('mcc','Christian McCaffrey','RB','San Francisco 49ers', 2860, [
-    '3× Pro Bowl','AP 1st-Team','2023 Offensive Player of Year',
-    '2,023 scrimmage yards (2019) — 2nd all-time single season',
-    'Only RB with 1,000 rush + 1,000 rec in same season (twice)',
-  ]),
+  pl('mcc','Christian McCaffrey','RB','San Francisco 49ers', 3420, [
+'4× Pro Bowl','3× AP 1st-Team All-Pro','2023 Offensive Player of the Year','2025 Comeback Player of the Year',
+'2,023 scrimmage yards (2019) — 2nd all-time single season','Only RB with 1,000 rush + 1,000 rec twice',
+'Multiple 2,000+ scrimmage yard seasons — generational dual-threat'
+]),
   pl('kam','Alvin Kamara','RB','New Orleans Saints', 2540, [
     '5× Pro Bowl','AP 1st-Team (2020)','2017 OROTY',
     '6 TD in single game (Christmas 2020) — tied NFL record',
     '8,000+ career scrimmage yards',
   ]),
-  pl('hen','Derrick Henry','RB','Baltimore Ravens', 1960, [
-    '4× Pro Bowl','2× Rushing Title (2019–20)','AP 1st-Team',
-    '2,000-yard season (2019) — one of 8 in NFL history',
-    '99-yard TD run (longest in modern NFL history)',
-  ]),
-  pl('bar','Saquon Barkley','RB','Philadelphia Eagles', 1580, [
-    '3× Pro Bowl','2018 OROTY','AP 1st-Team',
-    '2018: 2,028 scrimmage yards','Super Bowl LIX Champion (2024)',
-  ]),
+  pl('hen','Derrick Henry','RB','Baltimore Ravens', 2480, [
+'5× Pro Bowl','AP 1st-Team','2× Rushing Title','Multiple 1,500+ rush yard seasons',
+'2,000-yard season (2019) — one of only 8 in NFL history','2025: 1,595 rush yards, 16 TDs',
+'99-yard TD run (longest in modern NFL history) — all-time power back'
+]),
+  pl('bar','Saquon Barkley','RB','Philadelphia Eagles', 2680, [
+'3× Pro Bowl','2018 OROTY','AP 1st-Team All-Pro (2024)','2024 Offensive Player of the Year',
+'2024: 2,005 rush yards (9th player in NFL history)','Super Bowl LIX Champion (2024)',
+'Multiple 2,000+ scrimmage yard seasons — explosive big-play back'
+]),
+pl('bij','Bijan Robinson','RB','Atlanta Falcons', 1980, [
+'2× Pro Bowl','AP 1st-Team All-Pro (2025)','2025: NFL-leading 2,298 scrimmage yards (1,478 rush + 820 rec)',
+'Multiple 2,000+ scrimmage yard pace seasons','Elite vision, power, and receiving — franchise cornerstone'
+]),
   pl('coo','Dalvin Cook','RB','Free Agent', 1260, [
     '4× Pro Bowl','AP 1st-Team (2020)',
     '6,000+ career rushing yards','2× 1,000-yard seasons',
   ]),
-  pl('tay','Jonathan Taylor','RB','Indianapolis Colts', 1100, [
-    '2× Pro Bowl','2021 Rushing Title','AP 1st-Team',
-    '2021: 1,811 rush yards — Colts single-season record',
-  ]),
-  pl('jac','Josh Jacobs','RB','Green Bay Packers', 980, [
-    '2× Pro Bowl','2022 Rushing Title','AP 1st-Team (2022)',
-    '2022: 1,653 rush yards — Raiders single-season record',
-  ]),
-  pl('mix','Joe Mixon','RB','Houston Texans', 760, [
-    '2× Pro Bowl','7,000+ career rushing yards',
-    'Only RB with 2,000+ rush yards for Cincinnati franchise',
-  ]),
+  pl('tay','Jonathan Taylor','RB','Indianapolis Colts', 1620, [
+'2× Pro Bowl','2021 Rushing Title','AP 1st-Team All-Pro',
+'2021: 1,811 rush yards — Colts single-season record','Multiple 1,500+ scrimmage yard seasons',
+'Consistent elite efficiency and volume'
+]),
+  pl('jac','Josh Jacobs','RB','Green Bay Packers', 1280, [
+'2× Pro Bowl','2022 Rushing Title','AP 1st-Team All-Pro (2022)',
+'2022: 1,653 rush yards — Raiders single-season record','Multiple 1,000+ rush yard seasons — durable workhorse'
+]),
+  pl('mix','Joe Mixon','RB','Houston Texans', 980, [
+'2× Pro Bowl','5× 1,000+ rush yard seasons','7,000+ career rushing yards',
+'Consistent volume producer and goal-line back'
+]),
   pl('pol','Tony Pollard','RB','Tennessee Titans', 700, [
     'Pro Bowl (2022)','2× 1,000-yard seasons',
     'Two-time Super Bowl Champion (as backup, DAL)',
   ]),
-  pl('ach','De\'Von Achane','RB','Miami Dolphins', 620, [
-    'Pro Bowl (2023)','2023: 800+ yards in first 6 games',
-    '72.4 yards-per-game — fastest to 500 rush yards (history)',
-  ]),
-  pl('hal','Breece Hall','RB','New York Jets', 540, [
-    '2× Pro Bowl','1,000+ rush yards (2023)',
-    'Most yards after contact per attempt among active RBs',
-  ]),
-  pl('pac','Isiah Pacheco','RB','Kansas City Chiefs', 460, [
-    '2× Super Bowl Champion (LVII, LVIII)','1,000+ rush yards (2023)',
-  ]),
-  pl('mon','David Montgomery','RB','Detroit Lions', 420, [
-    '2× Pro Bowl','1,000+ rush yards (2023 NFC Championship run)',
-  ]),
-  pl('gib','Jahmyr Gibbs','RB','Detroit Lions', 380, [
-    '12th Pick (2023 Draft)','945 rush + rec yards in rookie season',
-  ]),
-  pl('coo2','James Cook','RB','Buffalo Bills', 360, [
-    'Pro Bowl (2023)','1,122 rush yards (2023)',
-  ]),
-  pl('whi','Rachaad White','RB','Tampa Bay Buccaneers', 280, [
-    '1,000+ scrimmage yards (2023)',
-    '2022: 1,000+ yards in limited work — led TampaBay rushing',
-  ]),
-  pl('kyr','Kyren Williams','RB','Los Angeles Rams', 320, [
-    '1,144 rush yards (2023)','Super Bowl LVI Ring',
-    '17 total TDs (2023) — 2nd most by an RB',
-  ]),
-  pl('ejo','Aaron Jones','RB','Minnesota Vikings', 580, [
-    '2× Pro Bowl','2020: 9 TDs, 1,000+ rush yards',
-    '6,000+ career scrimmage yards',
-  ]),
-  pl('ell','Ezekiel Elliott','RB','New England Patriots', 860, [
-    '3× Pro Bowl','2× Rushing Title (2016, 2018)','AP 1st-Team',
-    '4th Overall Pick (2016)','2016: 1,631 rush yards as rookie',
-  ]),
+  pl('ach','De\'Von Achane','RB','Miami Dolphins', 980, [
+'Pro Bowl (2023)','Historic explosive pace — multiple elite YPC seasons',
+'Big-play threat with speed and receiving skills'
+]),
+  pl('hal','Breece Hall','RB','New York Jets', 880, [
+'2× Pro Bowl','Multiple 1,000+ rush yard seasons',
+'Elite yards after contact — strong vision and receiving'
+]),
+  pl('pac','Isiah Pacheco','RB','Detroit Lions', 780, [
+'2× Super Bowl Champion (LVII, LVIII)','Multiple 1,000+ rush yard seasons',
+'Physical lead back for championship teams'
+]),
+  pl('mon','David Montgomery','RB','Houston Texans', 720, [
+'2× Pro Bowl','Multiple 1,000+ rush yard seasons',
+'Tough, consistent contributor in strong run schemes'
+]),
+  pl('coo2','James Cook','RB','Buffalo Bills', 1380, [
+'Pro Bowl (2023)','2025 NFL Rushing Champion — 1,621 rush yards (league leader)',
+'Multiple 1,000+ rush yard seasons','5.2 YPC in 2025 — elite efficiency',
+'Consistent lead back in high-powered Bills offense'
+]),
+  pl('gib','Jahmyr Gibbs','RB','Detroit Lions', 1420, [
+'3× Pro Bowl','2025: 1,223 rush yards + 616 rec yards (1,839 scrimmage), 18 total TDs',
+'Explosive dual-threat back with elite vision and big-play ability',
+'Dynamic centerpiece of Lions\' offense — high touchdown scorer'
+]),
+  pl('kyr','Kyren Williams','RB','Los Angeles Rams', 820, [
+'Multiple 1,000+ rush yard seasons','Super Bowl LVI Ring',
+'High-volume, efficient lead back'
+]),
+  pl('ejo','Aaron Jones','RB','Minnesota Vikings', 780, [
+'2× Pro Bowl','Multiple 1,000+ scrimmage yard seasons',
+'6,000+ career scrimmage yards — reliable veteran'
+]),
 ];
 
 /* ══════════════════════════════════════════════════════════════════════

@@ -40,7 +40,7 @@ function pl(id: string, name: string, pos: PositionGroup, team: string, score: n
    QUARTERBACKS — 9 entries (original set verified; scores/feats unchanged)
 ══════════════════════════════════════════════════════════════════════ */
 export const QB_POOL_V7: NFLPlayer[] = [
-  pl('tbr7', 'Tom Brady', 'QB', 'Retired (GOAT)', 7200, [
+  pl('tbr7', 'Tom Brady', 'QB', 'Retired (GOAT)', 8200, [
     '7× Super Bowl Champion (most in NFL history)',
     '5× Super Bowl MVP', '3× League MVP', '15× Pro Bowl',
     '3× AP 1st-Team', '89,214 career passing yards (all-time record)',
@@ -139,7 +139,7 @@ export const RB_POOL_V7: NFLPlayer[] = [
    WIDE RECEIVERS — 9 entries (Julio/AB/Calvin feats & scores fully updated per verified data + legend/HOF-caliber boost; now all immortal-tier)
 ══════════════════════════════════════════════════════════════════════ */
 export const WR_POOL_V7: NFLPlayer[] = [
-  pl('jri', 'Jerry Rice', 'WR', 'Retired (HOF 2010)', 8200, [
+  pl('jri', 'Jerry Rice', 'WR', 'Retired (HOF 2010)', 8050, [
     '3× Super Bowl Champion (XIX, XXIII, XXIX)', 'Super Bowl XXIII MVP',
     '13× Pro Bowl', '10× AP 1st-Team', '2× OPOY', 'League MVP 1987',
     '22,895 career receiving yards — all-time record by a massive margin',
@@ -181,7 +181,7 @@ export const WR_POOL_V7: NFLPlayer[] = [
     'Most 100+ yard games through first 8 seasons (49)',
     'NFL 2010s All-Decade Team', 'Consensus top-5 WR all-time (HOF caliber)',
   ]),
-  pl('abr', 'Antonio Brown', 'WR', 'Retired', 4500, [
+  pl('abr', 'Antonio Brown', 'WR', 'Retired', 4700, [
     '7× Pro Bowl', '4× AP 1st-Team', '1× AP 2nd-Team',
     '1× Super Bowl Champion (LV)',
     '2× receiving yards title (2014, 2017)', '2× receptions title (2014, 2015)', '1× receiving TDs title (2018)',
@@ -189,7 +189,7 @@ export const WR_POOL_V7: NFLPlayer[] = [
     'NFL record: 4 games of 175+ receiving yards in a single season (2015)',
     'NFL 2010s All-Decade Team', 'Consensus top-5 WR all-time (HOF caliber)',
   ]),
-  pl('cjo', 'Calvin Johnson', 'WR', 'Retired (HOF 2021)', 4800, [
+  pl('cjo', 'Calvin Johnson', 'WR', 'Retired (HOF 2021)', 5200, [
     '6× Pro Bowl', '3× AP 1st-Team', '1× AP 2nd-Team',
     '2× receiving yards title (2011, 2012)', '1× receiving TDs title (2008)', '1× receptions title (2012)',
     '2012: 1,964 yards — NFL single-season record',
@@ -222,7 +222,7 @@ export const TE_POOL_V7: NFLPlayer[] = [
     'Revolutionized TE as a receiving weapon — "Air Coryell" pillar',
     'HOF-caliber pioneer — closer to elite tier',
   ]),
-  pl('gro2','Rob Gronkowski','TE','New England Patriots (Ret.)', 4800, [
+  pl('gro2','Rob Gronkowski','TE','New England Patriots (Ret.)', 5150, [
     '5× Pro Bowl','4× AP 1st-Team','4× Super Bowl Champion',
     '2011 AP Offensive Player of Year','94th Pick (2010)',
     'All-time TE leader in TDs (92) at retirement',
@@ -275,7 +275,7 @@ export const OT_POOL_V7: NFLPlayer[] = [
     'NFL 2010s All-Decade Team',
     'HOF-caliber ironman — way higher per request',
   ]),
-  pl('jth', 'Joe Thomas', 'OT', 'Retired (HOF 2023)', 4500, [
+  pl('jth', 'Joe Thomas', 'OT', 'Retired (HOF 2023)', 4800, [
     '10× Pro Bowl', '6× AP 1st-Team', '2× AP 2nd-Team',
     'NFL record: 10,363 consecutive snaps played (offensive line ironman)',
     'Pro Football Hall of Fame (2023) — way higher per request',
@@ -286,7 +286,7 @@ export const OT_POOL_V7: NFLPlayer[] = [
    OFFENSIVE GUARDS — 8 entries (Zack Martin & Randall McDaniel fully boosted per request — now best-ever tier)
 ══════════════════════════════════════════════════════════════════════ */
 export const OG_POOL_V7: NFLPlayer[] = [
-  pl('jgu', 'John Hannah', 'OG', 'Retired (HOF 1991)', 7400, [
+  pl('jgu', 'John Hannah', 'OG', 'Retired (HOF 1991)', 7000, [
     '9× Pro Bowl', '10× AP 1st-Team', 'Super Bowl XX Champion',
     'Sports Illustrated 1981: "The Best Offensive Lineman of All Time" (cover story)',
     'Consensus greatest guard in NFL history',
@@ -334,7 +334,7 @@ export const OG_POOL_V7: NFLPlayer[] = [
    CENTERS — 7 entries (Kelce/Saturday/Frederick boosted per request)
 ══════════════════════════════════════════════════════════════════════ */
 export const C_POOL_V7: NFLPlayer[] = [
-  pl('mwe', 'Mike Webster', 'C', 'Retired (HOF 1997)', 7200, [
+  pl('mwe', 'Mike Webster', 'C', 'Retired (HOF 1997)', 6800, [
     '9× Pro Bowl', '4× AP 1st-Team', '4× Super Bowl Champion (IX, X, XIII, XIV)',
     'Consensus greatest center in NFL history',
     '"Iron Mike" — 245 consecutive starts; played through devastating injuries',
@@ -358,7 +358,7 @@ export const C_POOL_V7: NFLPlayer[] = [
     '191 consecutive starts — tied for iron man at center position',
     'Blocked for multiple Hall of Fame QBs across career',
   ]),
-  pl('jke','Jason Kelce','C','Philadelphia Eagles (ret.)', 4200, [
+  pl('jke','Jason Kelce','C','Philadelphia Eagles (ret.)', 4650, [
     '7× Pro Bowl','6× AP 1st-Team',
     'Super Bowl LII Champion','3× Super Bowl appearances',
     'Considered the greatest center in NFL history',
@@ -366,7 +366,7 @@ export const C_POOL_V7: NFLPlayer[] = [
     'Highest-graded center in PFF history (multiple seasons)',
     'HOF-caliber boost per request',
   ]),
-  pl('jpa', 'Jeff Saturday', 'C', 'Retired', 4000, [
+  pl('jpa', 'Jeff Saturday', 'C', 'Retired', 4100, [
     '6× Pro Bowl', '3× AP 1st-Team (verified 2 first + 2 second)', 'Super Bowl XLI Champion (IND)',
     'Undrafted 1998', '2006: Protected Manning\'s blind side and center',
     'Peyton Manning\'s personal protector — QB called him best ever',

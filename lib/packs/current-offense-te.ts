@@ -155,10 +155,6 @@ export const TE_POOL_V1: NFLPlayer[] = [
     '120th Pick (2024)','2024: Competing for starting role with Colts',
     'Michigan: Reliable two-way TE — solid in both phases',
   ]),
-  pl('eal','Erick All Jr.','TE','Cincinnati Bengals', 180, [
-    '109th Pick (2024)','Replacing Hockenson in Bengals TE room',
-    'Iowa: Second in career receptions by a Hawkeye TE',
-  ]),
   pl('col','Colby Parkinson','TE','Los Angeles Rams', 260, [
     '98th Pick (2020)','Super Bowl LVI Champion',
     '2023: Key blocking TE in Rams\' system with Stafford',

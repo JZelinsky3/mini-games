@@ -1,7 +1,10 @@
 'use client';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function PackEmpireHub() {
+  const [showModeSelector, setShowModeSelector] = useState(false);
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: STYLES }} />
@@ -24,19 +27,25 @@ export default function PackEmpireHub() {
         {/* Mode cards */}
         <div className="pe-hub-modes">
 
-          {/* OFFENSE — live */}
-          <Link href="/games/pack-empire/offense" className="pe-hub-mode offense">
+          {/* OFFENSE — opens mode selector */}
+          <div 
+            onClick={() => setShowModeSelector(true)}
+            className="pe-hub-mode offense"
+            style={{ cursor: 'pointer' }}
+          >
             <div className="pe-hub-mode-badge live">LIVE</div>
             <div className="pe-hub-mode-icon">⚔️</div>
             <div className="pe-hub-mode-title">OFFENSE</div>
-            <div className="pe-hub-mode-desc">Draft your 11-man offense — QB, WR, RB, TE, and the full O-Line. Stack Common through Immortal cards and post your score.</div>
+            <div className="pe-hub-mode-desc">
+              Draft your 11-man offense. Choose between building your best solo lineup or challenging a friend head-to-head.
+            </div>
             <div className="pe-hub-mode-slots">
               {['QB','HB','WR','WR','WR','TE','LT','LG','C','RG','RT'].map((pos, i) => (
                 <span key={i} className="pe-hub-slot">{pos}</span>
               ))}
             </div>
-            <div className="pe-hub-mode-cta">Build My Offense →</div>
-          </Link>
+            <div className="pe-hub-mode-cta">Choose Mode →</div>
+          </div>
 
           {/* DEFENSE — coming soon */}
           <div className="pe-hub-mode defense coming-soon">
@@ -84,6 +93,55 @@ export default function PackEmpireHub() {
             ))}
           </div>
         </div>
+
+        {/* Mode Selector Modal */}
+        {showModeSelector && (
+          <div className="pe-mode-modal-overlay" onClick={() => setShowModeSelector(false)}>
+            <div className="pe-mode-modal" onClick={e => e.stopPropagation()}>
+              <div className="pe-modal-header">
+                <h2>OFFENSE MODE</h2>
+                <button 
+                  onClick={() => setShowModeSelector(false)} 
+                  className="pe-modal-close"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="pe-modes-grid">
+                {/* Empire Builder - Solo */}
+                <Link 
+                  href="/games/pack-empire/offense"
+                  className="pe-mode-option solo"
+                  onClick={() => setShowModeSelector(false)}
+                >
+                  <div className="pe-mode-option-icon">🏗️</div>
+                  <div className="pe-mode-option-title">Empire Builder</div>
+                  <div className="pe-mode-option-desc">
+                    Build your ultimate solo offense.<br />
+                    Post your best score on the leaderboard.
+                  </div>
+                  <div className="pe-mode-option-cta">Play Solo →</div>
+                </Link>
+
+                {/* Versus Challenge */}
+                <Link 
+                  href="/games/pack-empire/offense/versus"
+                  className="pe-mode-option versus"
+                  onClick={() => setShowModeSelector(false)}
+                >
+                  <div className="pe-mode-option-icon">⚔️</div>
+                  <div className="pe-mode-option-title">Versus Challenge</div>
+                  <div className="pe-mode-option-desc">
+                    Challenge a friend head-to-head.<br />
+                    Both draft — highest score wins.
+                  </div>
+                  <div className="pe-mode-option-cta versus-cta">Challenge Friend →</div>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
     </>
@@ -202,4 +260,113 @@ body{font-family:'Barlow Condensed',sans-serif;background:#050a18}
   font-size:.6rem;letter-spacing:.14em}
 .pe-hub-rar-pct{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;
   color:#2a4060;letter-spacing:.06em}
+
+/* Mode Selector Modal */
+.pe-mode-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5,10,24,0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.pe-mode-modal {
+  background: #0a1830;
+  border: 2px solid #ffd700;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 560px;
+  margin: 20px;
+  overflow: hidden;
+}
+
+.pe-modal-header {
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid #1a3050;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pe-modal-header h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.35rem;
+  color: #ffd700;
+  margin: 0;
+}
+
+.pe-modal-close {
+  background: none;
+  border: none;
+  color: #3a6080;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.pe-modes-grid {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.pe-mode-option {
+  border-radius: 12px;
+  padding: 1.4rem 1.2rem;
+  text-align: center;
+  border: 2px solid #1a3050;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.pe-mode-option:hover {
+  border-color: #ffd700;
+  transform: translateY(-4px);
+  box-shadow: 0 0 25px rgba(255,215,0,0.15);
+}
+
+.pe-mode-option.solo {
+  background: linear-gradient(160deg, #0a1830, #0d2040);
+}
+
+.pe-mode-option.versus {
+  background: rgba(40, 60, 100, 0.6);
+  border-color: #42c0f8;
+}
+
+.pe-mode-option-icon {
+  font-size: 2.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.pe-mode-option-title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 1.35rem;
+  color: #d4e8f8;
+  margin-bottom: 0.6rem;
+}
+
+.pe-mode-option-desc {
+  font-size: 0.86rem;
+  color: #3a6080;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+
+.pe-mode-option-cta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  color: #ffd700;
+}
+
+.versus-cta {
+  color: #42c0f8 !important;
+}
 `;

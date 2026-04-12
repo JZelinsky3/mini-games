@@ -226,10 +226,6 @@ export const OG_POOL_V1: NFLPlayer[] = [
     'Undrafted 2015', '2021 (NO): Starting LG for Saints',
     'Harvard: Ivy League ironman — 8-year career in NFL',
   ]),
-  pl('dbu', 'Dylan Bu\'uhulu',    'OG', 'San Francisco 49ers',      200, [
-    'Undrafted 2021', 'Super Bowl LVIII Appearance',
-    'Stanford: 2-year starter — part of 49ers\' exceptional OL depth',
-  ]),
   pl('jmc3','Jarvis Jenkins',     'OG', 'Indianapolis Colts',       220, [
     'Undrafted 2023', '2024: Part of Colts\' interior rebuild under new regime',
     'Georgia: 2-year starter on SEC championship line',
@@ -253,14 +249,6 @@ export const OG_POOL_V1: NFLPlayer[] = [
   pl('sim', 'John Simpson', 'OG', 'Baltimore Ravens', 850, [
     'Recent high-value signing','Physical guard with starting experience',
     'Helped stabilize interior lines'
-  ]),
-  pl('smi5', 'Emmanuel Pregnon', 'OG', 'Drafted / early career riser', 820, [
-    'High draft buzz / strong college-to-NFL transition','Elite athleticism and power',
-    'Projected day-one contributor'
-  ]),
-  pl('ioa', 'Olaivavega Ioane', 'OG', 'Penn State / early NFL', 790, [
-    'Top interior prospect traits','Powerful and scheme-versatile',
-    'Immediate impact potential'
   ]),
   pl('aba2','Aaron Banks','OG','San Francisco 49ers', 380, [
     '48th Pick (2021)','Super Bowl LVIII appearance',
@@ -417,10 +405,6 @@ export const OG_POOL_V1: NFLPlayer[] = [
     '133rd Pick (2020)','5-year starter at OG for Jacksonville',
     'St. John\'s (MN) — Division III small school to NFL starter',
   ]),
-  pl('mal','Luke Jones','OG','Cleveland Browns', 180, [
-    'Undrafted (2021)','2024: Starting RG in Browns\' system',
-    'Quietly reliable — 3 consecutive seasons as starter',
-  ]),
   pl('spa','Spencer Anderson','OG','Kansas City Chiefs', 300, [
     '2× Super Bowl Champion (LVII, LVIII)','Undrafted (2021)',
     'Essential depth piece on Chiefs\' dynasty O-Line',
@@ -458,11 +442,6 @@ export const C_POOL_V1: NFLPlayer[] = [
     '2024: One of highest-graded centers in AFC per PFF',
     'Wisconsin product — immediate elite-level starter',
     'Shot-blocker build: 6\'6", 313 lbs with rare mobility',
-  ]),
-  pl('ddl','Drew Dalman','C','Atlanta Falcons', 400, [
-    'Pro Bowl (2023)','78th Pick (2021)',
-    '2023: Key piece of Falcons\' resurgent run game',
-    'Stanford: Academic All-American & team captain',
   ]),
   pl('pme','Patrick Mekari','C','Jacksonville Jaguars', 360, [
     '2× Pro Bowl consideration','217th Pick (2019)',
@@ -503,9 +482,6 @@ export const C_POOL_V1: NFLPlayer[] = [
     '46th Pick (2017)','2022: Best season of career — graded top-10 C',
     '2023: Key piece of Browns\' run-heavy offense with Chubb',
   ]),
-  pl('dco','Drew Dalman (note)','C','Atlanta Falcons', 120, [
-    'Backup C depth on multiple rosters',
-  ]),
   pl('bre2', 'Aaron Brewer', 'C', 'Miami Dolphins', 2850, [
     'Career-high PFF grades (top run blocker in 2025)','Multiple Pro Bowl / All-Pro consideration',
     'Elite anchor for Dolphins\' interior',
@@ -516,7 +492,7 @@ export const C_POOL_V1: NFLPlayer[] = [
     'One of the best young centers in the league',
     'High-graded in both run and pass'
   ]),
-  pl('dal', 'Drew Dalman', 'C', 'Chicago Bears', 2520, [
+  pl('dal', 'Drew Dalman', 'C', 'Chicago Bears', 820, [
     'Pro Bowl selections (including 2025–2026)','Key to Bears\' resurgent line and run game',
   'Top vote-getter / high-impact starter'
   ]),
@@ -594,10 +570,6 @@ export const C_POOL_V1: NFLPlayer[] = [
   pl('mco3','Matt Gono',          'C', 'Free Agent',               180, [
     '247th Pick 2019', 'Versatile OL — started at C, LG, LT across career',
     'Richmond: FCS All-American tackle',
-  ]),
-  pl('kbo', 'Kyle Bosch',         'C', 'Los Angeles Chargers',      200, [
-    'Undrafted 2019', '2023: Backup C/G for Chargers under Brandon Staley',
-    'Michigan: Multi-year starter in Big Ten interior',
   ]),
   pl('gco', 'Greg Van Roten',     'C', 'Free Agent',               220, [
     'Undrafted 2012', '10-year career — started at C and G across 6 teams',

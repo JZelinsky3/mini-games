@@ -1,0 +1,8 @@
+  pl('smi5', 'Emmanuel Pregnon', 'OG', 'Drafted / early career riser', 820, [
+    'High draft buzz / strong college-to-NFL transition','Elite athleticism and power',
+    'Projected day-one contributor'
+  ]),
+  pl('ioa', 'Olaivavega Ioane', 'OG', 'Penn State / early NFL', 790, [
+    'Top interior prospect traits','Powerful and scheme-versatile',
+    'Immediate impact potential'
+  ]),

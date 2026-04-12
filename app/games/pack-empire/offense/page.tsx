@@ -99,7 +99,7 @@ function getTier(s: number) { return TIERS.find(t => s >= t.min)!; }
 /* ─── Pack weights ───────────────────────────────────────────────────── */
 const WEIGHTS = {
   normal:  { common: 44, rare: 28, dynasty: 17, transcendent: 10, immortal: 1 },
-  captain: { common: 5,  rare: 27, dynasty: 41, transcendent: 22, immortal: 5 },
+  captain: { common: 5,  rare: 22, dynasty: 41, transcendent: 27, immortal: 5 },
 };
 
 function weightedDraw(poolKey: string, count: number = 5, isCaptain: boolean = false, excl: string[] = []): Player[] {
@@ -108,47 +108,31 @@ function weightedDraw(poolKey: string, count: number = 5, isCaptain: boolean = f
 
   const baseWeights = isCaptain ? WEIGHTS.captain : WEIGHTS.normal;
 
-  // === ONLY apply boost for normal packs (not captain) ===
-  const useBoosted = !isCaptain;   // ← This is the key line
+  // Normal packs: one boosted slot with higher rare chance
+  // Captain packs: one boosted slot with higher transcendent chance
+  const boostedWeights = isCaptain
+    ? { ...baseWeights, rare: 15, transcendent: 33, immortal: 2 }
+    : { ...baseWeights, common: 36, rare: 42 };        // existing rare boost for normal
 
-  const boostedWeights = {
-    ...baseWeights,
-    common: 36,
-    rare:   42,
-    // dynasty, transcendent, immortal stay unchanged
-  };
-
-  // Choose which weights to use for each slot
-  const normalPool = avail.map(p => ({ p, w: baseWeights[p.rarity] ?? 1 }));
+  const normalPool  = avail.map(p => ({ p, w: baseWeights[p.rarity] ?? 1 }));
   const boostedPool = avail.map(p => ({ p, w: boostedWeights[p.rarity] ?? 1 }));
-
-  // Pick one random slot to get the boosted weights (only if it's a normal pack)
-  const boostedIndex = useBoosted ? Math.floor(Math.random() * count) : -2;
+  const boostedIndex = Math.floor(Math.random() * count);
 
   const used = new Set<string>();
   const result: Player[] = [];
 
   for (let i = 0; i < Math.min(count, avail.length); i++) {
-    // Use boosted weights only on the chosen slot AND only for normal packs
-    const currentPool = (useBoosted && i === boostedIndex) ? boostedPool : normalPool;
-
+    const currentPool = i === boostedIndex ? boostedPool : normalPool;
     const available = currentPool.filter(x => !used.has(x.p.id));
     if (available.length === 0) break;
-
     const totalWeight = available.reduce((sum, x) => sum + x.w, 0);
     let roll = Math.random() * totalWeight;
-
     for (const item of available) {
       roll -= item.w;
-      if (roll <= 0) {
-        result.push(item.p);
-        used.add(item.p.id);
-        break;
-      }
+      if (roll <= 0) { result.push(item.p); used.add(item.p.id); break; }
     }
   }
 
-  // Shuffle final pack so boosted card isn't always in same position
   return result.sort(() => Math.random() - 0.5);
 }
 
@@ -201,7 +185,6 @@ function RarityEffects({ rarity, position = 'inner' }: { rarity: Rarity; positio
     );
   }
 
-  /* ── INNER effects — go inside the art div ── */
   return (
     <>
       {rarity === 'common' && (
@@ -227,7 +210,6 @@ function RarityEffects({ rarity, position = 'inner' }: { rarity: Rarity; positio
           <div className="pe-cm-bottom-glow" />
         </>
       )}
-
       {rarity === 'rare' && (
         <>
           <div className="pe-ra-depth-vig" />
@@ -257,7 +239,6 @@ function RarityEffects({ rarity, position = 'inner' }: { rarity: Rarity; positio
           </div>
         </>
       )}
-
       {rarity === 'dynasty' && (
         <>
           <div className="pe-ep-burst">
@@ -283,7 +264,6 @@ function RarityEffects({ rarity, position = 'inner' }: { rarity: Rarity; positio
           <div className="pe-ep-shine" />
         </>
       )}
-
       {rarity === 'transcendent' && (
         <>
           <div className="pe-le-aurora">
@@ -299,41 +279,35 @@ function RarityEffects({ rarity, position = 'inner' }: { rarity: Rarity; positio
             <div className="pe-le-depth-ring" /><div className="pe-le-depth-ring" /><div className="pe-le-depth-ring" />
           </div>
           <div className="pe-le-bolt-layer">
-            {/* bolt 1 — far left, short */}
             <svg className="pe-le-bolt b1" viewBox="0 0 125 183">
               <polyline className="pe-le-bolt-glow" points="8,2 20,28 10,27 26,58 14,56 32,98" />
               <polyline className="pe-le-bolt-mid"  points="8,2 20,28 10,27 26,58 14,56 32,98" />
               <polyline className="pe-le-bolt-core" points="8,2 20,28 10,27 26,58 14,56 32,98" />
               <polyline className="pe-le-bolt-branch" points="26,58 40,68 34,82" />
             </svg>
-            {/* bolt 2 — left-center */}
             <svg className="pe-le-bolt b2" viewBox="0 0 125 183">
               <polyline className="pe-le-bolt-glow" points="36,0 50,30 38,28 56,62 42,60 62,110" />
               <polyline className="pe-le-bolt-mid"  points="36,0 50,30 38,28 56,62 42,60 62,110" />
               <polyline className="pe-le-bolt-core" points="36,0 50,30 38,28 56,62 42,60 62,110" />
               <polyline className="pe-le-bolt-branch" points="56,62 70,74 62,90" />
             </svg>
-            {/* bolt 3 — center, tallest */}
             <svg className="pe-le-bolt b3" viewBox="0 0 125 183">
               <polyline className="pe-le-bolt-glow" points="62,0 76,28 63,26 84,60 68,58 92,108 74,106 88,150" />
               <polyline className="pe-le-bolt-mid"  points="62,0 76,28 63,26 84,60 68,58 92,108 74,106 88,150" />
               <polyline className="pe-le-bolt-core" points="62,0 76,28 63,26 84,60 68,58 92,108 74,106 88,150" />
               <polyline className="pe-le-bolt-branch" points="84,60 100,74 90,90" />
             </svg>
-            {/* bolt 4 — right-center */}
             <svg className="pe-le-bolt b4" viewBox="0 0 125 183">
               <polyline className="pe-le-bolt-glow" points="88,2 100,30 88,28 106,62 92,60 112,104" />
               <polyline className="pe-le-bolt-mid"  points="88,2 100,30 88,28 106,62 92,60 112,104" />
               <polyline className="pe-le-bolt-core" points="88,2 100,30 88,28 106,62 92,60 112,104" />
               <polyline className="pe-le-bolt-branch" points="106,62 118,76 110,92" />
             </svg>
-            {/* bolt 5 — far right, offset */}
             <svg className="pe-le-bolt b5" viewBox="0 0 125 183">
               <polyline className="pe-le-bolt-glow" points="116,10 108,36 118,34 104,68 116,66 96,118" />
               <polyline className="pe-le-bolt-mid"  points="116,10 108,36 118,34 104,68 116,66 96,118" />
               <polyline className="pe-le-bolt-core" points="116,10 108,36 118,34 104,68 116,66 96,118" />
             </svg>
-            {/* bolt 6 — left edge diagonal */}
             <svg className="pe-le-bolt b6" viewBox="0 0 125 183">
               <polyline className="pe-le-bolt-glow" points="22,15 10,44 22,42 6,78 20,76 2,130" />
               <polyline className="pe-le-bolt-mid"  points="22,15 10,44 22,42 6,78 20,76 2,130" />
@@ -350,7 +324,6 @@ function RarityEffects({ rarity, position = 'inner' }: { rarity: Rarity; positio
           <div className="pe-le-whiteout w3" />
         </>
       )}
-
       {rarity === 'immortal' && (
         <>
           <div className="pe-imm-slab-layer">
@@ -433,14 +406,10 @@ export default function OffensePackEmpire() {
       });
       setImageMap(map);
     }).catch(() => { });
-
-    // load leaderboard from localStorage (site-wide via shared key)
     try {
       const lb = JSON.parse(localStorage.getItem('pe-leaderboard') || '[]') as LeaderboardEntry[];
       setLeaderboard(lb);
     } catch { }
-
-    // load saved drafts for this user
     try {
       const sd = JSON.parse(localStorage.getItem('pe-saved-drafts') || '[]') as SavedDraft[];
       setSavedDrafts(sd);
@@ -457,58 +426,45 @@ export default function OffensePackEmpire() {
   const anyRevealed = revealed.some(Boolean);
 
   const submitToLeaderboard = useCallback(async (name: string) => {
-  if (!name.trim()) return;
-  if (filter.isProfane(name)) {
-    alert('Please choose an appropriate name.');
-    return;
-  }
-  setSubmit('saving');
-  try {
-    const supabase = createClient();
-    const { error } = await supabase.from('leaderboard').insert({
-      name: name.trim(),
-      score: totalScore,
-      tier: tier.label,
-      icon: tier.icon,
-      lineup,
-    });
-    if (error) throw error;
-    setSubmit('saved');
-    setTimeout(() => setSubmit('idle'), 3000);
-  } catch {
-    setSubmit('error');
-  }
-}, [totalScore, tier, lineup]);
+    if (!name.trim()) return;
+    if (filter.isProfane(name)) { alert('Please choose an appropriate name.'); return; }
+    setSubmit('saving');
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.from('leaderboard').insert({
+        name: name.trim(), score: totalScore, tier: tier.label, icon: tier.icon, lineup,
+      });
+      if (error) throw error;
+      setSubmit('saved');
+      setTimeout(() => setSubmit('idle'), 3000);
+    } catch { setSubmit('error'); }
+  }, [totalScore, tier, lineup]);
 
   const saveDraft = useCallback(() => {
     if (!draftName.trim()) return;
     try {
       const draft: SavedDraft = {
-        id: Date.now().toString(),
-        name: draftName.trim(),
-        score: totalScore,
-        tier: tier.label,
-        icon: tier.icon,
-        lineup,
-        timestamp: Date.now(),
+        id: Date.now().toString(), name: draftName.trim(), score: totalScore,
+        tier: tier.label, icon: tier.icon, lineup, timestamp: Date.now(),
       };
       const existing = JSON.parse(localStorage.getItem('pe-saved-drafts') || '[]') as SavedDraft[];
-      const updated = [draft, ...existing].slice(0, 5); // keep top 5
+      const updated = [draft, ...existing].slice(0, 5);
       localStorage.setItem('pe-saved-drafts', JSON.stringify(updated));
-      setSavedDrafts(updated);
-      setShowSD(false);
-      setDraftName('');
+      setSavedDrafts(updated); setShowSD(false); setDraftName('');
     } catch { }
   }, [draftName, totalScore, tier, lineup]);
 
   const openPack = useCallback((si: number, isCaptain: boolean, curLineup: (Player | null)[]) => {
-    const pool = SLOTS[si].pool;
-    const excl = curLineup.filter(Boolean).map(p => p!.id);
-    const cards = weightedDraw(pool, 5, isCaptain, excl);
-    setPackSi(si); setPackCards(cards);
-    setRevealed(Array(cards.length).fill(false)); setPickedId(null);
-    setTimeout(() => { cardsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80);
-  }, []);
+  const excl = curLineup.filter(Boolean).map(p => p!.id);
+  const cards = weightedDraw(SLOTS[si].pool, 5, isCaptain, excl);
+  setPackSi(si); setPackCards(cards);
+  setRevealed(Array(cards.length).fill(false)); setPickedId(null);
+  // Trigger immortal flash immediately if any card in the pack is immortal
+  if (cards.some(c => c.rarity === 'immortal')) {
+    setTimeout(() => { setImmFlash(true); setTimeout(() => setImmFlash(false), 2400); }, 300);
+  }
+  setTimeout(() => { cardsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80);
+}, []);
 
   const selectCaptain = useCallback((si: number) => {
     setCaptainSi(si); setPhase('packing'); markPlayed();
@@ -520,17 +476,15 @@ export default function OffensePackEmpire() {
   }, [isBusy, pickedId, captainSi, lineup, openPack]);
 
   const revealOne = useCallback((i: number) => {
-    setRevealed(prev => { const n = [...prev]; n[i] = true; return n; });
-    if (packCards[i]?.rarity === 'immortal')
-      setTimeout(() => { setImmFlash(true); setTimeout(() => setImmFlash(false), 2400); }, 200);
-  }, [packCards]);
+  setRevealed(prev => { const n = [...prev]; n[i] = true; return n; });
+  if (packCards[i]?.rarity === 'immortal')
+    setTimeout(() => { setImmFlash(true); setTimeout(() => setImmFlash(false), 2400); }, 200);
+}, [packCards]);
 
   const revealAll = useCallback(() => {
     packCards.forEach((_, i) => {
       if (!revealed[i]) setTimeout(() => {
         setRevealed(prev => { const n = [...prev]; n[i] = true; return n; });
-        if (packCards[i]?.rarity === 'immortal')
-          setTimeout(() => { setImmFlash(true); setTimeout(() => setImmFlash(false), 2400); }, 300);
       }, i * 130);
     });
   }, [packCards, revealed]);
@@ -542,20 +496,18 @@ export default function OffensePackEmpire() {
     setPickedId(card.id);
     setTimeout(() => {
       setLineup(prev => {
-        const n = [...prev]; n[packSi!] = card;
-        if (n.filter(Boolean).length === 11) {
-          setPhase('complete');
-          // auth prompt removed — leaderboard submit bar handles this
-        }
+        const n = [...prev];
+        n[packSi!] = card;
+        if (n.filter(Boolean).length === 11) setPhase('complete');
         return n;
       });
       setPackCards([]); setRevealed([]); setPickedId(null); setPackSi(null);
     }, 650);
-  }, [pickedId, revealed, revealOne, packCards, packSi, userInit]);
+  }, [pickedId, revealed, revealOne, packCards, packSi]);
 
   const reset = useCallback(() => {
-    setPhase('setup'); setLineup(Array(11).fill(null));
-    setCaptainSi(null); setPackSi(null);
+    setPhase('setup');
+    setLineup(Array(11).fill(null)); setCaptainSi(null); setPackSi(null);
     setPackCards([]); setRevealed([]); setPickedId(null); setImmFlash(false);
   }, []);
 
@@ -583,13 +535,9 @@ export default function OffensePackEmpire() {
     return (
       <div className={`pe-slot-outer${isHB ? ' hb-back' : ''}`}>
         {player ? (
-          /* ── FILLED card ── */
           <div className="pe-fsl has-p"
             style={{ '--rc': rc!.color, '--rg': rc!.glow, '--art': rc!.art } as React.CSSProperties}>
-
-            {/* outer rarity effects (spin borders, plasma, glow) */}
             <RarityEffects rarity={player.rarity} position="outer" />
-
             <div className="pe-filled-card">
               <div className="pe-fc-topbar" style={{ background: 'rgba(4,8,16,.95)' }}>
                 <div className="pe-fc-pos-badge" style={{ background: rc!.color }}>{player.pos}</div>
@@ -597,7 +545,6 @@ export default function OffensePackEmpire() {
               </div>
               <div className="pe-fc-art" style={{ background: rc!.art }}>
                 <div className="pe-fc-field-lines" />
-                {/* inner rarity effects */}
                 <RarityEffects rarity={player.rarity} position="inner" />
                 {imgSrc && (
                   <img src={imgSrc} alt={player.name} className="pe-fc-img"
@@ -624,7 +571,6 @@ export default function OffensePackEmpire() {
             </div>
           </div>
         ) : isAct ? (
-          /* ── ACTIVE spinner ── */
           <div className="pe-fsl active">
             <div className="pe-fsl-locked">
               <div className="pe-fsl-pos-small">{SLOTS[si].short}</div>
@@ -632,7 +578,6 @@ export default function OffensePackEmpire() {
             </div>
           </div>
         ) : (
-          /* ── PACK image ── */
           <div
             className={`pe-pack-wrap${isCap ? ' is-cap' : ''}${clickable ? ' clickable' : ''}`}
             onClick={() => isSetup ? selectCaptain(si) : canOpen ? clickSlot(si) : undefined}
@@ -678,14 +623,12 @@ export default function OffensePackEmpire() {
     <>
       <style dangerouslySetInnerHTML={{ __html: STYLES }} />
 
-      {/* Immortal pull flash */}
       {immFlash && (
         <div className="pe-imm-flash" aria-hidden="true">
           <div className="pe-imm-text">💎 IMMORTAL PULL!</div>
         </div>
       )}
 
-      {/* Nav */}
       <nav className="pe-nav">
         <div className="pe-nav-l"><Link href="/games/pack-empire" className="pe-back">← Pack Empire</Link></div>
         <div className="pe-nav-c"><span className="pe-pip" />PACK EMPIRE</div>
@@ -696,7 +639,6 @@ export default function OffensePackEmpire() {
         </div>
       </nav>
 
-      {/* Score strip */}
       {(phase === 'packing' || phase === 'complete') && (
         <div className="pe-strip">
           <div className="pe-sg"><div className="pe-sv" style={{ color: tier.color }}>{totalScore.toLocaleString()}</div><div className="pe-sl">ACCOLADES</div></div>
@@ -777,7 +719,6 @@ export default function OffensePackEmpire() {
               <FieldLayout />
             </div>
 
-            {/* Pack reveal cards */}
             {packCards.length > 0 && (
               <div className="pe-cards-area" ref={cardsRef}>
                 <div className="pe-ca-header">
@@ -803,15 +744,12 @@ export default function OffensePackEmpire() {
                         style={{ '--rc': rc.color, '--rg': rc.glow, '--art': rc.art, '--sh': rc.shimmer } as React.CSSProperties}
                       >
                         <div className="pe-ci">
-                          {/* outer border effects sit on ci so they aren't clipped by card-front overflow:hidden */}
                           <RarityEffects rarity={card.rarity} position="outer" />
-                          {/* Card back */}
                           <div className="pe-card-back">
                             <div className="pe-back-grid" />
                             <div className="pe-back-icon">🏈</div>
                             <div className="pe-back-label">CLICK TO REVEAL</div>
                           </div>
-                          {/* Card front */}
                           <div className="pe-card-front">
                             <div className="pe-cf-topbar">
                               <div className="pe-cf-pos" style={{ background: rc.color }}>{card.pos}</div>
@@ -869,10 +807,12 @@ export default function OffensePackEmpire() {
               <div className="pe-ch-score">{totalScore.toLocaleString()}</div>
               <div className="pe-ch-lbl">TOTAL ACCOLADES</div>
             </div>
+
             <div className="pe-comp-field-wrap"><FieldLayout /></div>
+
             <div className="pe-tier-card">
               {[...TIERS].reverse().map(t => {
-                const reached   = totalScore >= t.min;
+                const reached = totalScore >= t.min;
                 const isCurrent = getTier(totalScore) === t;
                 return (
                   <div key={t.label} className={`pe-tier-row${isCurrent ? ' active' : ''}`}>
@@ -884,7 +824,7 @@ export default function OffensePackEmpire() {
                 );
               })}
             </div>
-            {/* Leaderboard submit bar */}
+
             <div className="pe-lb-bar">
               <div className="pe-lb-bar-label">🏆 Submit to Leaderboard</div>
               <div className="pe-lb-bar-row">
@@ -908,6 +848,7 @@ export default function OffensePackEmpire() {
                 <Link href="/games/pack-empire/leaderboard" className="pe-lb-view">View Board</Link>
               </div>
             </div>
+
             <div className="pe-comp-btns">
               <button className="pe-share-btn" onClick={share}>{copied ? '✓ Copied!' : '↗ Share'}</button>
               <button className="pe-save-draft-btn" onClick={() => setShowSD(true)}>💾 Save Draft</button>
@@ -915,111 +856,113 @@ export default function OffensePackEmpire() {
             </div>
           </div>
         )}
-      </div>
 
-      {/* How to Play overlay */}
-      {showHow && (
-        <div className="pe-overlay" onClick={() => setShowHow(false)}>
-          <div className="pe-howto" onClick={e => e.stopPropagation()}>
-            <div className="pe-ht-title">🏈 HOW TO PLAY</div>
-            {[
-              'Tap any position to set it as your CAPTAIN. Captain packs have 5% immortal odds vs only 1% in normal packs.',
-              'Once you pick a captain the packing phase begins. Tap any position pack to open it — captain last if you dare.',
-              'Each pack deals 5 face-down cards. Tap individual cards to flip them, or hit Reveal All.',
-              'Once a card is flipped, tap it to PICK that player for the position.',
-              'Fill all 11 positions to see your final Offense Tier. You need 20,000+ points for GOAT Offense!',
-            ].map((rule, i) => (
-              <div key={i} className="pe-ht-rule">
-                <div className="pe-ht-num">{i + 1}</div>
-                <div className="pe-ht-text">{rule}</div>
-              </div>
-            ))}
-            <div className="pe-ht-tiers">
-              {TIERS.map(t => (
-                <div key={t.label} className="pe-ht-trow">
-                  <span>{t.icon}</span>
-                  <span style={{ color: t.color, fontWeight: 700 }}>{t.label}</span>
-                  <span className="pe-ht-pts">{t.min.toLocaleString()}+ pts</span>
+        {/* How to Play overlay */}
+        {showHow && (
+          <div className="pe-overlay" onClick={() => setShowHow(false)}>
+            <div className="pe-howto" onClick={e => e.stopPropagation()}>
+              <div className="pe-ht-title">🏈 HOW TO PLAY</div>
+              {[
+                'Tap any position to set it as your CAPTAIN. Captain packs have 5% immortal odds vs only 1% in normal packs.',
+                'Once you pick a captain the packing phase begins. Tap any position pack to open it — captain last if you dare.',
+                'Each pack deals 5 face-down cards. Tap individual cards to flip them, or hit Reveal All.',
+                'Once a card is flipped, tap it to PICK that player for the position.',
+                'Fill all 11 positions to see your final Offense Tier. You need 20,000+ points for GOAT Offense!',
+              ].map((rule, i) => (
+                <div key={i} className="pe-ht-rule">
+                  <div className="pe-ht-num">{i + 1}</div>
+                  <div className="pe-ht-text">{rule}</div>
                 </div>
               ))}
-            </div>
-            <button className="pe-ht-close" onClick={() => setShowHow(false)}>BUILD MY OFFENSE</button>
-          </div>
-        </div>
-      )}
-
-      {/* Save Draft modal */}
-      {showSaveDraft && (
-        <div className="pe-overlay" onClick={() => setShowSD(false)}>
-          <div className="pe-modal" onClick={e => e.stopPropagation()}>
-            <div className="pe-mi">💾</div>
-            <div className="pe-mt">Save This Draft</div>
-            {!userInit ? (
-              /* ── not signed in ── */
-              <>
-                <div className="pe-mb">Sign in to save up to 5 of your favorite builds to your profile and access them anytime.</div>
-                <div className="pe-mbtns">
-                  <Link href="/login" className="pe-mcta">Sign In to Save</Link>
-                  <Link href="/signup" className="pe-msec">Create Free Account</Link>
-                </div>
-                <button className="pe-mskip" onClick={() => setShowSD(false)}>Maybe Later</button>
-              </>
-            ) : (
-              /* ── signed in ── */
-              <>
-                <div className="pe-mb">Save up to 5 of your favorite builds to your profile.</div>
-                <input
-                  className="pe-lb-input"
-                  style={{marginBottom:'1rem',width:'100%'}}
-                  type="text"
-                  placeholder="Name this draft..."
-                  maxLength={32}
-                  value={draftName}
-                  onChange={e => setDraftName(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && saveDraft()}
-                  autoComplete="off"
-                />
-                {savedDrafts.length > 0 && (
-                  <div className="pe-saved-list">
-                    <div className="pe-saved-list-label">Your saved drafts ({savedDrafts.length}/5):</div>
-                    {savedDrafts.map(d => (
-                      <div key={d.id} className="pe-saved-row">
-                        <span className="pe-saved-name">{d.name}</span>
-                        <span className="pe-saved-score" style={{color: TIERS.find(t=>t.label===d.tier)?.color??'#3a6080'}}>{d.icon} {d.score.toLocaleString()}</span>
-                        <button className="pe-saved-del" onClick={() => {
-                          const updated = savedDrafts.filter(x => x.id !== d.id);
-                          setSavedDrafts(updated);
-                          localStorage.setItem('pe-saved-drafts', JSON.stringify(updated));
-                        }}>✕</button>
-                      </div>
-                    ))}
+              <div className="pe-ht-tiers">
+                {TIERS.map(t => (
+                  <div key={t.label} className="pe-ht-trow">
+                    <span>{t.icon}</span>
+                    <span style={{ color: t.color, fontWeight: 700 }}>{t.label}</span>
+                    <span className="pe-ht-pts">{t.min.toLocaleString()}+ pts</span>
                   </div>
-                )}
-                <div className="pe-mbtns">
-                  <button className="pe-mcta" style={{border:'none',cursor:'pointer'}} onClick={saveDraft}
-                    disabled={!draftName.trim() || savedDrafts.length >= 5}>
-                    {savedDrafts.length >= 5 ? 'Delete one to save more' : 'Save Draft'}
-                  </button>
-                </div>
-                <button className="pe-mskip" onClick={() => setShowSD(false)}>Cancel</button>
-              </>
-            )}
+                ))}
+              </div>
+              <button className="pe-ht-close" onClick={() => setShowHow(false)}>BUILD MY OFFENSE</button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {/* Save Draft modal */}
+        {showSaveDraft && (
+          <div className="pe-overlay" onClick={() => setShowSD(false)}>
+            <div className="pe-modal" onClick={e => e.stopPropagation()}>
+              <div className="pe-mi">💾</div>
+              <div className="pe-mt">Save This Draft</div>
+              {!userInit ? (
+                <>
+                  <div className="pe-mb">Sign in to save up to 5 of your favorite builds to your profile and access them anytime.</div>
+                  <div className="pe-mbtns">
+                    <Link href="/login" className="pe-mcta">Sign In to Save</Link>
+                    <Link href="/signup" className="pe-msec">Create Free Account</Link>
+                  </div>
+                  <button className="pe-mskip" onClick={() => setShowSD(false)}>Maybe Later</button>
+                </>
+              ) : (
+                <>
+                  <div className="pe-mb">Save up to 5 of your favorite builds to your profile.</div>
+                  <input
+                    className="pe-lb-input"
+                    style={{marginBottom:'1rem',width:'100%'}}
+                    type="text"
+                    placeholder="Name this draft..."
+                    maxLength={32}
+                    value={draftName}
+                    onChange={e => setDraftName(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && saveDraft()}
+                    autoComplete="off"
+                  />
+                  {savedDrafts.length > 0 && (
+                    <div className="pe-saved-list">
+                      <div className="pe-saved-list-label">Your saved drafts ({savedDrafts.length}/5):</div>
+                      {savedDrafts.map(d => (
+                        <div key={d.id} className="pe-saved-row">
+                          <span className="pe-saved-name">{d.name}</span>
+                          <span className="pe-saved-score" style={{color: TIERS.find(t=>t.label===d.tier)?.color??'#3a6080'}}>{d.icon} {d.score.toLocaleString()}</span>
+                          <button className="pe-saved-del" onClick={() => {
+                            const updated = savedDrafts.filter(x => x.id !== d.id);
+                            setSavedDrafts(updated);
+                            localStorage.setItem('pe-saved-drafts', JSON.stringify(updated));
+                          }}>✕</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div className="pe-mbtns">
+                    <button
+                      className="pe-mcta"
+                      style={{border:'none',cursor:'pointer'}}
+                      onClick={saveDraft}
+                      disabled={!draftName.trim() || savedDrafts.length >= 5}
+                    >
+                      {savedDrafts.length >= 5 ? 'Delete one to save more' : 'Save Draft'}
+                    </button>
+                  </div>
+                  <button className="pe-mskip" onClick={() => setShowSD(false)}>Cancel</button>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
+      </div>
     </>
   );
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   STYLES
+   STYLES — unchanged from original
 ══════════════════════════════════════════════════════════════════════ */
 const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Barlow Condensed',sans-serif}
 
-/* ── Nav ── */
 .pe-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:.7rem 1.2rem;
   border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
 .pe-nav-l{justify-self:start}
@@ -1039,7 +982,6 @@ body{font-family:'Barlow Condensed',sans-serif}
   color:#1a3050;text-decoration:none;border:1px solid #0d1835;padding:.25rem .65rem;border-radius:4px;transition:.15s}
 .pe-si:hover{color:#ffd700;border-color:#ffd700}
 
-/* ── Immortal flash ── */
 .pe-imm-flash{position:fixed;inset:0;z-index:250;pointer-events:none;
   background:radial-gradient(ellipse at center,rgba(40,220,120,.35),rgba(10,60,30,.2) 40%,transparent 70%);
   display:flex;align-items:center;justify-content:center;animation:imm-in 2.4s ease both}
@@ -1049,7 +991,6 @@ body{font-family:'Barlow Condensed',sans-serif}
   animation:imm-pop .55s cubic-bezier(.36,1.6,.64,1) both}
 @keyframes imm-pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
 
-/* ── Score strip ── */
 .pe-strip{background:rgba(5,10,24,.96);border-bottom:2px solid #0d1835;display:flex;align-items:center;
   padding:.5rem 1.2rem;position:sticky;top:50px;z-index:20;backdrop-filter:blur(8px);overflow:hidden}
 .pe-sg{flex:1;text-align:center;padding:0 .4rem}
@@ -1061,13 +1002,11 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-sbar{position:absolute;bottom:0;left:0;right:0;height:3px;background:#0d1835}
 .pe-sfill{height:100%;background:linear-gradient(90deg,#a07020,#ffd700);transition:width .5s ease}
 
-/* ── Root ── */
 .pe-root{min-height:calc(100vh - 50px);background:#050a18;
   background-image:radial-gradient(ellipse at 50% -10%,rgba(255,215,0,.05),transparent 55%),
     repeating-linear-gradient(0deg,transparent,transparent 70px,rgba(255,255,255,.014) 70px,rgba(255,255,255,.014) 71px),
     repeating-linear-gradient(90deg,transparent,transparent 70px,rgba(255,255,255,.014) 70px,rgba(255,255,255,.014) 71px)}
 
-/* ══ INTRO ══ */
 .pe-intro{max-width:640px;margin:0 auto;padding:1.5rem 1.2rem 4rem}
 .pe-intro-hero{text-align:center;margin-bottom:1.5rem;padding:1.5rem 1rem;
   background:radial-gradient(ellipse at 50% 0%,rgba(255,215,0,.07),transparent 65%)}
@@ -1095,7 +1034,6 @@ body{font-family:'Barlow Condensed',sans-serif}
   letter-spacing:.1em;cursor:pointer;transition:.15s;text-align:center}
 .pe-rules-btn:hover{border-color:#ffd700;color:#ffd700}
 
-/* ══ SETUP ══ */
 .pe-setup{max-width:1200px;margin:0 auto;padding:1rem 1rem 3rem}
 .pe-setup-hero{text-align:center;margin-bottom:1rem;padding:1rem}
 .pe-hero-sup{font-size:.65rem;letter-spacing:.4em;color:#3a6080;margin-bottom:.2rem}
@@ -1115,19 +1053,16 @@ body{font-family:'Barlow Condensed',sans-serif}
   font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.12em;cursor:pointer;margin:.8rem auto 0;transition:.15s}
 .pe-how-link:hover{color:#7aa0c0}
 
-/* ════ FIELD LAYOUT ════ */
 .pe-field{display:flex;flex-direction:column;align-items:center;gap:18px;width:fit-content;margin:0 auto}
 .pe-form-row{display:flex;gap:16px}
 .pe-skill-spread{display:flex;justify-content:space-between;align-items:flex-end;width:calc(100% + 380px);margin:0 -40px}
 .pe-skill-side{display:flex;gap:18px}
 
-/* ════ SLOT OUTER ════ */
 .pe-slot-outer{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;background:transparent;border:none}
 .pe-slot-outer.hb-back{margin-top:16px;margin-left:8px}
 .pe-slot-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.62rem;letter-spacing:.12em;color:#3a6080;text-align:center;line-height:1}
 .pe-slot-label.cap{color:#c040ff;text-shadow:0 0 8px rgba(192,64,255,.7)}
 
-/* ════ PACK IMAGE ════ */
 .pe-pack-wrap{position:relative;display:flex;align-items:center;justify-content:center;cursor:default;width:125px;height:183px;flex-shrink:0}
 .pe-pack-img{width:100% !important;height:100% !important;object-fit:cover;display:block;background:transparent}
 .pe-pack-wrap.clickable{cursor:pointer;transition:transform .18s ease,filter .18s ease}
@@ -1136,7 +1071,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 @keyframes cap-drop-pulse{0%,100%{filter:drop-shadow(0 0 8px rgba(160,32,240,.9))}50%{filter:drop-shadow(0 0 18px rgba(224,64,255,1))}}
 .pe-pack-cap-badge{position:absolute;top:-8px;left:0;right:0;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.7rem;letter-spacing:.18em;color:#ffd700;text-shadow:0 0 8px rgba(255,215,0,.95);z-index:2;pointer-events:none}
 
-/* ════ FILLED SLOT ════ */
 .pe-fsl{width:125px;height:183px;border-radius:11px;overflow:visible;background:transparent;border:none;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   position:relative;transition:all .22s;cursor:default;flex-shrink:0}
@@ -1148,7 +1082,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-fsl-opening{font-size:.65rem;color:#ffd700;animation:blink .9s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
 
-/* Filled card internals */
 .pe-filled-card{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;border-radius:9px}
 .pe-fc-topbar{height:25px;flex-shrink:0;width:100%;display:flex;align-items:center;justify-content:space-between;padding:.25rem .35rem;background:rgba(4,8,16,.95);border-bottom:1px solid rgba(255,255,255,.08)}
 .pe-fc-pos-badge{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.55rem;letter-spacing:.12em;color:#fff;padding:1px 5px;border-radius:3px}
@@ -1162,7 +1095,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-fc-info{flex-shrink:0;padding:.35rem .4rem .3rem;width:100%;background:linear-gradient(to bottom,rgba(4,8,16,.9),rgba(4,8,16,.98));border-top:2px solid var(--rc,rgba(255,255,255,.1))}
 .pe-fc-name{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.82rem;line-height:1;letter-spacing:.02em;color:var(--rc,#e0eef8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pe-fc-score{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1rem;line-height:1.1;color:#d4e8f8;margin-top:2px}
-.pe-fc-rar{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.48rem;letter-spacing:.2em;margin-top:2px;opacity:.9;color:var(--rc)}
 .pe-fc-team-tag{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.48rem;letter-spacing:.1em;margin-top:2px;color:#3a6080;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pe-fc-cap-badge{position:absolute;top:-18px;left:50%;transform:translateX(-50%);
   font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.58rem;letter-spacing:.14em;
@@ -1171,7 +1103,6 @@ body{font-family:'Barlow Condensed',sans-serif}
   text-shadow:0 0 8px rgba(255,215,0,.8);pointer-events:none}
 .pe-fc-shine{position:absolute;inset:0;pointer-events:none;z-index:4;background:linear-gradient(135deg,transparent 45%,rgba(255,255,255,.06) 50%,transparent 55%)}
 
-/* ══ PACKING ══ */
 .pe-packing{max-width:1200px;margin:0 auto;padding:.8rem 1rem 3rem}
 .pe-formation-wrap{background:rgba(8,14,30,.7);border:1px solid #0d1835;border-radius:14px;padding:.8rem .6rem;margin-bottom:.8rem;overflow:hidden}
 .pe-cap-banner{display:flex;align-items:center;justify-content:center;gap:.6rem;font-size:.78rem;color:#5a8ab0;letter-spacing:.06em;margin-bottom:.8rem;padding:.45rem .8rem;background:rgba(192,64,255,.07);border:1px solid rgba(192,64,255,.2);border-radius:6px}
@@ -1186,7 +1117,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-ca-status{font-size:.8rem;color:#3a6080;letter-spacing:.06em}
 .pe-cards-row{display:flex;gap:.55rem;justify-content:center;flex-wrap:wrap;padding:.3rem 0}
 
-/* Individual pack reveal cards */
 .pe-card{width:136px;flex-shrink:0;perspective:1000px;position:relative;cursor:pointer;transition:transform .2s ease,opacity .3s;z-index:1}
 .pe-card:hover{z-index:10}
 .pe-card.rev.selectable:hover{transform:translateY(-14px) scale(1.07)}
@@ -1196,11 +1126,11 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-ci{position:relative;width:100%;height:208px;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1);overflow:visible}
 .pe-card.rev .pe-ci{transform:rotateY(180deg)}
 .pe-card-back,.pe-card-front{position:absolute;inset:0;border-radius:11px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
-.pe-card-back{background:linear-gradient(155deg,#080e24,#0c1840);border:2px solid #1a3060;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem}
+.pe-card-back{background:linear-gradient(155deg,#080e24,#0c1840);border:2px solid #1a3060;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;-webkit-backface-visibility:hidden;backface-visibility:hidden;transform:translateZ(0)}
 .pe-back-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:14px 14px}
 .pe-back-icon{font-size:2.2rem;opacity:.18;position:relative;z-index:1}
 .pe-back-label{font-size:.58rem;letter-spacing:.2em;color:#1a3060;font-family:'Barlow Condensed',sans-serif;position:relative;z-index:1}
-.pe-card-front{background:linear-gradient(170deg,#080e24,#0b1438);border:2px solid var(--sh,#333);transform:rotateY(180deg);box-shadow:0 0 18px var(--rg,transparent),inset 0 1px 0 rgba(255,255,255,.06);position:relative}
+.pe-card-front{background:linear-gradient(170deg,#080e24,#0b1438);border:2px solid var(--sh,#333);transform:rotateY(180deg) translateZ(0);box-shadow:0 0 18px var(--rg,transparent),inset 0 1px 0 rgba(255,255,255,.06);position:relative;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .pe-cf-topbar{display:flex;align-items:center;justify-content:space-between;padding:.35rem .5rem .15rem}
 .pe-cf-pos{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.62rem;letter-spacing:.12em;color:#fff;padding:2px 5px;border-radius:3px}
 .pe-cf-rlab{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.52rem;letter-spacing:.18em;color:var(--rc);opacity:.9}
@@ -1229,7 +1159,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-ep-text{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.12em;color:#3a6080;margin-bottom:.25rem}
 .pe-ep-sub{font-size:.75rem;color:#1a3050;letter-spacing:.08em}
 
-/* ══ COMPLETE ══ */
 .pe-complete{max-width:1200px;margin:0 auto;padding:1rem 1rem 4rem}
 .pe-comp-hdr{text-align:center;padding:1.2rem 1rem;background:radial-gradient(ellipse at 50% 0%,rgba(255,215,0,.09),transparent 65%);margin-bottom:.9rem}
 .pe-ch-icon{font-size:2.8rem;margin-bottom:.4rem;animation:icon-pop .7s cubic-bezier(.36,1.6,.64,1)}
@@ -1253,10 +1182,7 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-share-btn:hover{filter:brightness(1.1);transform:scale(1.02)}
 .pe-restart-btn{background:transparent;border:2px solid #1a3050;color:#3a6080;border-radius:8px;padding:.85rem 1.4rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.1em;cursor:pointer;transition:.2s}
 .pe-restart-btn:hover{border-color:#ffd700;color:#ffd700}
-.pe-save-link{display:block;text-align:center;background:none;border:none;color:#1a3050;font-size:.75rem;cursor:pointer;letter-spacing:.08em;font-family:'Barlow Condensed',sans-serif;transition:.15s;margin-top:.4rem}
-.pe-save-link:hover{color:#3a6080}
 
-/* ── Overlays ── */
 .pe-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(10px);padding:1rem}
 .pe-howto{background:#07101e;border:2px solid #1a3050;border-radius:16px;padding:1.5rem;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;animation:fade-up .3s ease}
 .pe-howto::-webkit-scrollbar{width:4px}
@@ -1283,9 +1209,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-mskip{background:none;border:none;color:#1a3050;font-size:.74rem;cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.1em;transition:.15s}
 .pe-mskip:hover{color:#3a6080}
 
-/* ════════════════════════════════════════════════════════
-   SHARED RARITY ANIMATIONS
-════════════════════════════════════════════════════════ */
 @keyframes border-spin   {from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes orb-float     {0%,100%{transform:translateY(0) scale(1);opacity:.55}33%{transform:translateY(-12px) scale(1.2);opacity:1}66%{transform:translateY(-5px) scale(.9);opacity:.65}}
 @keyframes sp-anim       {0%{transform:scale(0) rotate(0deg);opacity:0}20%{transform:scale(1) rotate(45deg);opacity:1}70%{transform:scale(.8) rotate(180deg);opacity:.8}100%{transform:scale(0) rotate(360deg);opacity:0}}
@@ -1313,9 +1236,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 @keyframes whiteout-leg  {0%,42%,52%,100%{background:rgba(255,255,255,0)}44%{background:rgba(255,200,255,.65)}47%{background:rgba(255,220,255,.12)}50%{background:rgba(255,255,255,.04)}}
 @keyframes inner-border-pulse{0%,100%{box-shadow:inset 0 0 18px rgba(40,220,120,.16),inset 0 0 44px rgba(40,220,120,.05)}50%{box-shadow:inset 0 0 30px rgba(80,255,160,.35),inset 0 0 65px rgba(40,220,120,.12)}}
 
-/* ════════════════════════════════════════════════════════
-   1. COMMON
-════════════════════════════════════════════════════════ */
 .pe-cm-corner{position:absolute;z-index:5;width:10px;height:10px;pointer-events:none}
 .pe-cm-corner::before,.pe-cm-corner::after{content:'';position:absolute;background:#c87840;opacity:.5}
 .pe-cm-corner::before{width:100%;height:1.5px;top:0;left:0}
@@ -1351,9 +1271,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-cm-ember:nth-child(5){width:3px;height:3px;left:24%;animation-duration:3.0s;animation-delay:1.7s}
 .pe-cm-bottom-glow{position:absolute;bottom:0;left:0;right:0;height:24px;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(180,70,10,.3),transparent)}
 
-/* ════════════════════════════════════════════════════════
-   2. RARE
-════════════════════════════════════════════════════════ */
 .pe-ra-spin-wrap{position:absolute;inset:-3px;border-radius:13px;overflow:hidden;z-index:0;pointer-events:none}
 .pe-ra-spin-arc{position:absolute;inset:0;background:conic-gradient(from 0deg,transparent 55%,rgba(66,192,248,.9) 73%,rgba(160,230,255,1) 80%,rgba(66,192,248,.9) 87%,transparent 100%);animation:border-spin 2.8s linear infinite}
 .pe-ra-spin-inner{position:absolute;inset:2px;border-radius:11px;background:#062840}
@@ -1371,9 +1288,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-ra-crackle:nth-child(3){animation-duration:3.9s;animation-delay:3.4s}
 .pe-ra-crackle-path{fill:none;stroke:#42c0f8;stroke-width:1.1;stroke-linecap:round;filter:drop-shadow(0 0 3px #42c0f8)}
 
-/* ════════════════════════════════════════════════════════
-   3. DYNASTY
-════════════════════════════════════════════════════════ */
 .pe-ep-dual-wrap{position:absolute;inset:-3px;border-radius:13px;overflow:hidden;z-index:0;pointer-events:none}
 .pe-ep-dual-arc1{position:absolute;inset:0;background:conic-gradient(from 0deg,transparent 60%,rgba(255,215,0,.9) 76%,rgba(255,245,120,1) 82%,rgba(255,215,0,.9) 88%,transparent 100%);animation:border-spin 3.5s linear infinite}
 .pe-ep-dual-arc2{position:absolute;inset:0;background:conic-gradient(from 180deg,transparent 65%,rgba(255,180,0,.55) 80%,rgba(255,220,0,.75) 86%,transparent 100%);animation:border-spin 5s linear infinite reverse}
@@ -1395,9 +1309,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-ep-shine{position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:9px;overflow:hidden}
 .pe-ep-shine::after{content:'';position:absolute;top:-100%;left:-60%;width:40%;height:300%;background:linear-gradient(105deg,transparent 30%,rgba(255,245,120,.42) 50%,transparent 70%);animation:coin-flip 3.5s ease-in-out infinite}
 
-/* ════════════════════════════════════════════════════════
-   4. TRANSCENDENT
-════════════════════════════════════════════════════════ */
 .pe-le-plasma-wrap{position:absolute;inset:-4px;border-radius:14px;overflow:hidden;z-index:0;pointer-events:none}
 .pe-le-plasma-arc1{position:absolute;inset:0;background:conic-gradient(from 0deg,transparent 40%,rgba(192,32,240,.7) 57%,rgba(255,80,255,1) 64%,rgba(224,64,255,.9) 71%,transparent 84%);animation:border-spin 2s linear infinite}
 .pe-le-plasma-arc2{position:absolute;inset:0;background:conic-gradient(from 90deg,transparent 45%,rgba(160,20,220,.5) 61%,rgba(200,64,255,.8) 69%,transparent 81%);animation:border-spin 3.2s linear infinite reverse}
@@ -1444,9 +1355,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-le-whiteout.w2{animation:whiteout-leg 9.5s ease-in-out infinite;animation-delay:2.24s}
 .pe-le-whiteout.w3{animation:whiteout-leg 6.8s ease-in-out infinite;animation-delay:5.14s}
 
-/* ════════════════════════════════════════════════════════
-   5. IMMORTAL
-════════════════════════════════════════════════════════ */
 .pe-imm-glow-1{position:absolute;inset:-5px;border-radius:18px;z-index:-1;pointer-events:none;box-shadow:0 0 16px 4px rgba(40,220,120,.65),0 0 36px 8px rgba(20,180,80,.4);animation:glow-breathe 2s ease-in-out infinite}
 .pe-imm-glow-2{position:absolute;inset:-16px;border-radius:24px;z-index:-2;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,rgba(40,220,120,.26) 0%,rgba(20,160,70,.12) 45%,transparent 72%);animation:glow-breathe 2s ease-in-out infinite;animation-delay:.3s}
 .pe-imm-glow-3{position:absolute;inset:-44px;border-radius:52px;z-index:-3;pointer-events:none;background:radial-gradient(ellipse at 50% 55%,rgba(20,200,80,.14) 0%,rgba(10,120,50,.06) 50%,transparent 72%);animation:glow-breathe 3.2s ease-in-out infinite;animation-delay:.8s}
@@ -1522,7 +1430,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-imm-shock-core{position:absolute;width:20px;height:20px;border-radius:50%;z-index:5;background:radial-gradient(circle,rgba(220,255,230,.95),rgba(40,220,120,.35),transparent 70%);animation:core-pulse 2.8s ease-out infinite}
 .pe-imm-shock-flash{position:absolute;inset:0;z-index:6;pointer-events:none;border-radius:11px;background:rgba(0,0,0,0);animation:shock-flash 2.8s ease-out infinite}
 
-/* ── Leaderboard bar ── */
 .pe-lb-bar{background:rgba(8,14,30,.85);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:.8rem 1rem;margin-bottom:.8rem}
 .pe-lb-bar-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.18em;color:#ffd700;margin-bottom:.55rem}
 .pe-lb-bar-row{display:flex;gap:.5rem;align-items:center}
@@ -1533,32 +1440,17 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-lb-submit:hover{filter:brightness(1.1)}
 .pe-lb-submit.saved{background:linear-gradient(135deg,#206040,#28dc78);color:#050a18}
 .pe-lb-submit:disabled{opacity:.6;cursor:default}
-.pe-lb-view{background:transparent;border:1px solid #1a3050;color:#3a6080;border-radius:6px;padding:.55rem .8rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.1em;cursor:pointer;transition:.2s;white-space:nowrap;flex-shrink:0}
+.pe-lb-view{background:transparent;border:1px solid #1a3050;color:#3a6080;border-radius:6px;padding:.55rem .8rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.1em;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap;flex-shrink:0;transition:.2s}
 .pe-lb-view:hover{border-color:#42c0f8;color:#42c0f8}
 
-/* leaderboard modal */
-.pe-lb-modal{background:#07101e;border:2px solid #1a3050;border-radius:16px;padding:1.4rem;max-width:480px;width:100%;max-height:80vh;display:flex;flex-direction:column;animation:fade-up .3s ease}
-.pe-lb-modal-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.18em;color:#ffd700;text-align:center;margin-bottom:1rem}
-.pe-lb-list{overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:.3rem}
-.pe-lb-list::-webkit-scrollbar{width:4px}
-.pe-lb-list::-webkit-scrollbar-thumb{background:#0d1835}
-.pe-lb-row{display:flex;align-items:center;gap:.6rem;padding:.4rem .6rem;border-radius:6px;background:rgba(4,8,16,.7);font-family:'Barlow Condensed',sans-serif;font-size:.8rem}
-.pe-lb-row.top3{background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.12)}
-.pe-lb-rank{font-family:'Orbitron',sans-serif;font-weight:700;font-size:.7rem;min-width:28px;text-align:center}
-.pe-lb-entry-name{flex:1;font-weight:700;letter-spacing:.04em;color:#d4e8f8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pe-lb-entry-tier{font-size:.65rem;font-weight:700;letter-spacing:.06em;white-space:nowrap}
-.pe-lb-entry-score{font-family:'Orbitron',sans-serif;font-weight:900;font-size:.78rem;color:#d4e8f8;white-space:nowrap}
-.pe-lb-empty{text-align:center;padding:2rem;color:#2a4060;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:.1em}
-.pe-lb-close{width:100%;margin-top:1rem;background:linear-gradient(135deg,#a07020,#ffd700);color:#050a18;border:none;border-radius:8px;padding:.75rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:.15em;cursor:pointer;transition:.2s;flex-shrink:0}
-.pe-lb-close:hover{filter:brightness(1.1)}
-
-/* comp buttons update */
+.pe-comp-btns{display:flex;gap:.65rem;margin-bottom:.9rem}
+.pe-share-btn{flex:1;background:linear-gradient(135deg,#a07020,#ffd700);color:#050a18;border:none;border-radius:8px;padding:.85rem 1rem;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;letter-spacing:.12em;cursor:pointer;transition:.2s}
+.pe-share-btn:hover{filter:brightness(1.1);transform:scale(1.02)}
 .pe-save-draft-btn{background:transparent;border:2px solid #42c0f8;color:#42c0f8;border-radius:8px;padding:.85rem .8rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:.08em;cursor:pointer;transition:.2s;white-space:nowrap}
 .pe-save-draft-btn:hover{background:rgba(66,192,248,.1)}
-.pe-sign-save{display:block;text-align:center;background:none;border:none;color:#1a3050;font-size:.72rem;cursor:pointer;letter-spacing:.08em;font-family:'Barlow Condensed',sans-serif;transition:.15s;margin-top:.3rem}
-.pe-sign-save:hover{color:#3a6080}
+.pe-restart-btn{background:transparent;border:2px solid #1a3050;color:#3a6080;border-radius:8px;padding:.85rem 1.4rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.1em;cursor:pointer;transition:.2s}
+.pe-restart-btn:hover{border-color:#ffd700;color:#ffd700}
 
-/* saved drafts list inside modal */
 .pe-saved-list{margin-bottom:.8rem;display:flex;flex-direction:column;gap:.3rem}
 .pe-saved-list-label{font-size:.62rem;color:#2a4060;letter-spacing:.12em;margin-bottom:.3rem;font-family:'Barlow Condensed',sans-serif}
 .pe-saved-row{display:flex;align-items:center;gap:.5rem;padding:.35rem .5rem;background:rgba(4,8,16,.8);border-radius:5px;border:1px solid #0d1835}
@@ -1567,7 +1459,6 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-saved-del{background:none;border:none;color:#2a4060;cursor:pointer;font-size:.75rem;padding:0 .2rem;transition:.15s;flex-shrink:0}
 .pe-saved-del:hover{color:#e04040}
 
-/* ── Responsive ── */
 @media(max-width:1000px){
   .pe-pack-img,.pe-fsl{width:100px;height:158px}
   .pe-skill-spread{width:calc(100% + 160px);margin:0 -30px}

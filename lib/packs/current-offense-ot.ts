@@ -234,11 +234,6 @@ export const OT_POOL_V1: NFLPlayer[] = [
     '103rd Pick (2022)','2024: Spot starter in Pittsburgh system',
     'Pittsburgh: 3-year starter before heading to hometown team',
   ]),
-  pl('cfl','Cam Fleming','OT','New York Giants', 240, [
-    '123rd Pick (2014)','10-year veteran swing tackle across 6 teams',
-    'Patriots: 2× Super Bowl Champion (XLIX, LI)',
-    'Reliable veteran depth — started at both tackle spots in career',
-  ]),
   pl('sto3','Storm Norton','OT','Los Angeles Chargers', 260, [
     'Undrafted (2017)','2021: Started 15 games at RT for Chargers',
     'One of best UDFA OT success stories — earned starting role',

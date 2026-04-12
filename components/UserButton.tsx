@@ -54,7 +54,7 @@ export default function UserButton() {
         <span className="w-6 h-6 rounded-full bg-zinc-800 border border-zinc-700 group-hover:border-emerald-500/40 group-hover:bg-emerald-500/10 flex items-center justify-center text-zinc-500 group-hover:text-emerald-400 transition-all duration-200">
           <UserIcon />
         </span>
-        <span className="text-zinc-300 group-hover:text-white transition-colors">Sign In</span>
+        <span className="text-zinc-300 group-hover:text-white transition-colors">Login</span>
         <span className="text-zinc-600 group-hover:text-emerald-500 transition-colors text-xs">→</span>
       </Link>
     );
