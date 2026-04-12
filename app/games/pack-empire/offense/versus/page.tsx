@@ -71,24 +71,30 @@ export default function VersusChallenge() {
     } catch { }
   };
 
-  const createNewChallenge = () => {
-    const newId = 'vs-' + Date.now().toString(36).slice(0, 9);
-    setChallengeId(newId);
-    setPhase('invite');
+  const createNewChallenge = async () => {
+  const newId = 'vs-' + Date.now().toString(36).slice(0, 9);
+  setChallengeId(newId);
+  setPhase('invite');
 
-    const newChallenge = {
-      id: newId,
-      status: 'waiting',
-      createdAt: Date.now(),
-      creatorId: user?.id,
-      myScore: null,
-      opponentScore: null,
-      opponentName: 'Waiting for opponent...',
-    };
+  // Save to Supabase so opponent can find it
+  await supabase.from('versus_challenges').insert({
+    id: newId,
+    creator_id: user?.id ?? null,
+    host_name: user?.user_metadata?.full_name || user?.email || 'Host',
+    status: 'waiting',
+  });
 
-    const current = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
-    localStorage.setItem('versus-active-challenges', JSON.stringify([newChallenge, ...current]));
+  // Also save locally for lobby tracking
+  const newChallenge = {
+    id: newId,
+    status: 'waiting',
+    createdAt: Date.now(),
+    creatorId: user?.id,
+    opponentName: 'Waiting for opponent...',
   };
+  const current = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
+  localStorage.setItem('versus-active-challenges', JSON.stringify([newChallenge, ...current]));
+};
 
   const copyInviteLink = () => {
     if (!challengeId || !origin) return;

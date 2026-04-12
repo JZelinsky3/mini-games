@@ -178,6 +178,7 @@ function VersusDraft() {
   const router       = useRouter();
   const challengeId  = searchParams.get('challenge');
   const supabase     = createClient();
+  const [user, setUser] = useState<any>(null);
 
   const [phase, setPhase]         = useState<Phase>('setup');
   const [lineup, setLineup]       = useState<(Player | null)[]>(Array(11).fill(null));
@@ -210,7 +211,8 @@ function VersusDraft() {
   useEffect(() => {
     if (!challengeId) return;
     async function checkIdentity() {
-  const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
 
   // Check if this device created the challenge (exists in their lobby list)
   const challenges = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
@@ -245,6 +247,28 @@ function VersusDraft() {
   } else {
     setNeedsIdentity(true);
   }
+  // Save to their local lobby so it appears in their versus lobby
+const existing = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
+const alreadySaved = existing.some((c: any) => c.id === challengeId);
+if (!alreadySaved) {
+  const { data: challenge } = await supabase
+    .from('versus_challenges')
+    .select('*')
+    .eq('id', challengeId)
+    .single();
+
+  if (challenge) {
+    const entry = {
+      id: challengeId,
+      status: challenge.status,
+      createdAt: new Date(challenge.created_at).getTime(),
+      creatorId: challenge.creator_id,
+      opponentName: challenge.opponent_name || 'Opponent',
+      isOpponent: true,
+    };
+    localStorage.setItem('versus-active-challenges', JSON.stringify([entry, ...existing]));
+  }
+}
 }
     checkIdentity();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -296,36 +320,49 @@ function VersusDraft() {
   const anyRevealed = revealed.some(Boolean);
 
   /* ── Submit: saves with role key, then redirects to results ── */
-  const submitResult = useCallback((finalLineup: (Player | null)[]) => {
-    if (!challengeId) return;
-    const score = finalLineup.reduce((s, p) => s + (p?.score ?? 0), 0);
-    const t = getTier(score);
-    const roleKey = isHost ? 'host' : 'opponent';
+  const submitResult = useCallback(async (finalLineup: (Player | null)[]) => {
+  if (!challengeId) return;
+  const score = finalLineup.reduce((s, p) => s + (p?.score ?? 0), 0);
+  const t = getTier(score);
+  const roleKey = isHost ? 'host' : 'opponent';
+  const playerName = isHost
+    ? (user?.user_metadata?.full_name || user?.email || 'Host')
+    : (guestName || 'Opponent');
 
-    try {
-      // Save result under role-specific key
-      localStorage.setItem(`versus-result-${challengeId}-${roleKey}`, JSON.stringify({
-        lineup: finalLineup, score, tier: t.label, icon: t.icon,
-        completedAt: Date.now(),
-        name: isHost ? 'You (Host)' : (guestName || 'Opponent'),
-      }));
+  const resultData = {
+    lineup: finalLineup,
+    score,
+    tier: t.label,
+    icon: t.icon,
+    completedAt: Date.now(),
+    name: playerName,
+  };
 
-      // Update challenge status in lobby list
-      const challenges = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
-      const updated = challenges.map((c: any) =>
-        c.id === challengeId ? { ...c, [`${roleKey}Score`]: score, [`${roleKey}Done`]: true } : c
-      );
-      localStorage.setItem('versus-active-challenges', JSON.stringify(updated));
-
-      // Clean up draft progress
-      localStorage.removeItem(`versus-draft-progress-${challengeId}-${roleKey}`);
-    } catch (e) {
-      console.error('Failed to save result', e);
+  try {
+    // Write to Supabase — both players can now see each other's results
+    if (isHost) {
+      await supabase.from('versus_challenges').update({
+        host_result: resultData,
+        host_name: playerName,
+        status: 'host_done',
+      }).eq('id', challengeId);
+    } else {
+      await supabase.from('versus_challenges').update({
+        opponent_result: resultData,
+        opponent_name: playerName,
+        status: 'opponent_done',
+      }).eq('id', challengeId);
     }
+  } catch (e) {
+    console.error('Failed to save to Supabase', e);
+  }
 
-    // Redirect to results page
-    router.push(`/games/pack-empire/offense/versus/results?challenge=${challengeId}`);
-  }, [challengeId, isHost, guestName, router]);
+  // Also save locally as backup
+  localStorage.setItem(`versus-result-${challengeId}-${roleKey}`, JSON.stringify(resultData));
+  localStorage.removeItem(`versus-draft-progress-${challengeId}-${roleKey}`);
+
+  router.push(`/games/pack-empire/offense/versus/results?challenge=${challengeId}`);
+}, [challengeId, isHost, guestName, router, supabase, user]);
 
   const openPack = useCallback((si: number, isCaptain: boolean, curLineup: (Player | null)[]) => {
   const excl = curLineup.filter(Boolean).map(p => p!.id);

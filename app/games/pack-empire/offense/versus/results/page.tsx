@@ -208,36 +208,35 @@ function VersusResults() {
 
   /* ── Determine role and load results ── */
   useEffect(() => {
-    if (!challengeId) return;
-    async function init() {
-      const { data: { user } } = await supabase.auth.getUser();
-      const challenges = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
-      const challenge = challenges.find((c: any) => c.id === challengeId);
-      const host = !!(challenge && challenge.creatorId === user?.id);
-      setIsHost(host);
+  if (!challengeId) return;
 
-      const myKey  = `versus-result-${challengeId}-${host ? 'host' : 'opponent'}`;
-      const oppKey = `versus-result-${challengeId}-${host ? 'opponent' : 'host'}`;
+  async function loadResults() {
+    const { data: { user } } = await supabase.auth.getUser();
 
-      try {
-        const myRaw = localStorage.getItem(myKey);
-        if (myRaw) {
-          const d = JSON.parse(myRaw);
-          setMyResult({ ...d, lineup: hydrateLineup(d.lineup ?? []) });
-        }
-      } catch { }
+    // Fetch the shared challenge from Supabase
+    const { data: challenge } = await supabase
+      .from('versus_challenges')
+      .select('*')
+      .eq('id', challengeId)
+      .single();
 
-      try {
-        const oppRaw = localStorage.getItem(oppKey);
-        if (oppRaw) {
-          const d = JSON.parse(oppRaw);
-          setOppResult({ ...d, lineup: hydrateLineup(d.lineup ?? []) });
-        }
-      } catch { }
-    }
-    init();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [challengeId, pollTick]);
+    if (!challenge) return;
+
+    // Determine if current user/device is host
+    const challenges = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
+    const isHostDevice = challenges.some((c: any) => c.id === challengeId);
+
+    const myRaw    = isHostDevice ? challenge.host_result     : challenge.opponent_result;
+    const oppRaw   = isHostDevice ? challenge.opponent_result : challenge.host_result;
+
+    if (myRaw)  setMyResult({ ...myRaw,  lineup: hydrateLineup(myRaw.lineup  ?? []) });
+    if (oppRaw) setOppResult({ ...oppRaw, lineup: hydrateLineup(oppRaw.lineup ?? []) });
+
+    setIsHost(isHostDevice);
+  }
+
+  loadResults();
+}, [challengeId, pollTick]);
 
   /* ── Poll every 4s for opponent result ── */
   useEffect(() => {
