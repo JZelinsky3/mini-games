@@ -739,7 +739,16 @@ const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Barlow Condensed',sans-serif}
-.pe-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:.7rem 1.2rem;border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
+.pe-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:1.3rem 1.2rem;
+  border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
+.pe-nav-l{justify-self:start}
+.pe-nav-l a.pe-back {
+    font-size: .95rem;     /* ← This is what actually controls the size */
+    font-weight: 700;
+    color: #ffd700;
+    text-decoration: none;}
+.pe-nav-l a.pe-back:hover {
+    color: #ffea80;}
 .pe-nav-l{justify-self:start}.pe-nav-c{display:flex;align-items:center;gap:.6rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.22em;color:#28dc78;justify-self:center;text-shadow:0 0 24px rgba(40,220,120,.5)}.pe-nav-r{justify-self:end}
 .pe-pip{width:9px;height:9px;border-radius:50%;background:#28dc78;flex-shrink:0;box-shadow:0 0 12px #28dc78,0 0 28px rgba(40,220,120,.6);animation:pip-pulse 2s ease-in-out infinite}
 @keyframes pip-pulse{0%,100%{box-shadow:0 0 12px #28dc78,0 0 28px rgba(40,220,120,.6)}50%{box-shadow:0 0 22px #28dc78,0 0 48px rgba(40,220,120,.8)}}

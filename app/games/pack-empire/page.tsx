@@ -160,12 +160,12 @@ body{font-family:'Barlow Condensed',sans-serif;background:#050a18}
 
 /* nav */
 .pe-hub-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
-  padding:.7rem 1.4rem;border-bottom:2px solid #0d1835;
+  padding:1.3rem 1.2rem;border-bottom:2px solid #0d1835;
   position:sticky;top:0;background:#050a18;z-index:30}
-.pe-hub-back{color:#2a4060;text-decoration:none;font-family:'Barlow Condensed',sans-serif;
-  font-size:.82rem;letter-spacing:.08em;transition:.15s;justify-self:start}
+.pe-hub-back{color:#ffd700;text-decoration:none;font-family:'Barlow Condensed',sans-serif;
+  font-size:1.0rem;font-weight:500;letter-spacing:.08em;transition:.15s;justify-self:start}
 .pe-hub-back:hover{color:#d4e8f8}
-.pe-hub-nav-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:.9rem;
+.pe-hub-nav-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.25rem;
   letter-spacing:.24em;color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,.5)}
 .pe-hub-lb-nav{color:#3a6080;text-decoration:none;font-family:'Barlow Condensed',sans-serif;
   font-size:.78rem;font-weight:700;letter-spacing:.08em;transition:.15s;

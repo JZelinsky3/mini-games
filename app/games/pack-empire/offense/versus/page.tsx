@@ -247,14 +247,16 @@ const VERSUS_STYLES = `
   background-image:radial-gradient(ellipse at 50% 0%,rgba(255,215,0,.04),transparent 50%)}
 
 /* ── Nav ── */
-.pe-vs-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:.7rem 1.2rem;
+.pe-vs-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:1.3rem 1.2rem;
   border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
-.pe-vs-back{color:#2a4060;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;
+.pe-vs-back{color:#ffd700;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;
   font-weight:600;letter-spacing:.06em;transition:.15s;justify-self:start}
 .pe-vs-back:hover{color:#d4e8f8}
-.pe-vs-nav-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.2em;
+
+
+.pe-vs-nav-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.3rem;letter-spacing:.2em;
   color:#ffd700;justify-self:center;text-shadow:0 0 20px rgba(255,215,0,.5)}
-.pe-vs-nav-lb{color:#2a4060;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;
+.pe-vs-nav-lb{color:#2a4060;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;
   font-weight:600;letter-spacing:.06em;transition:.15s;justify-self:end}
 .pe-vs-nav-lb:hover{color:#ffd700}
 
