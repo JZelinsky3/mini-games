@@ -210,20 +210,42 @@ function VersusDraft() {
   useEffect(() => {
     if (!challengeId) return;
     async function checkIdentity() {
-      const { data: { user } } = await supabase.auth.getUser();
-      const challenges = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
-      const thisChallenge = challenges.find((c: any) => c.id === challengeId);
-      const host = !!(thisChallenge && thisChallenge.creatorId === user?.id);
-      setIsHost(host);
+  const { data: { user } } = await supabase.auth.getUser();
 
-      if (host && user) {
-        setNeedsIdentity(false);
-        return;
-      }
-      const savedGuest = localStorage.getItem(`versus-guest-${challengeId}`);
-      if (savedGuest) { setGuestName(savedGuest); setNeedsIdentity(false); }
-      else setNeedsIdentity(true);
-    }
+  // Check if this device created the challenge (exists in their lobby list)
+  const challenges = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
+  const thisChallenge = challenges.find((c: any) => c.id === challengeId);
+  const createdHere = !!(thisChallenge && thisChallenge.creatorId);
+
+  // Also check if host result already saved on this device
+  const hostResultHere = !!localStorage.getItem(`versus-result-${challengeId}-host`);
+  const hostProgressHere = !!localStorage.getItem(`versus-draft-progress-${challengeId}-host`);
+
+  // You are the host if: you created the challenge on this device
+  const host = createdHere;
+  setIsHost(host);
+
+  if (host) {
+    // Host never needs identity screen
+    setNeedsIdentity(false);
+    return;
+  }
+
+  // Opponent flow — check for saved guest name or signed-in user
+  const savedGuest = localStorage.getItem(`versus-guest-${challengeId}`);
+  if (user) {
+    // Signed-in opponent — use their display name
+    const name = user.user_metadata?.full_name || user.email || 'Opponent';
+    setGuestName(name);
+    localStorage.setItem(`versus-guest-${challengeId}`, name);
+    setNeedsIdentity(false);
+  } else if (savedGuest) {
+    setGuestName(savedGuest);
+    setNeedsIdentity(false);
+  } else {
+    setNeedsIdentity(true);
+  }
+}
     checkIdentity();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [challengeId]);
@@ -493,7 +515,7 @@ function VersusDraft() {
 
     {/* Sign in option */}
     <Link
-      href={`/login?redirect=/games/pack-empire/offense/versus/draft?challenge=${challengeId}`}
+      href={`/login?redirect=${encodeURIComponent(`/games/pack-empire/offense/versus/draft?challenge=${challengeId}`)}`}
       style={{
         display:'block', width:'100%', background:'linear-gradient(135deg,#a07020,#ffd700)',
         color:'#050a18', border:'none', borderRadius:'10px', padding:'14px',

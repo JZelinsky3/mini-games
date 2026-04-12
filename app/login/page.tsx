@@ -1,10 +1,11 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
-export default function LoginPage() {
+function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [identifier, setIdentifier] = useState(''); // email OR username
   const [email, setEmail] = useState('');
@@ -19,6 +20,8 @@ export default function LoginPage() {
   const [lastEmail, setLastEmail] = useState('');
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirect');
   const supabase = createClient();
 
   // Live username check for sign up
@@ -73,8 +76,8 @@ export default function LoginPage() {
 
       if (error) throw error;
 
-      router.push('/');
-      router.refresh();
+router.push(redirectTo ? decodeURIComponent(redirectTo) : '/');
+router.refresh();
     } else {
       // SIGN UP
       if (!username || username.length < 3) {
@@ -252,5 +255,21 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function LoginFallback() {
+  return (
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <div className="text-zinc-600 text-sm tracking-widest">LOADING...</div>
+    </div>
+  );
+}
+
+export default function LoginPageWrapper() {
+  return (
+    <Suspense fallback={<LoginFallback />}>
+      <LoginPage />
+    </Suspense>
   );
 }
