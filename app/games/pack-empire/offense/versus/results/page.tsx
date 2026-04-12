@@ -223,8 +223,10 @@ function VersusResults() {
     if (!challenge) return;
 
     // Determine if current user/device is host
-    const challenges = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
-    const isHostDevice = challenges.some((c: any) => c.id === challengeId);
+    // Host = creator_id matches current user, fallback to localStorage for guests
+    const isHostDevice = !!(user && challenge.creator_id && challenge.creator_id === user.id)
+  ||  (!user && JSON.parse(localStorage.getItem('versus-active-challenges') || '[]')
+      .some((c: any) => c.id === challengeId && !c.isOpponent));
 
     const myRaw    = isHostDevice ? challenge.host_result     : challenge.opponent_result;
     const oppRaw   = isHostDevice ? challenge.opponent_result : challenge.host_result;
@@ -439,9 +441,9 @@ body{font-family:'Barlow Condensed',sans-serif}
 .vr-banner-center{display:flex;flex-direction:column;align-items:center;gap:.2rem}
 .vr-banner-spacer{flex:1}
 .vr-banner-icon{font-size:2rem}
-.vr-banner-text{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(1.2rem,4vw,1.8rem);letter-spacing:.1em;color:#ffd700;text-shadow:0 0 24px rgba(255,215,0,.6)}
-.vr-banner-sub{font-size:.75rem;color:#3a6080;letter-spacing:.1em}
-.vr-banner-arrow{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.6rem;color:#ffd700;text-shadow:0 0 16px rgba(255,215,0,.8);animation:arrow-pulse 1.2s ease-in-out infinite}
+.vr-banner-text{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(1.2rem,4vw,1.8rem);letter-spacing:.1em;color:#ffd700;text-shadow:0 0 24px rgba(255,215,0,.6);align-items:center}
+.vr-banner-sub{font-size:.75rem;color:#3a6080;letter-spacing:.1em;align-items:center}
+.vr-banner-arrow{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.6rem;color:#ffd700;text-shadow:0 0 16px rgba(255,215,0,.8);animation:arrow-pulse 1.2s ease-in-out infinite;align-items:center}
 @keyframes arrow-pulse{0%,100%{opacity:.6;text-shadow:0 0 16px rgba(255,215,0,.6)}50%{opacity:1;text-shadow:0 0 32px rgba(255,215,0,.9)}}
 
 /* ── Waiting banner ── */
