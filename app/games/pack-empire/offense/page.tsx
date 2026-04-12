@@ -1471,6 +1471,7 @@ body{font-family:'Barlow Condensed',sans-serif}
   .pe-form-row{gap:6px}
   .pe-skill-side{gap:6px}
   .pe-pack-wrap,.pe-fsl{width:82px;height:128px}
+  .pe-field{transform:scale(0.82);transform-origin:top center;margin-bottom:-18%}
 }
 @media(max-width:420px){
   .pe-pack-img,.pe-fsl{width:64px;height:100px}
