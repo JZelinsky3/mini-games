@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
@@ -173,7 +173,7 @@ function RarityEffects({ rarity, position = 'inner' }: { rarity: Rarity; positio
 /* ══════════════════════════════════════════════════════════════════════
    VERSUS DRAFT COMPONENT
 ══════════════════════════════════════════════════════════════════════ */
-export default function VersusDraft() {
+function VersusDraft() {
   const searchParams = useSearchParams();
   const router       = useRouter();
   const challengeId  = searchParams.get('challenge');
@@ -744,3 +744,21 @@ body{font-family:'Barlow Condensed',sans-serif}
 }
 @media(max-width:420px){.pe-pack-img,.pe-fsl{width:64px;height:100px}.pe-card{min-width:96px}.pe-fc-score{font-size:.72rem}.pe-skill-spread{width:calc(100% + 60px);margin:0 -10px}.pe-pack-wrap,.pe-fsl{width:64px;height:100px}}
 `;
+
+function VersusDraftFallback() {
+  return (
+    <div style={{ minHeight:'100vh', background:'#050a18', display:'flex', alignItems:'center', justifyContent:'center' }}>
+      <div style={{ fontFamily:'Barlow Condensed,sans-serif', color:'#2a4060', letterSpacing:'.2em', fontSize:'.85rem' }}>
+        LOADING...
+      </div>
+    </div>
+  );
+}
+
+export default function VersusDraftPage() {
+  return (
+    <Suspense fallback={<VersusDraftFallback />}>
+      <VersusDraft />
+    </Suspense>
+  );
+}

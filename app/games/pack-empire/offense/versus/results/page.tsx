@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
@@ -175,7 +175,7 @@ function LineupColumn({
 /* ══════════════════════════════════════════════════════════════════════
    RESULTS PAGE
 ══════════════════════════════════════════════════════════════════════ */
-export default function VersusResults() {
+function VersusResults() {
   const searchParams = useSearchParams();
   const challengeId  = searchParams.get('challenge');
   const supabase     = createClient();
@@ -540,3 +540,21 @@ body{font-family:'Barlow Condensed',sans-serif}
   .vr-col-score{font-size:.85rem}
 }
 `;
+
+function VersusResultsFallback() {
+  return (
+    <div style={{ minHeight:'100vh', background:'#050a18', display:'flex', alignItems:'center', justifyContent:'center' }}>
+      <div style={{ fontFamily:'Barlow Condensed,sans-serif', color:'#2a4060', letterSpacing:'.2em', fontSize:'.85rem' }}>
+        LOADING...
+      </div>
+    </div>
+  );
+}
+
+export default function VersusResultsPage() {
+  return (
+    <Suspense fallback={<VersusResultsFallback />}>
+      <VersusResults />
+    </Suspense>
+  );
+}
