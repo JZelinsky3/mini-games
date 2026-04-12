@@ -30,331 +30,179 @@ function pl(
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   TIGHT ENDS — 13 entries  |  10 common · 3 rare · 0 epic
+   TIGHT ENDS — V2
+   Current 2025–2026 skill-based scoring | Boosted top TEs + varied commons
 ══════════════════════════════════════════════════════════════════════ */
+
 export const TE_POOL_V1: NFLPlayer[] = [
-  pl('jmg2','Jonnu Smith',         'TE', 'Miami Dolphins',        660, [
-    'Pro Bowl 2020 (alternate)', '100th Pick 2017',
-    '2020 (TEN): 448 yards, 8 TDs — Pro Bowl caliber season',
-    '2023 (ATL): 703 yards, 4 TDs — career renaissance',
+  // === TRANSCENDENT TIER ===
+  pl('kel','Travis Kelce','TE','Kansas City Chiefs', 2050, [
+    'All-time great TE','Still elite at advanced age'
   ]),
-  pl('iro', 'Irv Smith Jr.',       'TE', 'Pittsburgh Steelers',   440, [
-    '50th Pick 2019', '2023: Starting TE for Steelers after injuries',
-    'Alabama: National Champion 2017 — reliable blocker and receiver',
+  pl('kit','George Kittle','TE','San Francisco 49ers', 2780, [
+    'Complete dominant TE','Elite blocker and receiver'
   ]),
-  pl('bsp', 'Blake Bell',          'TE', 'Free Agent',            220, [
-    '100th Pick 2015', '9-year veteran — elite blocking designation',
-    'Kansas: 2-year QB converted to TE — versatile every-down player',
+  pl('mcb','Trey McBride','TE','Arizona Cardinals', 3350, [
+    'Rising superstar','Led TEs in production'
   ]),
-  pl('jth2','Jelani Woods',        'TE', 'Indianapolis Colts',    280, [
-    '73rd Pick 2022', '2023: 445 yards — emerging pass-catcher for Colts',
-    '6\'7\" — physically imposing red-zone mismatch',
+  pl('bow','Brock Bowers','TE','Las Vegas Raiders', 3020, [
+    'Historic rookie season','Best TE prospect in years'
   ]),
-  pl('cwa3','C.J. Uzomah',         'TE', 'Free Agent',            380, [
-    'Pro Bowl 2021 (alternate)', '157th Pick 2015',
-    '2021 (CIN): 493 yards, 5 TDs in Super Bowl LVI run',
-    '8-year veteran — physical blocker and reliable safety valve',
+  pl('lap','Sam LaPorta','TE','Detroit Lions', 2380, [
+    'Explosive rookie star','Immediate franchise weapon'
   ]),
-  pl('rto', 'Ross Travis',         'TE', 'Free Agent',            180, [
-    'Undrafted 2015 — Penn State product converted from DE',
-    'Elite special teams designation across NE and KC',
+
+  // === DYNASTY TIER ===
+  pl('and','Mark Andrews','TE','Baltimore Ravens', 1920, [
+    'Reliable red-zone threat','Multiple 1,000-yard seasons'
   ]),
-  pl('des2','Devin Asiasi',        'TE', 'Washington Commanders', 200, [
-    '91st Pick 2020', '2024: Depth TE in Washington\'s evolving offense',
-    'UCLA: 2-year starter — solid blocker and short-area receiver',
+  pl('goe','Dallas Goedert','TE','Philadelphia Eagles', 1780, [
+    'Consistent volume TE','Strong receiving threat'
   ]),
-  pl('mfi', 'MyCole Pruitt',       'TE', 'Free Agent',            180, [
-    '165th Pick 2015', 'Elite blocking TE across 8 seasons',
-    'Southern Illinois (FCS): Run-blocking specialist',
+  pl('fer','Jake Ferguson','TE','Dallas Cowboys', 1520, [
+    'Breakout franchise TE','Record-setting season'
   ]),
-  pl('fmox', 'Foster Moreau',       'TE', 'Free Agent',            340, [
-    '137th Pick 2019', '2019 (LV): 4 TDs in rookie season',
-    '2023: Beat Hodgkin lymphoma diagnosis and returned to NFL',
-    'LSU: National Champion 2019',
+  pl('lik','Isaiah Likely','TE','Baltimore Ravens', 1380, [
+    'Elite depth performer','Multiple TD seasons'
   ]),
-  pl('zth', 'Zach Gentry',         'TE', 'Pittsburgh Steelers',   200, [
-    '164th Pick 2019', '2022: Starting TE in Steelers offense',
-    'Michigan: 2-year starter — elite athlete at 6\'8\"',
+  pl('ert','Zach Ertz','TE','Washington Commanders', 1150, [
+    'Veteran leader','Super Bowl champion'
   ]),
-  pl('bab2','Brock Bowers',        'TE', 'Las Vegas Raiders',     820, [
-    '13th Overall Pick 2024', 'Pro Bowl 2024',
-    '2024: 112 receptions — most ever by a rookie TE in NFL history',
-    'Georgia: 3× Mackey Award finalist — best TE prospect since Gronkowski',
+  pl('tgr','Tucker Kraft','TE','Green Bay Packers', 1450, [
+  'Emerging starting TE','Reliable safety valve for Jordan Love'
+]),
+
+  // === RARE TIER (700–1499) ===
+  pl('hoc','T.J. Hockenson','TE','Minnesota Vikings', 980, [
+    'Reliable safety valve','Strong target share'
   ]),
-  pl('hai','Harrison Bryant',      'TE', 'Cleveland Browns',      300, [
-    '115th Pick 2020', '2020: 238 yards, 4 TDs filling for Hooper',
-    'FAU: 2019 Mackey Award winner — program legend',
+  pl('eng','Evan Engram','TE','Jacksonville Jaguars', 920, [
+    'High-catch volume','Franchise record setter'
   ]),
-  pl('kha2','Ko Kieft',            'TE', 'Tampa Bay Buccaneers',  220, [
-    '194th Pick 2022', '2023: Elite blocking grade 78+ in run game',
-    'Minnesota: 3-year starter — devastatingly physical blocker',
+  pl('dal2','Dalton Schultz','TE','Houston Texans', 980, [
+    'Veteran starter','Consistent producer'
   ]),
-  pl('hen3','Hunter Henry','TE','New England Patriots', 620, [
-    '2× Pro Bowl','35th Pick (2016)',
-    '2021: 603 yards, 9 TDs — led all NFL TEs in TDs',
-    '5× 500+ yard seasons; elite red-zone weapon',
+  pl('hen3','Hunter Henry','TE','New England Patriots', 920, [
+    'Red-zone specialist','Multiple TD seasons'
   ]),
-  pl('hil2','Taysom Hill','TE','New Orleans Saints', 480, [
-    'Pro Bowl (2020 — unique hybrid designation)',
-    '4th Round Pick (2017)','2020: 4 TDs rushing + 1 passing in 5 starts',
-    'Only player in NFL history to appear at QB, RB, WR, TE, and LS',
+  pl('pit','Kyle Pitts','TE','Atlanta Falcons', 880, [
+    'Athletic mismatch','Former No. 4 overall pick'
   ]),
-  pl('con','Tyler Conklin','TE','New York Jets', 340, [
-    'Pro Bowl (2021)','158th Pick (2018)',
-    '2021: 593 yards, 3 TDs — Vikings top TE',
-    'Reliable safety-valve TE across multiple rosters',
+  pl('njo','David Njoku','TE','Cleveland Browns', 840, [
+    'Athletic playmaker','Growing target share'
   ]),
-  pl('dul','Greg Dulcich','TE','Denver Broncos', 260, [
-    '80th Pick (2022)','2022: 3 TDs in 9 games as rookie',
-    '2024: Showed elite YAC ability — athletic freak at 6\'4"',
+
+  // === COMMON TIER — Varied scores (205–680) ===
+  pl('cmo','Cole Kmet','TE','Chicago Bears', 680, [
+    'Reliable receiving TE','Career-best production'
   ]),
-  pl('ben2','Ben Sinnott','TE','Washington Commanders', 240, [
-    '40th Pick (2024)','2024: Immediate contributor in Commanders playoff run',
-    '2023 (Kansas State): 797 yards, 7 TDs — Big 12 standout',
+  pl('par4','Pat Freiermuth','TE','Pittsburgh Steelers', 750, [
+    'Steady target','"The Dragon" nickname'
   ]),
-  pl('kol','Charlie Kolar','TE','Baltimore Ravens', 260, [
-    '128th Pick (2022)','2024: 500+ yards complementing Mark Andrews',
-    'Iowa State: 2× First-Team All-Big 12',
+  pl('mge','Mike Gesicki','TE','New England Patriots', 620, [
+    'Athletic receiving TE','Former Pro Bowl level'
   ]),
-  pl('smr','Durham Smythe','TE','Miami Dolphins', 200, [
-    '121st Pick (2018)','Elite blocking TE — 7 seasons of iron-man reliability',
-    'Key piece allowing Dolphins\' skill positions to shine',
+  pl('aok','Austin Hooper','TE','Free Agent', 580, [
+    'Veteran volume TE','Consistent blocker'
   ]),
-  pl('bjo2','Brevin Jordan','TE','Houston Texans', 220, [
-    '147th Pick (2021)','2024: 500+ yards in complementary role',
-    'Athletic receiving TE — elite speed for position (4.60)',
+  pl('hil2','Taysom Hill','TE','New Orleans Saints', 540, [
+    'Unique hybrid weapon','Multi-position threat'
   ]),
-  pl('cha4','Charlie Jones','TE','Cincinnati Bengals', 160, [
-    'Undrafted (2023)','2024: Flex TE / WR hybrid for Bengals',
-    '2022 (Purdue): Led nation in receptions (110) as WR convert',
+  pl('con','Tyler Conklin','TE','New York Jets', 600, [
+    'Reliable safety valve','Consistent contributor'
   ]),
-  pl('geo','Gerald Everett','TE','Los Angeles Chargers', 340, [
-    'Pro Bowl (2021)','44th Pick (2017)',
-    '2021: 478 yards, 4 TDs — Seahawks\' top option',
-    '2022 (LAC): 586 yards; consistent pass-catching TE for 7 seasons',
+  pl('jmg2','Jonnu Smith','TE','Miami Dolphins', 580, [
+    'Versatile veteran','Career renaissance'
   ]),
-  pl('irv2','Irv Smith Jr.','TE','Cincinnati Bengals', 300, [
-    '50th Pick (2019)','2023: 519 yards for Bengals post-Hockenson trade',
-    '2021: 365 yards before torn meniscus — had star potential',
+  pl('geo','Gerald Everett','TE','Los Angeles Chargers', 560, [
+    'Pass-catching specialist','Veteran option'
   ]),
-  pl('ngo','Noah Gray','TE','Kansas City Chiefs', 340, [
-    '141st Pick (2021)','2× Super Bowl Champion (LVII, LVIII)',
-    '2023: 326 yards, 3 TDs complementing Kelce',
-    'Duke: Reliable blocker and safety-valve receiver',
+  pl('ngo','Noah Gray','TE','Kansas City Chiefs', 440, [
+    'Super Bowl depth','Reliable blocker'
   ]),
-  pl('bwr','Brock Wright','TE','Detroit Lions', 260, [
-    '168th Pick (2022)','Super Bowl LVIII appearance',
-    '2023: Key blocking TE in Detroit\'s dominant run game',
-    'Notre Dame: Cornerstone of Lions\' trenches identity',
+  pl('bwr','Brock Wright','TE','Detroit Lions', 420, [
+    'Strong blocking TE','Run-game contributor'
   ]),
-  pl('tjo','Theo Johnson','TE','New York Giants', 200, [
-    '109th Pick (2024)','2024: Immediate depth piece for Giants',
-    'Penn State: Athletic pass-catching TE with upside',
+  pl('iro','Irv Smith Jr.','TE','Free Agent', 500, [
+    'Athletic pass-catcher','Alabama pedigree'
   ]),
-  pl('ajb','AJ Barner','TE','Indianapolis Colts', 220, [
-    '120th Pick (2024)','2024: Competing for starting role with Colts',
-    'Michigan: Reliable two-way TE — solid in both phases',
+  pl('cwa3','C.J. Uzomah','TE','Free Agent', 480, [
+    'Physical blocker','Super Bowl experience'
   ]),
-  pl('col','Colby Parkinson','TE','Los Angeles Rams', 260, [
-    '98th Pick (2020)','Super Bowl LVI Champion',
-    '2023: Key blocking TE in Rams\' system with Stafford',
-    'Stanford: High-IQ TE; reliable in short-to-mid passing game',
+  pl('fmox','Foster Moreau','TE','Free Agent', 460, [
+    'Comeback story','Resilient veteran'
   ]),
-  pl('don','Donald Parham Jr.','TE','Los Angeles Chargers', 240, [
-    'Undrafted (2019) — Canadian Football League route',
-    '2021: 241 yards, 3 TDs for Chargers','6\'8" — tallest TE in league',
-    'Elite red zone target; unique height advantage',
+  pl('tan2','Robert Tonyan','TE','Minnesota Vikings', 440, [
+    'Former TD specialist','Veteran depth'
   ]),
-  pl('ttr2','Tommy Tremble','TE','Carolina Panthers', 240, [
-    '85th Pick (2021)','3× starter for Panthers blocking-TE role',
-    'Notre Dame: Defensive OPOY-level blocking accolades',
+  pl('kol','Charlie Kolar','TE','Baltimore Ravens', 320, [
+    'Developing complement','Big 12 standout'
   ]),
-  pl('sto2','Stone Smartt','TE','Los Angeles Chargers', 180, [
-    '232nd Pick (2022)','2023: Spot contributor for Chargers',
-    'Undrafted trajectory before being claimed — persevered',
+  pl('dul','Greg Dulcich','TE','Denver Broncos', 305, [
+    'Athletic YAC threat','Injury recovery'
   ]),
-  pl('kgr2','Kylen Granson','TE','Indianapolis Colts', 220, [
-    '128th Pick (2021)','2022: 290 yards in growing role',
-    'SMU: Record-holder for receiving yards by a Mustang TE',
+  pl('ben2','Ben Sinnott','TE','Washington Commanders', 290, [
+    'Immediate rookie contributor','College standout'
   ]),
-  pl('jmi','James Mitchell','TE','Detroit Lions', 200, [
-    '168th Pick (2022)','Super Bowl LVIII appearance',
-    '2023: Depth piece in Lions\' loaded TE room',
-    'Virginia Tech: Torn ACL in final college season; remarkable return',
+  pl('ott','Cade Otton','TE','Tampa Bay Buccaneers', 675, [
+    'Core rebuilding piece','Rising role'
   ]),
-  pl('lfa','Luke Farrell','TE','Jacksonville Jaguars', 180, [
-    '159th Pick (2021)','Elite blocking designation — PFF grade 78+ in run',
-    'Ohio State: National Champion (2021); locks down edge in run game',
+  pl('mug','Luke Musgrave','TE','Green Bay Packers', 460, [
+    'Athletic mismatch','Developing chemistry'
+  ]),
+  pl('jth2','Jelani Woods','TE','Indianapolis Colts', 245, [
+    'Physical red-zone threat','Imposing size'
+  ]),
+  pl('bjo2','Brevin Jordan','TE','Houston Texans', 335, [
+    'Speedy receiving TE','Athletic upside'
+  ]),
+  pl('smr','Durham Smythe','TE','Miami Dolphins', 225, [
+    'Elite blocking TE','Iron-man reliability'
+  ]),
+  pl('kha2','Ko Kieft','TE','Tampa Bay Buccaneers', 215, [
+    'Devastating blocker','Physical run-game piece'
+  ]),
+  pl('hai','Harrison Bryant','TE','Cleveland Browns', 210, [
+    'Mackey Award winner','Depth contributor'
+  ]),
+  pl('tjo','Theo Johnson','TE','New York Giants', 220, [
+    'Athletic pass-catcher','Developing upside'
+  ]),
+  pl('ajb','AJ Barner','TE','Indianapolis Colts', 305, [
+    'Two-way college TE','Physical blocker'
+  ]),
+  pl('col','Colby Parkinson','TE','Los Angeles Rams', 330, [
+    'High-IQ route runner','Reliable veteran'
+  ]),
+  pl('don','Donald Parham Jr.','TE','Los Angeles Chargers', 425, [
+    'Red-zone height advantage','Unique 6\'8" frame'
+  ]),
+  pl('ttr2','Tommy Tremble','TE','Carolina Panthers', 215, [
+    'Blocking specialist','Notre Dame pedigree'
+  ]),
+  pl('kgr2','Kylen Granson','TE','Indianapolis Colts', 210, [
+    'Record-holding receiver','Athletic TE'
   ]),
   pl('qmo','Quintin Morris','TE','Buffalo Bills', 220, [
-    'Undrafted (2022)','2023: 215 yards in first full NFL season',
-    'Western Michigan: MAC Tight End of the Year (2021)',
+    'Undrafted success','MAC standout'
   ]),
-  pl('ert','Zach Ertz','TE','Washington Commanders', 1180, [
-    '4× Pro Bowl','Super Bowl LII Champion',
-    '74th Pick (2013)','2018: 116 catches — NFL record for a TE at time',
-    'Super Bowl LII: Key role in Eagles\' championship run',
+  pl('jmi','James Mitchell','TE','Detroit Lions', 205, [
+    'Resilient depth','Injury comeback'
   ]),
-  pl('fen','Noah Fant','TE','Seattle Seahawks', 580, [
-    '2× Pro Bowl','20th Pick (2019)',
-    '2023: 535 yards for Seattle — continued production',
-    'Part of historic Broncos/Seahawks blockbuster trade',
+  pl('lfa','Luke Farrell','TE','Jacksonville Jaguars', 215, [
+    'Elite run blocker','Ohio State champion'
   ]),
-  pl('lik','Isaiah Likely','TE','Baltimore Ravens', 420, [
-    '2× Pro Bowl (2022, 2023 snub candidate)','139th Pick (2022)',
-    '2022: Stepped in for injured Andrews — 8 TDs in partial season',
-    '2023: 84 catches, 1,000+ yards, 6 TDs — historic TE season for depth role',
+  pl('bla2','Brevyn Spann-Ford','TE','Minnesota Vikings', 210, [
+    'Physical blocker','Developing depth'
   ]),
-  pl('fer','Jake Ferguson','TE','Dallas Cowboys', 560, [
-    'Pro Bowl (2023)','129th Pick (2022)',
-    '2023: 1,021 yards, 6 TDs — Cowboys franchise TE season record',
-    'Emerged as primary target with Lamb dominating attention',
+  pl('csp','Cade Stover','TE','Houston Texans', 225, [
+    'Versatile LB convert','Competing for snaps'
   ]),
-  pl('okw','Chigoziem Okonkwo','TE','Tennessee Titans', 340, [
-    'Pro Bowl (2023)','69th Pick (2022)',
-    '2023: 567 yards, 5 TDs — one of fastest TEs in NFL',
-    '4.51s 40 — elite athleticism for the position',
+  pl('jny','Josh Whyle','TE','Cincinnati Bengals', 205, [
+    'Pass-catching backup','Growing role'
   ]),
-  pl('ott','Cade Otton','TE','Tampa Bay Buccaneers', 280, [
-    '106th Pick (2022)','2023: 578 yards, 3 TDs',
-    'Core piece of Buccaneers\' rebuilt TE room post-Gronk',
-  ]),
-  pl('mug','Luke Musgrave','TE','Green Bay Packers', 260, [
-    '42nd Pick (2023)','2023: 473 yards, 4 TDs as rookie',
-    'Ascending under Jordan Love — natural chemistry',
-  ]),
-  pl('meh','Michael Mayer','TE','Las Vegas Raiders', 220, [
-    '35th Pick (2023)','2023: 392 yards in rookie season',
-    'First TE selected in 2023 draft; Notre Dame standout',
-  ]),
-  pl('kra','Tucker Kraft','TE','Green Bay Packers', 200, [
-    '93rd Pick (2023)','2023: Showed flashes in GB TE committee',
-    'Ascending — featured more in 2024 season',
-  ]),
-  pl('dis','Will Dissly','TE','Los Angeles Chargers', 220, [
-    'Reliable blocking & receiving TE — Pro Bowl consideration 2021',
-    '120th Pick (2018)','Career 400+ rec yards in multiple seasons',
-  ]),
-  pl('tan2','Robert Tonyan','TE','Minnesota Vikings', 320, [
-    'Pro Bowl (2021 snub)','Super Bowl LV appearance (GB)','139th Pick (2017)',
-    '2020: 11 TDs — tied TE single-season record for Green Bay',
-  ]),
-  pl('cmo', 'Cole Kmet',          'TE', 'Chicago Bears',            640, [
-    '43rd Pick 2020', '2023: 719 yards, 8 TDs — career-best season',
-    'Notre Dame: All-American — first TE taken in 2020 draft',
-  ]),
-  pl('mge', 'Mike Gesicki',       'TE', 'New England Patriots',     560, [
-    'Pro Bowl 2022 (alternate)', '42nd Pick 2018',
-    '2020 (MIA): 703 yards — elite receiving TE',
-    'Penn State: 2018 Mackey Award finalist',
-  ]),
-  pl('aok', 'Austin Hooper',      'TE', 'Free Agent',               540, [
-    '3× Pro Bowl', '81st Pick 2016',
-    '2019: 787 yards, 6 TDs — set Falcons single-season TE record',
-    'Stanford: Two-year starter in Cardinal system',
-  ]),
-  pl('par4','Pat Freiermuth',     'TE', 'Pittsburgh Steelers',      700, [
-    '55th Pick 2021', '2× Pro Bowl', '2022: 732 yards, 3 TDs for Steelers',
-    'Penn State: 16 TDs in final two seasons — "Freiermuth the Dragon"',
-  ]),
-  pl('jha2','Josh Hill',          'TE', 'Free Agent',               180, [
-    'Undrafted 2013', '10-year Saints career — elite blocking designation',
-    'Jacksonville State (FCS): Ironman durability across a decade',
-  ]),
-  pl('tha', 'Theo Johnson',       'TE', 'New York Giants',          200, [
-    '109th Pick 2024', 'Penn State: Athletic pass-catching TE with upside',
-    'Immediate depth piece — growing rapport with Daniel Jones',
-  ]),
-  pl('tgr2','Tucker Kraft',       'TE', 'Green Bay Packers',        380, [
-    '93rd Pick 2023', '2024: 511 yards — becoming Jordan Love\'s safety valve',
-    'South Dakota State (FCS): 2-year leading receiver and blocker',
-  ]),
-  pl('csp', 'Cade Stover',        'TE', 'Houston Texans',           260, [
-    '100th Pick 2024', 'Ohio State: Switched from LB to TE — versatile blocker',
-    '2024: Competing for TE1 role with Texans',
-  ]),
-  pl('jny', 'Josh Whyle',         'TE', 'Cincinnati Bengals',       200, [
-    '148th Pick 2023', '2024: Backup with growing pass-catching role',
-    'Penn State: 2-year starter — solid hands and athleticism',
-  ]),
-  pl('mmi', 'Michael Mayer',      'TE', 'Las Vegas Raiders',        280, [
-    '35th Pick 2023', '2024: Full starter in Raiders offense',
-    'Notre Dame: 2× All-American — most productive TE in school history',
-  ]),
-  pl('bla2','Brevyn Spann-Ford',  'TE', 'Minnesota Vikings',        220, [
-    '102nd Pick 2023', '2024: Depth role with growing snaps',
-    'Illinois: 3-year starter — physical blocker',
-  ]),
-  pl('dal2','Dalton Schultz',     'TE', 'Houston Texans',           760, [
-    '2× Pro Bowl', '137th Pick 2018',
-    '2021: 808 yards, 8 TDs — set Cowboys TE single-season TD record',
-    '2022 (HOU): 577 yards helping launch Stroud era',
-  ]),
-  pl('kel','Travis Kelce','TE','Kansas City Chiefs', 3180, [
-    '9× Pro Bowl','6× AP 1st-Team','3× Super Bowl Champion',
-    'All-Time TE receiving yards leader (11,000+)',
-    'Most consecutive seasons with 1,000+ rec yards by a TE (8)',
-    '2020 OPOY finalist — 105 catches, 1,416 yards',
-  ]),
-  pl('kit','George Kittle','TE','San Francisco 49ers', 2580, [
-    '5× Pro Bowl','3× AP 1st-Team',
-    '2018 single-season TE receiving yards record (1,377)',
-    '2023 Super Bowl LVIII appearance','8,000+ career receiving yards',
-  ]),
-  pl('and','Mark Andrews','TE','Baltimore Ravens', 1560, [
-    '4× Pro Bowl','AP 1st-Team (2021)','AP 2nd-Team',
-    '2021: 1,361 yards — Ravens franchise TE record',
-    '3× 1,000-yard seasons',
-  ]),
-  pl('goe','Dallas Goedert','TE','Philadelphia Eagles', 980, [
-    '2× Pro Bowl','Super Bowl LVII appearance',
-    '3× 1,000-yard seasons','100+ catches (2022)',
-  ]),
-  pl('hoc','T.J. Hockenson','TE','Minnesota Vikings', 780, [
-    '2× Pro Bowl','2022: 95 catches — most ever by a TE in MN',
-    '8th Pick (2019 Draft)',
-  ]),
-  pl('eng','Evan Engram','TE','Jacksonville Jaguars', 640, [
-    '2× Pro Bowl','2022: 1,114 yards — Jaguars franchise TE record',
-    '23rd Pick (2017 Draft)',
-  ]),
-  pl('njo','David Njoku','TE','Cleveland Browns', 560, [
-    '2× Pro Bowl','2022: 628 yards','2023: 882 yards, 6 TDs',
-    '19th Pick (2017 Draft)',
-  ]),
-  pl('pit','Kyle Pitts','TE','Atlanta Falcons', 620, [
-    '2× Pro Bowl (2021, 2023)','4th Overall Pick (2021)',
-    '2021: 1,026 yards — most by a TE in debut season (NFL record)',
-  ]),
-  pl('mcb','Trey McBride','TE','Arizona Cardinals', 660, [
-    '2× Pro Bowl','2023: 825 yards, highest in ARI TE history',
-    '55th Pick (2022 Draft)',
-    '2025 PFWA All-NFL First-Team',
-    'Led all TEs in slot production (receptions, yards, TDs)',
-  ]),
-  pl('lap','Sam LaPorta','TE','Detroit Lions', 340, [
-    'Pro Bowl (2023)','AP 2nd-Team (2023)','34th Pick (2023 Draft)',
-    '2023: 889 yards — most ever by a rookie TE',
-  ]),
-  pl('fre','Pat Freiermuth','TE','Pittsburgh Steelers', 340, [
-    'Pro Bowl (2022)','55th Pick (2021)',
-    '2022: 732 yards, 7 TDs in Steelers system',
-  ]),
-  pl('kme','Cole Kmet','TE','Chicago Bears', 280, [
-    '2× Pro Bowl','2023: 719 yards, 8 TDs — Bears franchise TE record',
-    '43rd Pick (2020 Draft)',
-  ]),
-  pl('kin','Dalton Kincaid','TE','Buffalo Bills', 200, [
-    '25th Pick (2023)','2023: 673 yards as rookie',
-    'Key piece of Bills\' pass-heavy offense',
-  ]),
-  pl('hig2','Tyler Higbee','TE','Los Angeles Rams', 380, [
-    'Pro Bowl (2019)','Super Bowl LVI Champion',
-    '2019: 734 yards in final 5 games — historic hot streak',
-  ]),
-  pl('ges','Mike Gesicki','TE','New England Patriots', 340, [
-    '2× Pro Bowl','5× 500+ yard seasons',
-    'Exceptional blocker turned reliable safety valve',
+  pl('mmi','Michael Mayer','TE','Las Vegas Raiders', 230, [
+    'Notre Dame standout','Full-time starter'
   ]),
 ];
 

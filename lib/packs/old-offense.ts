@@ -100,6 +100,11 @@ export const QB_POOL_OLD: NFLPlayer[] = [
     '1978: 28 TDs — led Steelers to NFL\'s first back-to-back-to-back dominance',
     '3,833 Super Bowl passing yards — record at retirement',
   ]),
+  pl('rta2','Ryan Tannehill',       'QB', 'Free Agent',           620, [
+    '2× Pro Bowl', 'AP 2nd-Team All-Pro 2019',
+    '2019: 117.5 passer rating — 2nd-highest ever recorded in single season',
+    '8th Pick 2012 — 12-year starter for two franchises',
+  ]),
 ];
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -273,6 +278,11 @@ export const WR_POOL_OLD: NFLPlayer[] = [
     '5× Pro Bowl', '3× AP 1st-Team',
     '1995: 1,603 yards — Cowboys franchise record',
     '"The Playmaker" — 111 catches in 1995 (led NFL)',
+  ]),
+  pl('dpa','DeVante Parker','WR','Los Angeles Rams', 720, [
+    '2× Pro Bowl','14th Pick (2014)',
+    '2019: 1,202 yards, 9 TDs — Pro Bowl','2021: 996 yards for Miami',
+    '2022 (NE): 635 yards despite weak QB play — still showing up',
   ]),
 ];
 
