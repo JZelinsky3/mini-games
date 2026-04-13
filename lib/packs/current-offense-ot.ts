@@ -16,7 +16,7 @@ import type { NFLPlayer, PositionGroup, Rarity } from './current-offense-qb';
 
 function r(score: number): Rarity {
   if (score >= 2800) return 'transcendent';
-  if (score >= 1500) return 'dynasty';
+  if (score >= 1600) return 'dynasty';
   if (score >= 700) return 'rare';
   return 'common';
 }
@@ -60,7 +60,7 @@ export const OT_POOL_V1: NFLPlayer[] = [
   pl('bak','David Bakhtiari','OT','Green Bay Packers', 2380, [
     'Former elite protector','Strong when healthy'
   ]),
-  pl('tho','Andrew Thomas','OT','New York Giants', 2180, [
+  pl('tho','Andrew Thomas','OT','New York Giants', 2280, [
     'Reliable franchise LT','Zero-sack stretches'
   ]),
   pl('dar','Christian Darrisaw','OT','Minnesota Vikings', 1980, [
@@ -69,6 +69,54 @@ export const OT_POOL_V1: NFLPlayer[] = [
   pl('tun','Laremy Tunsil','OT','Houston Texans', 1880, [
     'Highest-paid LT history','Strong pass blocker'
   ]),
+  pl('jma','Jordan Mailata','OT','Philadelphia Eagles', 2420, [
+'Dominant left tackle','Elite run blocker & pass protector'
+]),
+pl('ofa','Olu Fashanu','OT','New York Jets', 1580, [
+'Rising blind-side star','High-upside young protector'
+]),
+pl('wca','Will Campbell','OT','New Orleans Saints', 1250, [
+'Consistent reliable starter','Strong anchor'
+]),
+pl('ppa','Patrick Paul','OT','Miami Dolphins', 1220, [
+'Athletic ascending LT','Developing franchise piece'
+]),
+pl('tgr','Tylan Grable','OT','Buffalo Bills', 680, [
+'Athletic swing tackle','Developing depth'
+]),
+pl('che','Charlie Heck','OT','Houston Texans', 620, [
+'Veteran backup','Multi-year contributor'
+]),
+pl('jhu','James Hudson III','OT','Cleveland Browns', 580, [
+'Solid swing tackle','Reliable depth'
+]),
+pl('lme','Lorenz Metz','OT','New England Patriots', 540, [
+'Massive frame depth','Spot starter potential'
+]),
+pl('mpi','Matt Peart','OT','Denver Broncos', 480, [
+'Former high pick','Injury recovery depth'
+]),
+pl('dhu','D.J. Humphries','OT','Los Angeles Rams', 380, [
+'Veteran journeyman','Experienced pass protector'
+]),
+pl('ras','Rasheed Walker','OT','Green Bay Packers', 1080, [
+'Solid left tackle','Improving pass blocker'
+]),
+pl('jel','Jermaine Eluemunor','OT','New York Giants', 1020, [
+'Versatile veteran starter','Reliable right tackle'
+]),
+pl('bjo','Braxton Jones','OT','Chicago Bears', 980, [
+'Quick-footed LT','Consistent when healthy'
+]),
+pl('brm','Braden Smith','OT','Houston Texans', 920, [
+'Powerful right tackle','Veteran anchor with experience'
+]),
+pl('ant','Anton Harrison','OT','Jacksonville Jaguars', 820, [
+'Developing blind-side protector','Steady improvement'
+]),
+pl('bro','Broderick Jones','OT','Pittsburgh Steelers', 780, [
+'Athletic young tackle','Physical run blocker'
+]),
 
   // === RARE TIER (700–1499) ===
   pl('tmo','Taylor Moton','OT','Carolina Panthers', 1420, [

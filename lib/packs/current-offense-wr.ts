@@ -26,7 +26,7 @@ import type { NFLPlayer, PositionGroup, Rarity } from './current-offense-qb';
 function r(score: number): Rarity {
   if (score >= 4000) return 'immortal';
   if (score >= 2800) return 'transcendent';
-  if (score >= 1500) return 'dynasty';
+  if (score >= 1600) return 'dynasty';
   if (score >=  700) return 'rare';
   return 'common';
 }
@@ -70,19 +70,25 @@ export const WR_POOL_V1: NFLPlayer[] = [
   pl('nab','Malik Nabers','WR','New York Giants', 2720, [
     'Explosive rookie star','Franchise record setter'
   ]),
-  pl('lon','Drake London','WR','Atlanta Falcons', 2420, [
+  pl('lon','Drake London','WR','Atlanta Falcons', 2120, [
     'Consistent target hog','Reliable alpha'
   ]),
   pl('ada','Davante Adams','WR','Las Vegas Raiders', 2080, [
     'Elite route runner','Red-zone specialist'
   ]),
-  pl('nic','Nico Collins','WR','Houston Texans', 2320, [
+  pl('nic','Nico Collins','WR','Houston Texans', 2020, [
     'Rising deep threat','Big-play producer'
   ]),
+  pl('gpi','George Pickens','WR','Dallas Cowboys', 2480, [
+    'Deep-ball explosive threat','High-upside alpha'
+  ]),
 
-  // === RARE TIER (700–1499) ===
-  pl('ter','Terry McLaurin','WR','Washington Commanders', 1880, [
+  // === RARE TIER (700–1599) ===
+  pl('ter','Terry McLaurin','WR','Washington Commanders', 1780, [
     'Consistent deep threat','Franchise leader'
+  ]),
+  pl('thi','Tyreek Hill','WR','Miami Dolphins', 1980, [
+    'Speed king','Big-play threat (age-adjusted)'
   ]),
   pl('bna','Brian Thomas Jr.','WR','Jacksonville Jaguars', 1580, [
     'Elite rookie production','Big-play ability'
@@ -90,21 +96,78 @@ export const WR_POOL_V1: NFLPlayer[] = [
   pl('wil2','Garrett Wilson','WR','New York Jets', 1780, [
     'Talented young star','OROTY winner'
   ]),
+  pl('rri','Rashee Rice','WR','Kansas City Chiefs', 1950, [
+    'Mahomes favorite target','Explosive YAC weapon'
+  ]),
   pl('zfl','Zay Flowers','WR','Baltimore Ravens', 1680, [
     'Dynamic slot weapon','Instant impact rookie'
   ]),
   pl('hig','Tee Higgins','WR','Cincinnati Bengals', 1580, [
     'Big-bodied red-zone threat','Multiple 1,000-yard seasons'
   ]),
+  pl('tmc','Tetairoa McMillan','WR','Carolina Panthers', 1450, [
+    'Rookie star / OROY contender','Big-bodied contested-catch beast'
+  ]),
+  pl('col','Chris Olave','WR','New Orleans Saints', 1580, [
+    'Smooth route technician','Consistent 1,000+ yard producer'
+    ]),
+  pl('rod','Rome Odunze','WR','Chicago Bears', 1550, [
+    'Big-bodied rookie breakout','Strong contested catcher'
+  ]),
   pl('coo3','Amari Cooper','WR','Cleveland Browns', 1020, [
     'Veteran alpha','Consistent 1,000-yard producer'
+  ]),
+  pl('dee','Deebo Samuel','WR','San Francisco 49ers', 1250, [
+    'Versatile YAC monster','Playmaker when healthy'
+  ]),
+  pl('sdg','Stefon Diggs','WR','Free Agent', 1320, [
+    'Veteran route technician','Reliable volume getter'
+  ]),
+  pl('mha','Marvin Harrison Jr.','WR','Arizona Cardinals', 1350, [
+    'Pedigree + contested-catch specialist','Still developing consistency'
+  ]),
+  pl('xwo','Xavier Worthy','WR','Kansas City Chiefs', 1220, [
+    'Blazing speed threat','Deep-ball & return specialist'
+  ]),
+  pl('mwi','Michael Wilson','WR','Arizona Cardinals', 1280, [
+    'Reliable complementary piece','Big target in Arizona'
   ]),
   pl('mtp','Michael Pittman Jr.','WR','Indianapolis Colts', 980, [
     'Contested-catch specialist','High target share'
   ]),
-  pl('dmo','DJ Moore','WR','Chicago Bears', 920, [
+  pl('jre','Jayden Reed','WR','Green Bay Packers', 920, [
+    'Dynamic slot weapon','Explosive playmaker'
+  ]),
+  pl('dmo','DJ Moore','WR','Chicago Bears', 1020, [
     'Reliable volume receiver','Multiple 1,000-yard seasons'
   ]),
+  pl('wro','Wan\'Dale Robinson','WR','Tennessee Titans', 1150, [
+'Quick slot weapon','High catch rate & YAC'
+]),
+
+pl('jje','Jauan Jennings','WR','San Francisco 49ers', 980, [
+'Big-bodied red-zone threat','Physical possession receiver'
+]),
+
+pl('kco','Keon Coleman','WR','Buffalo Bills', 620, [
+'Big target with upside','Developing alpha traits'
+]),
+
+pl('jco','Jalen Coker','WR','Carolina Panthers', 680, [
+'Emerging slot/possession guy','Strong rookie flashes'
+]),
+
+pl('api','Alec Pierce','WR','Indianapolis Colts', 1150, [
+'Deep-ball specialist','Consistent 1,000-yard potential'
+]),
+
+pl('ddo','Demario Douglas','WR','New England Patriots', 720, [
+'Dynamic slot playmaker','Explosive in space'
+]),
+
+pl('nbr','Noah Brown','WR','Washington Commanders', 650, [
+'Veteran big-play option','Reliable when healthy'
+]),
   pl('aiy','Brandon Aiyuk','WR','San Francisco 49ers', 880, [
     'Smooth route runner','Super Bowl contender piece'
   ]),
@@ -114,14 +177,16 @@ export const WR_POOL_V1: NFLPlayer[] = [
   pl('add','Jordan Addison','WR','Minnesota Vikings', 820, [
     'Complementary playmaker','Reliable target'
   ]),
-
-  // === COMMON TIER — Varied scores (205–680) ===
-  pl('obe','Odell Beckham Jr.','WR','Miami Dolphins', 680, [
+  pl('jme','Jakobi Meyers','WR','Las Vegas Raiders', 710, [
+    'Slot possession receiver','1,000-yard season'
+  ]),
+  pl('obe','Odell Beckham Jr.','WR','Miami Dolphins', 700, [
     'Iconic playmaker','Veteran big-play threat'
   ]),
-  pl('csa','Chris Godwin','WR','Tampa Bay Buccaneers', 750, [
+  pl('csa','Chris Godwin Jr.','WR','Tampa Bay Buccaneers', 750, [
     'Reliable slot presence','Super Bowl champion'
   ]),
+  // === COMMON TIER — Varied scores (205–680) ===
   pl('thi2','Tyler Boyd','WR','Tennessee Titans', 630, [
     'Veteran slot weapon','Consistent producer'
   ]),
@@ -154,9 +219,6 @@ export const WR_POOL_V1: NFLPlayer[] = [
   ]),
   pl('dmo2','Darnell Mooney','WR','Atlanta Falcons', 500, [
     'Consistent deep option','Multiple 1,000-yard seasons'
-  ]),
-  pl('jme','Jakobi Meyers','WR','Las Vegas Raiders', 580, [
-    'Slot possession receiver','1,000-yard season'
   ]),
   pl('ndl','Tank Dell','WR','Houston Texans', 460, [
     'Undersized competitor','Rookie impact'

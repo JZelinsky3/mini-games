@@ -40,7 +40,7 @@ export interface NFLPlayer {
 function r(score: number): Rarity {
   if (score >= 4000) return 'immortal';
   if (score >= 2800) return 'transcendent';
-  if (score >= 1500) return 'dynasty';
+  if (score >= 1600) return 'dynasty';
   if (score >=  700) return 'rare';
   return 'common';
 }
@@ -68,7 +68,7 @@ export const QB_POOL_V1: NFLPlayer[] = [
     '2× League MVP','Most dangerous dual-threat QB'
   ]),
   pl('sta','Matthew Stafford','QB','Los Angeles Rams', 2980, [
-    'Super Bowl MVP','Still elite in his late 30s'
+    'League MVP and Super Bowl MVP','Still elite in his late 30s'
   ]),
   pl('rod','Aaron Rodgers','QB','Pittsburgh Steelers', 2820, [
     '4× League MVP','Elite accuracy and football IQ'
@@ -78,16 +78,16 @@ export const QB_POOL_V1: NFLPlayer[] = [
   pl('bur','Joe Burrow','QB','Cincinnati Bengals', 2620, [
     'Precision passer','Franchise cornerstone'
   ]),
-  pl('hur','Jalen Hurts','QB','Philadelphia Eagles', 2480, [
+  pl('hur','Jalen Hurts','QB','Philadelphia Eagles', 2250, [
     'Dual-threat leader','Super Bowl contender anchor'
   ]),
-  pl('her','Justin Herbert','QB','Los Angeles Chargers', 2450, [
+  pl('her','Justin Herbert','QB','Los Angeles Chargers', 2250, [
     'Cannon arm','Consistent top-tier producer'
   ]),
-  pl('dma','Drake Maye','QB','New England Patriots', 2380, [
+  pl('dma','Drake Maye','QB','New England Patriots', 2180, [
     'Rising superstar','MVP runner-up in Year 2'
   ]),
-  pl('kca','Caleb Williams','QB','Chicago Bears', 1920, [
+  pl('kca','Caleb Williams','QB','Chicago Bears', 1720, [
     'Elite arm talent','Franchise QB with big upside'
   ]),
   pl('dak','Dak Prescott','QB','Dallas Cowboys', 1950, [
@@ -96,7 +96,27 @@ export const QB_POOL_V1: NFLPlayer[] = [
   pl('sab','Sam Darnold','QB','Seattle Seahawks', 1580, [
     'Career revival','Super Bowl champion QB'
   ]),
-
+pl('jda2','Jaxson Dart','QB','New York Giants', 1080, [
+'Rising young passer','Strong arm and mobility'
+]),
+pl('jfi','Justin Fields','QB','Kansas City Chiefs', 750, [
+'Athletic scrambler','High-upside backup'
+]),
+pl('kal','Kyle Allen','QB','Buffalo Bills', 520, [
+'Steady veteran backup','Reliable game manager'
+]),
+pl('mjo','Mac Jones','QB','San Francisco 49ers', 680, [
+'Former high draft pick','Pocket passer development'
+]),
+pl('jst','Jarrett Stidham','QB','Denver Broncos', 480, [
+'Solid depth option','Efficient when called upon'
+]),
+pl('dlo','Drew Lock','QB','Seattle Seahawks', 440, [
+'Big arm backup','Occasional starter flashes'
+]),
+pl('nmu','Nick Mullens','QB','Jacksonville Jaguars', 380, [
+'Volume passer','Backup with starting experience'
+]),
 
   // === RARE TIER (700–1499) ===
   pl('tua','Tua Tagovailoa','QB','Miami Dolphins', 980, [
@@ -131,7 +151,7 @@ export const QB_POOL_V1: NFLPlayer[] = [
   pl('jda','Jayden Daniels','QB','Washington Commanders', 1480, [
     'Explosive dual-threat','Immediate impact rookie'
   ]),
-  pl('byo','Bo Nix','QB','Denver Broncos', 1050, [
+  pl('byo','Bo Nix','QB','Denver Broncos', 1150, [
     'Experienced college producer','Competent young starter'
   ]),
   pl('afe','Anthony Richardson','QB','Indianapolis Colts', 620, [

@@ -13,7 +13,7 @@ import type { NFLPlayer, PositionGroup, Rarity } from './current-offense-qb';
 
 function r(score: number): Rarity {
   if (score >= 2800) return 'transcendent';
-  if (score >= 1500) return 'dynasty';
+  if (score >= 1600) return 'dynasty';
   if (score >= 700) return 'rare';
   return 'common';
 }
@@ -118,34 +118,66 @@ export const OG_POOL_V1: NFLPlayer[] = [
   pl('sbi','Spencer Brown','OG','Buffalo Bills', 880, [
     'Athletic development story','Pro Bowl alternate level'
   ]),
-
+  pl('kdo','Kevin Dotson','OG','Los Angeles Rams', 780, [
+'Strong run blocker','High PFF grades in recent seasons'
+]),
+pl('rhu','Robert Hunt','OG','Los Angeles Chargers', 720, [
+'Powerful interior presence','Massive run-game contributor'
+]),
+pl('jda','James Daniels','OG','Pittsburgh Steelers', 880, [
+'Experienced starter','Pro Bowl alternate level'
+]),
+pl('lto','Laken Tomlinson','OG','New York Jets', 700, [
+'Veteran reliable anchor','Long-time consistent performer'
+]),
+pl('cwh','Cody Whitehair','OG','Chicago Bears', 720, [
+'Multi-position veteran','Former high-level starter'
+]),
+pl('mbe','Matthew Bergeron','OG','Atlanta Falcons', 680, [
+'Developing young guard','Solid ascending piece'
+]),
+pl('nle','Nick Leverett','OG','Tampa Bay Buccaneers', 620, [
+'Super Bowl champion depth','Resilient interior player'
+]),
+pl('wfr','Will Fries','OG','Indianapolis Colts', 850, [
+'Consistent right guard','Strong recent production'
+]),
+pl('gbr','Graham Barton','OG','Tampa Bay Buccaneers', 630, [
+'Versatile young interior','Athletic contributor'
+]),
   // === COMMON / DEPTH GUARDS (selected examples — add more as needed) ===
-  pl('dot','Kevin Dotson','OG','Los Angeles Rams', 680, [
-    'Strong NFC guard','High PFF grades in recent years'
-  ]),
-  pl('hun','Robert Hunt','OG','Los Angeles Chargers', 680, [
-    'Massive run blocker','Key piece for Herbert'
-  ]),
-  pl('jad','James Daniels','OG','Pittsburgh Steelers', 660, [
-    'Pro Bowl alternate','Solid starter experience'
-  ]),
+  pl('jga','Jon Gaines II','OG','Pittsburgh Steelers', 650, [
+'Versatile interior depth','Reliable reserve guard'
+]),
+pl('ast','Andrew Stueber','OG','Atlanta Falcons', 620, [
+'Solid backup guard','Developing depth piece'
+]),
+pl('jpe','Jared Penning','OG','Baltimore Ravens', 580, [
+'Physical run blocker','Spot starter potential'
+]),
+pl('lcu','Liam Fornadel','OG','New York Jets', 550, [
+'Athletic depth option','Recent contributor'
+]),
+pl('gca','Gus Hartwig','OG','Green Bay Packers', 520, [
+'Young interior prospect','Developing reserve'
+]),
+pl('jdd','Justin Dedich','OG','Los Angeles Rams', 420, [
+'Developing guard','Run-game contributor'
+]),
+pl('khi','Kyle Hinton','OG','Atlanta Falcons', 390, [
+'Multi-position depth','Former college starter'
+]),
+pl('jgw','Jovaughn Gwyn','OG','Cleveland Browns', 340, [
+'Small-school gem','Rotational depth'
+]),
+pl('lro','Layden Robinson','OG','Las Vegas Raiders', 320, [
+'Powerful rookie depth','College production'
+]),
   pl('ami2','Austin Corbett','OG','Free Agent', 640, [
     'Super Bowl champion','Former Pro Bowl level'
   ]),
-  pl('tom','Laken Tomlinson','OG','New York Jets', 600, [
-    'Veteran anchor','Long-time starter'
-  ]),
-  pl('whi2','Cody Whitehair','OG','Chicago Bears', 580, [
-    'Multi-position veteran','Former Bears leader'
-  ]),
   pl('new','Xavier Newman-Johnson','OG','San Francisco 49ers', 560, [
     'Reliable reserve','Super Bowl appearance'
-  ]),
-  pl('ber2','Matthew Bergeron','OG','Atlanta Falcons', 550, [
-    'Developing starter','Rookie starter experience'
-  ]),
-  pl('lev2','Nick Leverett','OG','Tampa Bay Buccaneers', 520, [
-    'Super Bowl champion depth','Resilient backup'
   ]),
   pl('ont','Netane Muti','OG','San Francisco 49ers', 500, [
     'Powerful run blocker','Key depth piece'
@@ -269,15 +301,51 @@ export const OG_POOL_V1: NFLPlayer[] = [
   pl('cam2','Cam Jurgens','C','Philadelphia Eagles', 1050, [
     'Seamless high-level play','Pro Bowl consideration'
   ]),
-  pl('tip','Joe Tippmann','C','New York Jets', 980, [
+  pl('tbo','Tyler Biadasz','C','Los Angeles Chargers', 1180, [
+'Veteran steady anchor','Reliable interior leader'
+]),
+pl('lwa','Luke Wattenberg','C','Denver Broncos', 980, [
+'Solid run-game contributor','Consistent starter'
+]),
+pl('csh','Coleman Shelton','C','Los Angeles Rams', 880, [
+'Versatile veteran','Reliable depth-to-starter'
+]),
+  pl('tip','Joe Tippmann','C','New York Jets', 880, [
     'Highest-graded young center','Elite mobility and size'
   ]),
 
   // === MORE COMMON / DEPTH (examples) ===
+  pl('ame','Andrew Meyer','C','Miami Dolphins', 650, [
+'Young backup center','Athletic reserve'
+]),
+pl('jwi','Jared Wilson','C','New York Jets', 610, [
+'Developing interior anchor','Recent depth contributor'
+]),
+pl('jba','Jacob Bayer','C','New England Patriots', 540, [
+'Solid reserve center','Undrafted contributor'
+]),
+pl('hco','Hayden Conner','C','New Orleans Saints', 500, [
+'Powerful college product','Backup interior'
+]),
+pl('cbu2','Corey Bullock','C','Baltimore Ravens', 460, [
+'Emerging depth center','Reliable hands'
+]),
+pl('jka2','Josh Kaltenberger','C','Los Angeles Chargers', 430, [
+'Versatile swing center','Spot starter potential'
+]),
+pl('sed','Sedrick Van Pran-Granger','C','Buffalo Bills', 400, [
+'High-upside backup','Former high draft pedigree'
+]),
+pl('hun','Hunter Nourzad','C','Kansas City Chiefs', 370, [
+'Young depth piece','Developing reserve'
+]),
+pl('dmc2','Dylan McMahon','C','Los Angeles Rams', 340, [
+'Quiet utility center','Rotational option'
+]),
   pl('lft','Luke Fortner','C','Jacksonville Jaguars', 690, [
     'Full-time starter','College captain pedigree'
   ]),
-  pl('pme','Patrick Mekari','C','Jacksonville Jaguars', 640, [
+  pl('pme','Patrick Mekari','C','Jacksonville Jaguars', 660, [
     'Ultra-versatile OL','Started at multiple positions'
   ]),
   pl('bfa','Brian Allen','C','Los Angeles Rams', 580, [

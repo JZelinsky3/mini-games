@@ -46,7 +46,7 @@ export const QB_POOL_V7: NFLPlayer[] = [
     '3× AP 1st-Team', '89,214 career passing yards (all-time record)',
     '649 career TDs (all-time record)', 'Greatest of All Time — consensus',
   ]),
-  pl('pey', 'Peyton Manning', 'QB', 'Retired (HOF 2021)', 5800, [
+  pl('pey', 'Peyton Manning', 'QB', 'Retired (HOF 2021)', 7320, [
     '2× Super Bowl Champion', '5× League MVP (most ever)',
     '14× Pro Bowl', '7× AP 1st-Team',
     '2013: 55 TDs — NFL single-season record (at time)',
@@ -58,19 +58,19 @@ export const QB_POOL_V7: NFLPlayer[] = [
     '1984: 5,084 yards — NFL record that stood for 27 years',
     '61,361 career yards; only QB with multiple 5,000-yard seasons (at time)',
   ]),
-  pl('jmo7', 'Joe Montana', 'QB', 'Retired (HOF 1994)', 5600, [
+  pl('jmo7', 'Joe Montana', 'QB', 'Retired (HOF 1994)', 6650, [
     '4× Super Bowl Champion', '3× Super Bowl MVP',
     '8× Pro Bowl', '2× AP 1st-Team', 'Never threw an INT in 4 Super Bowls',
     '127.8 career postseason passer rating — highest ever',
     'The Drive (1987 AFCCG) — greatest clutch moment in QB history',
   ]),
-  pl('bre27','Brett Favre', 'QB', 'Retired (HOF 2016)', 4400, [
+  pl('bre27','Brett Favre', 'QB', 'Retired (HOF 2016)', 4200, [
     '3× Consecutive League MVP (1995–97, only ever done once)',
     'Super Bowl XXXI Champion', '11× Pro Bowl', '3× AP 1st-Team',
     '508 consecutive starts — NFL Iron Man record at QB',
     '71,838 career yards; 508 TDs across 20 seasons',
   ]),
-  pl('dco2','Drew Brees', 'QB', 'Retired (HOF 2024)', 4200, [
+  pl('dco2','Drew Brees', 'QB', 'Retired (HOF 2024)', 4830, [
     '13× Pro Bowl', '2× AP 1st-Team', 'Super Bowl XLIV Champion + MVP',
     '80,358 career yards — all-time record (surpassed by Brady)',
     '571 career TDs', '2018: 74.4% completion — NFL record at time',

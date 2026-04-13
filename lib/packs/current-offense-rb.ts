@@ -31,7 +31,7 @@ import type { NFLPlayer, PositionGroup, Rarity } from './current-offense-qb';
 function r(score: number): Rarity {
   if (score >= 4000) return 'immortal';
   if (score >= 2800) return 'transcendent';
-  if (score >= 1500) return 'dynasty';
+  if (score >= 1600) return 'dynasty';
   if (score >=  700) return 'rare';
   return 'common';
 }
@@ -95,13 +95,13 @@ export const RB_POOL_V1: NFLPlayer[] = [
   pl('pac','Isiah Pacheco','RB','Detroit Lions', 780, [
     'Physical champion RB','Multiple Super Bowl rings'
   ]),
-  pl('mon','David Montgomery','RB','Houston Texans', 920, [
+  pl('mon','David Montgomery','RB','Houston Texans', 1020, [
     'Tough between-tackles runner','Reliable contributor'
   ]),
   pl('kyr','Kyren Williams','RB','Los Angeles Rams', 1180, [
     'High-volume efficient back','Super Bowl champion'
   ]),
-  pl('ete','Travis Etienne Jr.','RB','Jacksonville Jaguars', 920, [
+  pl('ete','Travis Etienne Jr.','RB','Jacksonville Jaguars', 1020, [
     'Versatile playmaker','Strong scrimmage yards'
   ]),
   pl('nak','Najee Harris','RB','Pittsburgh Steelers', 880, [
@@ -113,6 +113,33 @@ export const RB_POOL_V1: NFLPlayer[] = [
   pl('cla2','Chase Brown','RB','Cincinnati Bengals', 820, [
     'Rising lead back','Strong vision and burst'
   ]),
+  pl('kwa','Kenneth Walker III','RB','Seattle Seahawks', 1650, [
+'Explosive lead back','Big-play home-run threat'
+]),
+pl('oha','Omarion Hampton','RB','Los Angeles Chargers', 1120, [
+'Rising young star','High-upside volume back'
+]),
+pl('aje','Ashton Jeanty','RB','Las Vegas Raiders', 1480, [
+'Elite rookie production','Workhorse potential'
+]),
+pl('jco','James Conner','RB','Arizona Cardinals', 1250, [
+'Durable veteran','Consistent 1,000-yard producer'
+]),
+pl('rhe','Rhamondre Stevenson','RB','New England Patriots', 880, [
+'Power between-the-tackles runner','Reliable starter'
+]),
+pl('jbr','Jonathon Brooks','RB','Carolina Panthers', 650, [
+'Developing lead back','Post-injury upside'
+]),
+pl('jhi','Justice Hill','RB','Baltimore Ravens', 520, [
+'Speedy change-of-pace back','Explosive in space'
+]),
+pl('sper','Samaje Perine','RB','[Team]', 480, [
+'Veteran pass-catcher','Reliable third-down option'
+]),
+pl('tyjo','Ty Johnson','RB','Buffalo Bills', 450, [
+'Versatile depth piece','Quick open-field runner'
+]),
 
   // === COMMON TIER — Varied scores (205–680) for depth ===
   pl('jkd','J.K. Dobbins','RB','Los Angeles Chargers', 780, [

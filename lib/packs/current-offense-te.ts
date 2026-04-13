@@ -18,7 +18,7 @@ import type { NFLPlayer, PositionGroup, Rarity } from './current-offense-qb';
 function r(score: number): Rarity {
   if (score >= 4000) return 'immortal';
   if (score >= 2800) return 'transcendent';
-  if (score >= 1500) return 'dynasty';
+  if (score >= 1600) return 'dynasty';
   if (score >=  700) return 'rare';
   return 'common';
 }
@@ -59,7 +59,7 @@ export const TE_POOL_V1: NFLPlayer[] = [
   pl('goe','Dallas Goedert','TE','Philadelphia Eagles', 1780, [
     'Consistent volume TE','Strong receiving threat'
   ]),
-  pl('fer','Jake Ferguson','TE','Dallas Cowboys', 1520, [
+  pl('fer','Jake Ferguson','TE','Dallas Cowboys', 1620, [
     'Breakout franchise TE','Record-setting season'
   ]),
   pl('lik','Isaiah Likely','TE','Baltimore Ravens', 1380, [
@@ -68,11 +68,26 @@ export const TE_POOL_V1: NFLPlayer[] = [
   pl('ert','Zach Ertz','TE','Washington Commanders', 1150, [
     'Veteran leader','Super Bowl champion'
   ]),
-  pl('tgr','Tucker Kraft','TE','Green Bay Packers', 1450, [
+  pl('tgr','Tucker Kraft','TE','Green Bay Packers', 1650, [
   'Emerging starting TE','Reliable safety valve for Jordan Love'
 ]),
+pl('clo','Colston Loveland','TE','Chicago Bears', 1050, [
+'Rookie sensation','Rising pass-catching threat'
+]),
+pl('twa','Tyler Warren','TE','Indianapolis Colts', 1480, [
+'Strong young producer','Reliable target'
+]),
+pl('hfa','Harold Fannin Jr.','TE','Cleveland Browns', 1180, [
+'High-upside talent','Contested-catch specialist'
+]),
+pl('dki','Dalton Kincaid','TE','Buffalo Bills', 1220, [
+'Athletic receiving TE','Upside in space'
+]),
+pl('oga','Oronde Gadsden II','TE','Miami Dolphins', 950, [
+'Emerging playmaker','Big-play flashes'
+]),
 
-  // === RARE TIER (700–1499) ===
+  // === RARE TIER (700–1599) ===
   pl('hoc','T.J. Hockenson','TE','Minnesota Vikings', 980, [
     'Reliable safety valve','Strong target share'
   ]),
@@ -88,9 +103,30 @@ export const TE_POOL_V1: NFLPlayer[] = [
   pl('pit','Kyle Pitts','TE','Atlanta Falcons', 880, [
     'Athletic mismatch','Former No. 4 overall pick'
   ]),
-  pl('njo','David Njoku','TE','Cleveland Browns', 840, [
+  pl('njo','David Njoku','TE','Cleveland Browns', 940, [
     'Athletic playmaker','Growing target share'
   ]),
+pl('jjo','Juwan Johnson','TE','New Orleans Saints', 1050, [
+'Veteran possession TE','Reliable red-zone option'
+]),
+pl('bst','Brenton Strange','TE','Jacksonville Jaguars', 980, [
+'Developing starter','Athletic pass-catcher'
+]),
+pl('jsm','Jonnu Smith','TE','Free Agent', 920, [
+'Versatile veteran','YAC & blocking ability'
+]),
+pl('nfa','Noah Fant','TE','New Orleans Saints', 870, [
+'Athletic receiving TE','Speed in space'
+]),
+pl('thi','Tyler Higbee','TE','Los Angeles Rams', 850, [
+'Veteran Rams stalwart','Franchise all-time TE leader'
+]),
+pl('dkn','Dawson Knox','TE','Buffalo Bills', 780, [
+'Physical red-zone threat','Reliable hands with Josh Allen'
+]),
+pl('pfr','Pat Freiermuth','TE','Pittsburgh Steelers', 1120, [
+'Steady volume TE','Consistent middle-of-the-field target'
+]),
 
   // === COMMON TIER — Varied scores (205–680) ===
   pl('cmo','Cole Kmet','TE','Chicago Bears', 680, [
@@ -144,7 +180,7 @@ export const TE_POOL_V1: NFLPlayer[] = [
   pl('ben2','Ben Sinnott','TE','Washington Commanders', 290, [
     'Immediate rookie contributor','College standout'
   ]),
-  pl('ott','Cade Otton','TE','Tampa Bay Buccaneers', 675, [
+  pl('ott','Cade Otton','TE','Tampa Bay Buccaneers', 875, [
     'Core rebuilding piece','Rising role'
   ]),
   pl('mug','Luke Musgrave','TE','Green Bay Packers', 460, [

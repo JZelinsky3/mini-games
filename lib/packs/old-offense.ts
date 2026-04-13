@@ -400,6 +400,9 @@ export const OT_POOL_OLD: NFLPlayer[] = [
     'Patriots: 2× Super Bowl Champion (XLIX, LI)',
     'Reliable veteran depth — started at both tackle spots in career',
   ]),
+  pl('yni','Yosuah Nijman','OT','Retired (2026)', 420, [
+    'Versatile swing OT','Long athletic frame'
+  ]),
 ];
 
 /* ══════════════════════════════════════════════════════════════════════
