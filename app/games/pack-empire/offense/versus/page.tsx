@@ -34,42 +34,35 @@ export default function VersusChallenge() {
     return () => clearInterval(interval);
   }, [phase]);
 
-  const loadActiveChallenges = () => {
-    try {
-      const active = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
+  const loadActiveChallenges = async () => {
+  try {
+    const active = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
 
-      // For each challenge, check if a guest name or signed-in opponent has joined
-      const enriched = active.map((ch: any) => {
-        const oppRoleKey = ch.creatorId === user?.id ? 'opponent' : 'host';
-        const guestName = localStorage.getItem(`versus-guest-${ch.id}`);
-        const oppResult = localStorage.getItem(`versus-result-${ch.id}-${oppRoleKey}`);
-        let opponentName = ch.opponentName ?? 'Waiting for opponent...';
+    // For each challenge, fetch latest from Supabase to get real opponent name
+    const enriched = await Promise.all(active.map(async (ch: any) => {
+      try {
+        const { data } = await supabase
+          .from('versus_challenges')
+          .select('opponent_name, host_name, status, opponent_result, host_result')
+          .eq('id', ch.id)
+          .single();
 
-        // Guest name set when opponent entered name on draft page
-        if (guestName && opponentName === 'Waiting for opponent...') {
-          opponentName = guestName;
-          // Persist back so it shows next load
-          const current = JSON.parse(localStorage.getItem('versus-active-challenges') || '[]');
-          const updated = current.map((c: any) =>
-            c.id === ch.id ? { ...c, opponentName } : c
-          );
-          localStorage.setItem('versus-active-challenges', JSON.stringify(updated));
-        }
+        if (!data) return ch;
 
-        // If opponent submitted result, pull name from there too
-        if (oppResult) {
-          try {
-            const data = JSON.parse(oppResult);
-            if (data.name) opponentName = data.name;
-          } catch { }
-        }
+        const isOpponent = ch.isOpponent;
+        const opponentName = isOpponent
+          ? (data.host_name || 'Host')
+          : (data.opponent_name || 'Waiting for opponent...');
 
         return { ...ch, opponentName };
-      });
+      } catch {
+        return ch;
+      }
+    }));
 
-      setActiveChallenges(enriched);
-    } catch { }
-  };
+    setActiveChallenges(enriched);
+  } catch { }
+};
 
   const createNewChallenge = async () => {
   const newId = 'vs-' + Date.now().toString(36).slice(0, 9);
@@ -250,15 +243,15 @@ const VERSUS_STYLES = `
 .pe-vs-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:1.3rem 1.2rem;
   border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
 .pe-vs-back{color:#ffd700;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;
-  font-weight:600;letter-spacing:.06em;transition:.15s;justify-self:start}
+  font-weight:700;letter-spacing:.06em;transition:.15s;justify-self:start}
 .pe-vs-back:hover{color:#d4e8f8}
 
 
 .pe-vs-nav-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.3rem;letter-spacing:.2em;
   color:#ffd700;justify-self:center;text-shadow:0 0 20px rgba(255,215,0,.5)}
-.pe-vs-nav-lb{color:#2a4060;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;
+.pe-vs-nav-lb{color:#ffd700;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;
   font-weight:600;letter-spacing:.06em;transition:.15s;justify-self:end}
-.pe-vs-nav-lb:hover{color:#ffd700}
+.pe-vs-nav-lb:hover{color:#d4e8f8}
 
 /* ── Container & card ── */
 .pe-versus-container{max-width:580px;margin:2.5rem auto;padding:0 1.2rem}

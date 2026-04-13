@@ -163,14 +163,14 @@ body{font-family:'Barlow Condensed',sans-serif;background:#050a18}
   padding:1.3rem 1.2rem;border-bottom:2px solid #0d1835;
   position:sticky;top:0;background:#050a18;z-index:30}
 .pe-hub-back{color:#ffd700;text-decoration:none;font-family:'Barlow Condensed',sans-serif;
-  font-size:1.0rem;font-weight:500;letter-spacing:.08em;transition:.15s;justify-self:start}
+  font-size:1rem;font-weight:700;letter-spacing:.08em;transition:.15s;justify-self:start}
 .pe-hub-back:hover{color:#d4e8f8}
 .pe-hub-nav-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.25rem;
   letter-spacing:.24em;color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,.5)}
-.pe-hub-lb-nav{color:#3a6080;text-decoration:none;font-family:'Barlow Condensed',sans-serif;
+.pe-hub-lb-nav{color:#ffd700;text-decoration:none;font-family:'Barlow Condensed',sans-serif;
   font-size:.78rem;font-weight:700;letter-spacing:.08em;transition:.15s;
-  justify-self:end;border:1px solid #1a3050;padding:.28rem .7rem;border-radius:5px}
-.pe-hub-lb-nav:hover{color:#ffd700;border-color:#ffd700}
+  justify-self:end;border:1px solid #ffd700;padding:.28rem .7rem;border-radius:5px}
+.pe-hub-lb-nav:hover{color:#d4e8f8;border-color:#d4e8f8}
 
 /* hero */
 .pe-hub-hero{text-align:center;padding:2.5rem 1.5rem 1.5rem;

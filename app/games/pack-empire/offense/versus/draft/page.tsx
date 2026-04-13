@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client';
 
 /* ─── Types ──────────────────────────────────────────────────────────── */
 type Rarity = 'common' | 'rare' | 'dynasty' | 'transcendent' | 'immortal';
-type Phase  = 'setup' | 'packing' | 'submitting';
+type Phase  = 'setup' | 'packing' | 'submitting' | 'submitted';
 interface Player { id: string; name: string; pos: string; team: string; score: number; rarity: Rarity; accolades: string[]; }
 
 /* ─── Rarity config ──────────────────────────────────────────────────── */
@@ -107,8 +107,8 @@ function weightedDraw(poolKey: string, count: number = 5, isCaptain: boolean = f
   // Normal packs: one boosted slot with higher rare chance
   // Captain packs: one boosted slot with higher transcendent chance
   const boostedWeights = isCaptain
-    ? { ...baseWeights, rare: 15, transcendent: 33, immortal: 2 }
-    : { ...baseWeights, common: 36, rare: 42 };        // existing rare boost for normal
+    ? { ...baseWeights, rare: 18, transcendent: 30, immortal: 2 }
+    : { ...baseWeights, common: 40, rare: 38 };        // existing rare boost for normal
 
   const normalPool  = avail.map(p => ({ p, w: baseWeights[p.rarity] ?? 1 }));
   const boostedPool = avail.map(p => ({ p, w: boostedWeights[p.rarity] ?? 1 }));
@@ -357,7 +357,7 @@ function VersusDraft() {
   localStorage.setItem(`versus-result-${challengeId}-${roleKey}`, JSON.stringify(resultData));
   localStorage.removeItem(`versus-draft-progress-${challengeId}-${roleKey}`);
 
-  router.push(`/games/pack-empire/offense/versus/results?challenge=${challengeId}`);
+  setPhase('submitted' as any);
 }, [challengeId, isHost, guestName, router, supabase, user]);
 
   const openPack = useCallback((si: number, isCaptain: boolean, curLineup: (Player | null)[]) => {
@@ -718,14 +718,54 @@ function VersusDraft() {
         )}
 
         {/* ════ SUBMITTING ════ */}
-        {phase === 'submitting' && (
-          <div style={{ textAlign:'center', padding:'4rem 1rem' }}>
-            <div style={{ fontSize:'3rem', marginBottom:'1rem' }}>⚡</div>
-            <div style={{ fontFamily:'Orbitron,sans-serif', fontWeight:700, fontSize:'1.2rem', color:'#28dc78', letterSpacing:'.14em' }}>
-              LOCKING IN YOUR DRAFT...
-            </div>
-          </div>
-        )}
+{phase === 'submitting' && (
+  <div style={{ textAlign:'center', padding:'4rem 1rem' }}>
+    <div style={{ fontSize:'3rem', marginBottom:'1rem' }}>⚡</div>
+    <div style={{ fontFamily:'Orbitron,sans-serif', fontWeight:700, fontSize:'1.2rem', color:'#28dc78', letterSpacing:'.14em' }}>
+      LOCKING IN YOUR DRAFT...
+    </div>
+  </div>
+)}
+
+{/* ════ SUBMITTED ════ */}
+{/* ════ SUBMITTED ════ */}
+{phase === 'submitted' && (
+  <div className="pe-packing">
+    <div className="pe-formation-wrap">
+      <FieldLayout />
+    </div>
+    <div style={{ textAlign:'center', padding:'2rem 1.5rem', maxWidth:480, margin:'0 auto' }}>
+    <div style={{ fontSize:'3rem', marginBottom:'1rem' }}>✅</div>
+    <div style={{ fontFamily:'Orbitron,sans-serif', fontWeight:900, fontSize:'1.3rem', color:'#28dc78', letterSpacing:'.1em', marginBottom:'.6rem' }}>
+      DRAFT LOCKED IN
+    </div>
+    <p style={{ color:'#3a6080', fontFamily:'Barlow,sans-serif', lineHeight:1.7, marginBottom:'2rem', fontSize:'.95rem' }}>
+      Your lineup has been submitted. Head to the results screen whenever you're ready — your opponent may still be drafting.
+    </p>
+    <button
+      onClick={() => router.push(`/games/pack-empire/offense/versus/results?challenge=${challengeId}`)}
+      style={{
+        display:'block', width:'100%', background:'linear-gradient(135deg,#20a050,#28dc78)',
+        color:'#050a18', border:'none', borderRadius:'10px', padding:'15px',
+        fontFamily:'Orbitron,sans-serif', fontWeight:700, fontSize:'.95rem',
+        letterSpacing:'.14em', cursor:'pointer', transition:'.2s', marginBottom:'.75rem',
+      }}
+    >
+      VIEW RESULTS →
+    </button>
+    <Link
+      href="/games/pack-empire/offense/versus"
+      style={{
+        display:'block', textAlign:'center', color:'#2a4060',
+        fontFamily:'Barlow Condensed,sans-serif', fontSize:'.82rem',
+        letterSpacing:'.1em', textDecoration:'none', transition:'.15s',
+      }}
+    >
+      ← Back to Versus Lobby
+    </Link>
+    </div>
+  </div>
+)}
 
       </div>
     </>
@@ -743,7 +783,7 @@ body{font-family:'Barlow Condensed',sans-serif}
   border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
 .pe-nav-l{justify-self:start}
 .pe-nav-l a.pe-back {
-    font-size: .95rem;     /* ← This is what actually controls the size */
+    font-size: 1rem;     /* ← This is what actually controls the size */
     font-weight: 700;
     color: #ffd700;
     text-decoration: none;}

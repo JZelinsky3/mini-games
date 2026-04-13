@@ -157,7 +157,7 @@ export default function LeaderboardPage() {
       <style dangerouslySetInnerHTML={{ __html: LB_STYLES }} />
 
       <nav className="lb-nav">
-        <Link href="/games/pack-empire/offense" className="lb-back">← Pack Empire</Link>
+        <button onClick={() => window.history.back()} className="lb-back">← Back</button>
         <div className="lb-nav-title"><span className="lb-pip" />LEADERBOARD</div>
         <Link href="/games/pack-empire" className="lb-hub">Hub</Link>
       </nav>

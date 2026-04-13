@@ -256,6 +256,8 @@ function VersusResults() {
   const iWin     = bothDone && myScore > oppScore;
   const theyWin  = bothDone && oppScore > myScore;
   const isTie    = bothDone && myScore === oppScore;
+  const oppName = oppResult?.name || 'Opponent';
+  const myName  = myResult?.name  || 'You';
 
   /* ════════════════════════════════════════════════════════
      RENDER
@@ -285,34 +287,27 @@ function VersusResults() {
         {bothDone && (
           <div className={`vr-winner-banner${isTie ? ' tie' : ''}`}>
             {isTie ? (
-              <div className="vr-banner-inner">
-                <span className="vr-banner-icon">🤝</span>
-                <span className="vr-banner-text">TIE GAME</span>
-                <span className="vr-banner-sub">Both coaches matched up evenly</span>
-              </div>
-            ) : iWin ? (
-              <div className="vr-banner-inner win">
-                {/* Arrow points LEFT toward "YOU" column */}
-                <div className="vr-banner-arrow left">◄◄◄</div>
-                <div className="vr-banner-center">
-                  <span className="vr-banner-icon">🏆</span>
-                  <span className="vr-banner-text">YOU WIN</span>
-                  <span className="vr-banner-sub">+{(myScore - oppScore).toLocaleString()} pts ahead</span>
-                </div>
-                <div className="vr-banner-spacer" />
-              </div>
-            ) : (
-              <div className="vr-banner-inner loss">
-                {/* Arrow points RIGHT toward "OPPONENT" column */}
-                <div className="vr-banner-spacer" />
-                <div className="vr-banner-center">
-                  <span className="vr-banner-icon">🏆</span>
-                  <span className="vr-banner-text">OPPONENT WINS</span>
-                  <span className="vr-banner-sub">+{(oppScore - myScore).toLocaleString()} pts ahead</span>
-                </div>
-                <div className="vr-banner-arrow right">►►►</div>
-              </div>
-            )}
+  <div className="vr-banner-inner">
+    <span className="vr-banner-icon">🤝</span>
+    <div className="vr-banner-center">
+      <span className="vr-banner-text">TIE GAME</span>
+      <span className="vr-banner-sub">Both coaches matched up evenly</span>
+    </div>
+  </div>
+) : (
+  <div className="vr-banner-inner">
+    <div className="vr-banner-center">
+      <span className="vr-banner-icon">🏆</span>
+      <span className="vr-banner-text">{iWin ? 'YOU WIN' : `${oppName} WINS`}</span>
+      <div className="vr-banner-arrow-row">
+        {iWin
+          ? <><span className="vr-banner-arrow">◄◄◄</span><span className="vr-banner-sub">+{(myScore - oppScore).toLocaleString()} pts</span></>
+          : <><span className="vr-banner-sub">+{(oppScore - myScore).toLocaleString()} pts</span><span className="vr-banner-arrow">►►►</span></>
+        }
+      </div>
+    </div>
+  </div>
+)}
           </div>
         )}
 
@@ -329,14 +324,14 @@ function VersusResults() {
         {(myResult || oppResult) && (
           <div className="vr-scoreboard">
             <div className={`vr-sb-side${iWin ? ' winner' : isTie ? '' : ' loser'}`}>
-              <div className="vr-sb-label">YOU</div>
+              <div className="vr-sb-label">{myName.toUpperCase()}</div>
               <div className="vr-sb-score" style={{ color: iWin ? '#ffd700' : isTie ? '#42c0f8' : '#3a6080' }}>
                 {myResult?.score.toLocaleString() ?? '—'}
               </div>
             </div>
             <div className="vr-sb-divider">VS</div>
             <div className={`vr-sb-side${theyWin ? ' winner' : isTie ? '' : oppResult ? ' loser' : ''}`}>
-              <div className="vr-sb-label">OPPONENT</div>
+              <div className="vr-sb-label">{oppName.toUpperCase()}</div>
               <div className="vr-sb-score" style={{ color: theyWin ? '#ffd700' : isTie ? '#42c0f8' : '#3a6080' }}>
                 {oppResult ? oppResult.score.toLocaleString() : <span className="vr-dots-inline">drafting</span>}
               </div>
@@ -347,7 +342,7 @@ function VersusResults() {
         {/* ════ SIDE-BY-SIDE LINEUPS ════ */}
         <div className="vr-lineups">
           <LineupColumn
-            label="YOU"
+            label={myName.toUpperCase()}
             result={myResult}
             isWinner={iWin}
             isLoser={theyWin}
@@ -360,7 +355,7 @@ function VersusResults() {
             <div className="vr-cd-line" />
           </div>
           <LineupColumn
-            label="OPPONENT"
+            label={oppName.toUpperCase()}
             result={oppResult}
             isWinner={theyWin}
             isLoser={iWin}
@@ -413,13 +408,13 @@ const STYLES = `
 body{font-family:'Barlow Condensed',sans-serif}
 
 /* ── Nav ── */
-.vr-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:.7rem 1.2rem;border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
+.vr-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:1.3rem 1.2rem;border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
 .vr-nav-l{justify-self:start}
-.vr-nav-c{display:flex;align-items:center;gap:.6rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.22em;color:#28dc78;justify-self:center;text-shadow:0 0 24px rgba(40,220,120,.5)}
+.vr-nav-c{display:flex;align-items:center;gap:.6rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:1.3rem;letter-spacing:.22em;color:#28dc78;justify-self:center;text-shadow:0 0 24px rgba(40,220,120,.5)}
 .vr-nav-r{justify-self:end}
 .vr-pip{width:9px;height:9px;border-radius:50%;background:#28dc78;flex-shrink:0;box-shadow:0 0 12px #28dc78,0 0 28px rgba(40,220,120,.6);animation:pip-pulse 2s ease-in-out infinite}
 @keyframes pip-pulse{0%,100%{box-shadow:0 0 12px #28dc78,0 0 28px rgba(40,220,120,.6)}50%{box-shadow:0 0 22px #28dc78,0 0 48px rgba(40,220,120,.8)}}
-.vr-back{color:#2a4060;text-decoration:none;font-size:.85rem;transition:.15s}.vr-back:hover{color:#28dc78}
+.vr-back{color:#28dc78;text-decoration:none;font-size:1rem;transition:.15s;font-weight:500}.vr-back:hover{color:#ffffff}
 .vr-challenge-id{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;color:#1a3050;letter-spacing:.14em}
 
 /* ── Root ── */
@@ -436,14 +431,12 @@ body{font-family:'Barlow Condensed',sans-serif}
 @keyframes banner-appear{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 .vr-winner-banner.tie{background:linear-gradient(135deg,rgba(66,192,248,.06),rgba(66,192,248,.02));border-bottom-color:rgba(66,192,248,.2)}
 .vr-banner-inner{display:flex;align-items:center;justify-content:center;gap:1rem;max-width:900px;margin:0 auto}
-.vr-banner-inner.win{justify-content:flex-start}
-.vr-banner-inner.loss{justify-content:flex-end}
-.vr-banner-center{display:flex;flex-direction:column;align-items:center;gap:.2rem}
-.vr-banner-spacer{flex:1}
+.vr-banner-center{display:flex;flex-direction:column;align-items:center;gap:.3rem}
 .vr-banner-icon{font-size:2rem}
-.vr-banner-text{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(1.2rem,4vw,1.8rem);letter-spacing:.1em;color:#ffd700;text-shadow:0 0 24px rgba(255,215,0,.6);align-items:center}
-.vr-banner-sub{font-size:.75rem;color:#3a6080;letter-spacing:.1em;align-items:center}
-.vr-banner-arrow{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.6rem;color:#ffd700;text-shadow:0 0 16px rgba(255,215,0,.8);animation:arrow-pulse 1.2s ease-in-out infinite;align-items:center}
+.vr-banner-text{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(1.2rem,4vw,1.8rem);letter-spacing:.1em;color:#ffd700;text-shadow:0 0 24px rgba(255,215,0,.6)}
+.vr-banner-arrow-row{display:flex;align-items:center;gap:.6rem}
+.vr-banner-sub{font-size:.75rem;color:#3a6080;letter-spacing:.1em}
+.vr-banner-arrow{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.2rem;color:#ffd700;text-shadow:0 0 16px rgba(255,215,0,.8);animation:arrow-pulse 1.2s ease-in-out infinite}
 @keyframes arrow-pulse{0%,100%{opacity:.6;text-shadow:0 0 16px rgba(255,215,0,.6)}50%{opacity:1;text-shadow:0 0 32px rgba(255,215,0,.9)}}
 
 /* ── Waiting banner ── */

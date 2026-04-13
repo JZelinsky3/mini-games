@@ -111,8 +111,8 @@ function weightedDraw(poolKey: string, count: number = 5, isCaptain: boolean = f
   // Normal packs: one boosted slot with higher rare chance
   // Captain packs: one boosted slot with higher transcendent chance
   const boostedWeights = isCaptain
-    ? { ...baseWeights, rare: 15, transcendent: 33, immortal: 2 }
-    : { ...baseWeights, common: 36, rare: 42 };        // existing rare boost for normal
+    ? { ...baseWeights, rare: 18, transcendent: 30, immortal: 2 }
+    : { ...baseWeights, common: 40, rare: 38 };        // existing rare boost for normal
 
   const normalPool  = avail.map(p => ({ p, w: baseWeights[p.rarity] ?? 1 }));
   const boostedPool = avail.map(p => ({ p, w: boostedWeights[p.rarity] ?? 1 }));
@@ -135,6 +135,14 @@ function weightedDraw(poolKey: string, count: number = 5, isCaptain: boolean = f
 
   return result.sort(() => Math.random() - 0.5);
 }
+
+['QB','RB','WR','TE','OT','OG','C'].forEach(key => {
+  const breakdown = (POOL[key] ?? []).reduce((acc, p) => {
+    acc[p.rarity] = (acc[p.rarity] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  console.log(`${key} pool (${(POOL[key]??[]).length} total):`, breakdown);
+});
 
 /* ══════════════════════════════════════════════════════════════════════
    RARITY EFFECTS COMPONENT
@@ -967,8 +975,8 @@ body{font-family:'Barlow Condensed',sans-serif}
   border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
 .pe-nav-l{justify-self:start}
 .pe-nav-l a.pe-back {
-    font-size: .95rem;     /* ← This is what actually controls the size */
-    font-weight: 500;
+    font-size: 1rem;     /* ← This is what actually controls the size */
+    font-weight: 700;
     color: #ffd700;
     text-decoration: none;}
 .pe-nav-l a.pe-back:hover {
