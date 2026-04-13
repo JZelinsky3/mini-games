@@ -284,6 +284,9 @@ export const WR_POOL_OLD: NFLPlayer[] = [
     '2019: 1,202 yards, 9 TDs — Pro Bowl','2021: 996 yards for Miami',
     '2022 (NE): 635 yards despite weak QB play — still showing up',
   ]),
+  pl('coo3','Amari Cooper','WR','Cleveland Browns', 1020, [
+    'Veteran alpha','Consistent 1,000-yard producer'
+  ]),
 ];
 
 /* ══════════════════════════════════════════════════════════════════════

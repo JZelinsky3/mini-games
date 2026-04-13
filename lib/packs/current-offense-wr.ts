@@ -87,7 +87,7 @@ export const WR_POOL_V1: NFLPlayer[] = [
   pl('ter','Terry McLaurin','WR','Washington Commanders', 1780, [
     'Consistent deep threat','Franchise leader'
   ]),
-  pl('thi','Tyreek Hill','WR','Miami Dolphins', 1980, [
+  pl('thi','Tyreek Hill','WR','Free Agent', 1980, [
     'Speed king','Big-play threat (age-adjusted)'
   ]),
   pl('bna','Brian Thomas Jr.','WR','Jacksonville Jaguars', 1580, [
@@ -114,10 +114,7 @@ export const WR_POOL_V1: NFLPlayer[] = [
   pl('rod','Rome Odunze','WR','Chicago Bears', 1550, [
     'Big-bodied rookie breakout','Strong contested catcher'
   ]),
-  pl('coo3','Amari Cooper','WR','Cleveland Browns', 1020, [
-    'Veteran alpha','Consistent 1,000-yard producer'
-  ]),
-  pl('dee','Deebo Samuel','WR','San Francisco 49ers', 1250, [
+  pl('dee','Deebo Samuel','WR','Washington Commanders', 1250, [
     'Versatile YAC monster','Playmaker when healthy'
   ]),
   pl('sdg','Stefon Diggs','WR','Free Agent', 1320, [
@@ -132,7 +129,7 @@ export const WR_POOL_V1: NFLPlayer[] = [
   pl('mwi','Michael Wilson','WR','Arizona Cardinals', 1280, [
     'Reliable complementary piece','Big target in Arizona'
   ]),
-  pl('mtp','Michael Pittman Jr.','WR','Indianapolis Colts', 980, [
+  pl('mtp','Michael Pittman Jr.','WR','Pittsburgh Steelers', 980, [
     'Contested-catch specialist','High target share'
   ]),
   pl('jre','Jayden Reed','WR','Green Bay Packers', 920, [
@@ -161,7 +158,7 @@ pl('api','Alec Pierce','WR','Indianapolis Colts', 1150, [
 'Deep-ball specialist','Consistent 1,000-yard potential'
 ]),
 
-pl('ddo','Demario Douglas','WR','New England Patriots', 720, [
+pl('ddo','DeMario Douglas','WR','New England Patriots', 720, [
 'Dynamic slot playmaker','Explosive in space'
 ]),
 

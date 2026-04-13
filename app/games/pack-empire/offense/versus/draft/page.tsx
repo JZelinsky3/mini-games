@@ -94,7 +94,7 @@ function getTier(s: number) { return TIERS.find(t => s >= t.min)!; }
 
 /* ─── Pack weights ───────────────────────────────────────────────────── */
 const WEIGHTS = {
-  normal:  { common: 44, rare: 28, dynasty: 17, transcendent: 10, immortal: 1 },
+  normal:  { common: 45, rare: 27, dynasty: 17, transcendent: 10, immortal: 1 },
   captain: { common: 5,  rare: 22, dynasty: 41, transcendent: 27, immortal: 5 },
 };
 
@@ -788,8 +788,9 @@ body{font-family:'Barlow Condensed',sans-serif}
     color: #ffd700;
     text-decoration: none;}
 .pe-nav-l a.pe-back:hover {
-    color: #ffea80;}
-.pe-nav-l{justify-self:start}.pe-nav-c{display:flex;align-items:center;gap:.6rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.22em;color:#28dc78;justify-self:center;text-shadow:0 0 24px rgba(40,220,120,.5)}.pe-nav-r{justify-self:end}
+    color: #d4e8f8;}
+.pe-nav-l{justify-self:start}
+.pe-nav-c{display:flex;align-items:center;gap:.6rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.22em;color:#28dc78;justify-self:center;text-shadow:0 0 24px rgba(40,220,120,.5)}.pe-nav-r{justify-self:end}
 .pe-pip{width:9px;height:9px;border-radius:50%;background:#28dc78;flex-shrink:0;box-shadow:0 0 12px #28dc78,0 0 28px rgba(40,220,120,.6);animation:pip-pulse 2s ease-in-out infinite}
 @keyframes pip-pulse{0%,100%{box-shadow:0 0 12px #28dc78,0 0 28px rgba(40,220,120,.6)}50%{box-shadow:0 0 22px #28dc78,0 0 48px rgba(40,220,120,.8)}}
 .pe-back{color:#2a4060;text-decoration:none;font-size:.85rem;transition:.15s}.pe-back:hover{color:#28dc78}

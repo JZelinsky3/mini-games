@@ -98,7 +98,7 @@ function getTier(s: number) { return TIERS.find(t => s >= t.min)!; }
 
 /* ─── Pack weights ───────────────────────────────────────────────────── */
 const WEIGHTS = {
-  normal:  { common: 44, rare: 28, dynasty: 17, transcendent: 10, immortal: 1 },
+  normal:  { common: 45, rare: 27, dynasty: 17, transcendent: 10, immortal: 1 },
   captain: { common: 5,  rare: 22, dynasty: 41, transcendent: 27, immortal: 5 },
 };
 

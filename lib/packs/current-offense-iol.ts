@@ -393,9 +393,6 @@ pl('dmc2','Dylan McMahon','C','Los Angeles Rams', 340, [
   pl('sam2','Sam Mustipher','C','Minnesota Vikings', 270, [
     'Undrafted success','Former Bears starter'
   ]),
-  pl('jfe','Joel Feeney','C','Free Agent', 260, [
-    'Consistent backup','Long-tenured journeyman'
-  ]),
   pl('bcx','Brett Toth','C','Free Agent', 250, [
     'Service academy story','Hard-working veteran'
   ]),

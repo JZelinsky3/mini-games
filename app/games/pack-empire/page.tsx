@@ -79,10 +79,10 @@ export default function PackEmpireHub() {
           <div className="pe-hub-rar-title">CARD RARITIES</div>
           <div className="pe-hub-rar-list">
             {[
-              { label: 'COMMON',       color: '#c87840', pct: '54%' },
-              { label: 'RARE',         color: '#42c0f8', pct: '28%' },
-              { label: 'DYNASTY',      color: '#ffd700', pct: '14%' },
-              { label: 'TRANSCENDENT', color: '#e040ff', pct: '3%'  },
+              { label: 'COMMON',       color: '#c87840', pct: '45%' },
+              { label: 'RARE',         color: '#42c0f8', pct: '27%' },
+              { label: 'DYNASTY',      color: '#ffd700', pct: '17%' },
+              { label: 'TRANSCENDENT', color: '#e040ff', pct: '10%'  },
               { label: 'IMMORTAL',     color: '#28dc78', pct: '1%'  },
             ].map(r => (
               <div key={r.label} className="pe-hub-rar-row">

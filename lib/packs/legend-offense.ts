@@ -42,36 +42,36 @@ function pl(id: string, name: string, pos: PositionGroup, team: string, score: n
 export const QB_POOL_V7: NFLPlayer[] = [
   pl('tbr7', 'Tom Brady', 'QB', 'Retired (GOAT)', 8200, [
     '7× Super Bowl Champion (most in NFL history)',
-    '5× Super Bowl MVP', '3× League MVP', '15× Pro Bowl',
+    '5× Super Bowl MVP, 3× League MVP', '15× Pro Bowl',
     '3× AP 1st-Team', '89,214 career passing yards (all-time record)',
     '649 career TDs (all-time record)', 'Greatest of All Time — consensus',
   ]),
   pl('pey', 'Peyton Manning', 'QB', 'Retired (HOF 2021)', 7320, [
     '2× Super Bowl Champion', '5× League MVP (most ever)',
-    '14× Pro Bowl', '7× AP 1st-Team',
+    '14× Pro Bowl, 7× AP 1st-Team',
     '2013: 55 TDs — NFL single-season record (at time)',
     '2013: 5,477 yards — NFL single-season record (at time)',
   ]),
   pl('dfa', 'Dan Marino', 'QB', 'Retired (HOF 2005)', 4900, [
-    '9× Pro Bowl', '3× AP 1st-Team',
+    '9× Pro Bowl, 3× AP 1st-Team',
     '1984: 48 TDs — NFL record that stood for 20 years',
     '1984: 5,084 yards — NFL record that stood for 27 years',
     '61,361 career yards; only QB with multiple 5,000-yard seasons (at time)',
   ]),
   pl('jmo7', 'Joe Montana', 'QB', 'Retired (HOF 1994)', 6650, [
-    '4× Super Bowl Champion', '3× Super Bowl MVP',
+    '4× Super Bowl Champion, 3× Super Bowl MVP',
     '8× Pro Bowl', '2× AP 1st-Team', 'Never threw an INT in 4 Super Bowls',
     '127.8 career postseason passer rating — highest ever',
     'The Drive (1987 AFCCG) — greatest clutch moment in QB history',
   ]),
   pl('bre27','Brett Favre', 'QB', 'Retired (HOF 2016)', 4200, [
-    '3× Consecutive League MVP (1995–97, only ever done once)',
-    'Super Bowl XXXI Champion', '11× Pro Bowl', '3× AP 1st-Team',
+    '3× Consecutive League MVP (only ever done once)',
+    'Super Bowl XXXI Champion', '11× Pro Bowl, 3× AP 1st-Team',
     '508 consecutive starts — NFL Iron Man record at QB',
     '71,838 career yards; 508 TDs across 20 seasons',
   ]),
   pl('dco2','Drew Brees', 'QB', 'Retired (HOF 2024)', 4830, [
-    '13× Pro Bowl', '2× AP 1st-Team', 'Super Bowl XLIV Champion + MVP',
+    '13× Pro Bowl, 2× AP 1st-Team', 'Super Bowl Champion + MVP',
     '80,358 career yards — all-time record (surpassed by Brady)',
     '571 career TDs', '2018: 74.4% completion — NFL record at time',
     'Rebuilt New Orleans post-Katrina — franchise icon',
@@ -83,52 +83,52 @@ export const QB_POOL_V7: NFLPlayer[] = [
 ══════════════════════════════════════════════════════════════════════ */
 export const RB_POOL_V7: NFLPlayer[] = [
   pl('jbr', 'Jim Brown', 'RB', 'Retired (HOF 1971)', 7800, [
-    '9× Pro Bowl', '8× AP 1st-Team', '3× League MVP',
+    '9× Pro Bowl, 8× AP 1st-Team', '3× League MVP',
     '8× NFL Rushing Title — in 9 seasons (retired at peak)',
     '5.2 career YPC — highest ever for a primary back',
     'Consensus greatest RB in NFL history; never fumbled under pressure',
   ]),
-  pl('bpa2','Barry Sanders', 'RB', 'Retired (HOF 2004)', 7400, [
-    '10× Pro Bowl', '6× AP 1st-Team', '2× League MVP',
-    '4× NFL Rushing Title', '1997: 2,358 yards — 2nd most ever',
+  pl('bpa2','Barry Sanders', 'RB', 'Retired (HOF 2004)', 7470, [
+    '10× Pro Bowl, 6× AP 1st-Team', '2× League MVP, 4× NFL Rushing Title', 
+    '1997: 2,358 yards — 2nd most ever',
     'Retired 2nd on all-time list (15,269 yards) — purely by choice',
     'Consensus #2 RB ever — the most elusive runner in NFL history',
   ]),
-  pl('wal','Walter Payton', 'RB', 'Retired (HOF 1993)', 7000, [
-    'Super Bowl XX Champion', '9× Pro Bowl', '2× AP 1st-Team',
+  pl('wal','Walter Payton', 'RB', 'Retired (HOF 1993)', 7030, [
+    'Super Bowl XX Champion', '9× Pro Bowl, 2× AP 1st-Team',
     '1977: 275 yards in one game — NFL record (stood 23 years)',
     '16,726 career rushing yards — held all-time record for 18 years',
     '"Sweetness" — combined rushing, receiving, and passing across career',
   ]),
-  pl('eme', 'Emmitt Smith', 'RB', 'Retired (HOF 2010)', 6200, [
-    '3× Super Bowl Champion (XXVII, XXVIII, XXX)', 'Super Bowl XXVIII MVP',
-    '8× Pro Bowl', '4× AP 1st-Team', '4× NFL Rushing Title',
+  pl('eme', 'Emmitt Smith', 'RB', 'Retired (HOF 2010)', 6750, [
+    '3× Super Bowl Champion, Super Bowl MVP',
+    '8× Pro Bowl, 4× AP 1st-Team', '4× NFL Rushing Title',
     '18,355 career rushing yards — all-time record',
     '164 career rushing TDs — all-time record',
   ]),
   pl('eal2','Earl Campbell', 'RB', 'Retired (HOF 1991)', 4200, [
-    'League MVP 1979', '5× Pro Bowl', '3× AP 1st-Team',
+    'League MVP 1979', '5× Pro Bowl, 3× AP 1st-Team',
     '3× NFL Rushing Title', '1980: 1,934 yards — Oilers franchise record',
     'Most physically powerful runner in NFL history — one of 3 unanimous MVP RBs',
   ]),
-  pl('lor', 'LaDainian Tomlinson', 'RB', 'Retired (HOF 2017)', 5800, [
-    '5× Pro Bowl', '3× AP 1st-Team', 'League MVP 2006',
+  pl('lor', 'LaDainian Tomlinson', 'RB', 'Retired (HOF 2017)', 5400, [
+    '5× Pro Bowl, 3× AP 1st-Team', 'League MVP 2006',
     '2006: 28 rushing TDs — NFL record', '2006: 186 points scored — NFL record',
     '13,684 career rushing yards', '162 career TDs',
   ]),
-  pl('mef', 'Marshall Faulk', 'RB', 'Retired (HOF 2011)', 4800, [
-    'League MVP 2000', '7× Pro Bowl', '3× AP 1st-Team',
+  pl('mef', 'Marshall Faulk', 'RB', 'Retired (HOF 2011)', 4950, [
+    'League MVP 2000', '7× Pro Bowl, 3× AP 1st-Team',
     'Super Bowl XXXIV Champion', '2000: 2,189 scrimmage yards',
     '2000: "The Greatest Show on Turf" centerpiece — revolutionary dual threat',
     '12,279 career rushing + 6,875 receiving yards',
   ]),
-  pl('eed', 'Eric Dickerson', 'RB', 'Retired (HOF 1999)', 4600, [
-    '6× Pro Bowl', '4× AP 1st-Team', '2× NFL Rushing Title',
+  pl('eed', 'Eric Dickerson', 'RB', 'Retired (HOF 1999)', 4730, [
+    '6× Pro Bowl, 4× AP 1st-Team', '2× NFL Rushing Title',
     '1984: 2,105 yards — NFL single-season record (still stands)',
     '1984 OROTY', '13,259 career rushing yards',
   ]),
-  pl('aha', 'Adrian Peterson (v2)','RB', 'Retired (HOF 2024)', 5400, [
-    '7× Pro Bowl', '4× AP 1st-Team', 'League MVP 2012', '4× Rushing Title',
+  pl('aha', 'Adrian Peterson','RB', 'Retired (HOF 2024)', 5750, [
+    '7× Pro Bowl, 4× AP 1st-Team', 'League MVP 2012, 4× Rushing Title',
     '2012: 2,097 yards — 2nd-highest single-season total ever',
     '2012: Returned from torn ACL in under a year — miraculous comeback',
     '14,918 career rushing yards — 4th all-time',
@@ -139,41 +139,38 @@ export const RB_POOL_V7: NFLPlayer[] = [
    WIDE RECEIVERS — 9 entries (Julio/AB/Calvin feats & scores fully updated per verified data + legend/HOF-caliber boost; now all immortal-tier)
 ══════════════════════════════════════════════════════════════════════ */
 export const WR_POOL_V7: NFLPlayer[] = [
-  pl('jri', 'Jerry Rice', 'WR', 'Retired (HOF 2010)', 8050, [
-    '3× Super Bowl Champion (XIX, XXIII, XXIX)', 'Super Bowl XXIII MVP',
-    '13× Pro Bowl', '10× AP 1st-Team', '2× OPOY', 'League MVP 1987',
+  pl('jri', 'Jerry Rice', 'WR', 'Retired (HOF 2010)', 7750, [
+    '3× Super Bowl Champion, Super Bowl MVP',
+    '2× OPOY, League MVP 1987', '13× Pro Bowl, 10× AP 1st-Team', 
     '22,895 career receiving yards — all-time record by a massive margin',
     '208 career receiving TDs — all-time record',
     'Consensus greatest WR and greatest skill position player in NFL history',
   ]),
-  pl('ran', 'Randy Moss', 'WR', 'Retired (HOF 2018)', 6800, [
-    'Super Bowl XLII appearance', '6× Pro Bowl', '4× AP 1st-Team',
+  pl('ran', 'Randy Moss', 'WR', 'Retired (HOF 2018)', 7130, [
+    '6× Pro Bowl, 4× AP 1st-Team',
     '1998 OROTY', '2007: 23 receiving TDs — NFL record',
     '2007: 1,493 yards alongside Brady\'s perfect season',
     '156 career TDs — 2nd all-time',
   ]),
   pl('ter27','Terrell Owens', 'WR', 'Retired (HOF 2018)', 6200, [
-    '6× Pro Bowl', '3× AP 1st-Team',
+    '6× Pro Bowl, 3× AP 1st-Team',
     '15,934 career receiving yards — 3rd all-time',
     '153 career TDs — 3rd all-time',
     '2004 (PHI): 77 catches, 1,200 yards — Super Bowl XXXIX appearance',
     '2000 (SF): 20 catches vs. Bears — NFL record',
   ]),
+  pl('c85','Chad Ochocinco', 'WR', 'Retired', 4750, [
+    '6× Pro Bowl, 3× AP 1st-Team','2006 Receiving Yards Leader',
+    '11,059 career receiving yards',
+  ]),
   pl('cca', 'Cris Carter', 'WR', 'Retired (HOF 2013)', 4200, [
-    '8× Pro Bowl', '3× AP 1st-Team',
+    '8× Pro Bowl, 3× AP 1st-Team',
     '130 TDs — 2nd all-time at retirement', '13,899 career yards',
     '1994: 122 catches — NFL record at time',
     'Known for greatest hands of any WR in NFL history',
   ]),
-  pl('don2','Don Hutson', 'WR', 'Retired (HOF 1963)', 4800, [
-    '9× Pro Bowl (pre-war era)', '3× League MVP',
-    '2× NFL Champion (Green Bay 1939, 1944)',
-    '99 career TDs — held record for 44 years',
-    'Invented most WR routes still used today — the original WR blueprint',
-    '1942: Led league in TDs — historic pre-modern dominance',
-  ]),
-  pl('jca2','Julio Jones','WR','Retired', 4500, [
-    '7× Pro Bowl', '2× AP 1st-Team', '3× AP 2nd-Team',
+  pl('jca2','Julio Jones','WR','Retired', 5120, [
+    '7× Pro Bowl, 2× AP 1st-Team', '3× AP 2nd-Team',
     '2× receiving yards title (2015, 2018)', '1× receptions co-leader (2015)',
     '2015: 1,871 yards — Falcons franchise single-season record',
     'Fastest to 10,000 / 11,000 / 12,000 career receiving yards',
@@ -181,7 +178,7 @@ export const WR_POOL_V7: NFLPlayer[] = [
     'Most 100+ yard games through first 8 seasons (49)',
     'NFL 2010s All-Decade Team', 'Consensus top-5 WR all-time (HOF caliber)',
   ]),
-  pl('abr', 'Antonio Brown', 'WR', 'Retired', 4700, [
+  pl('abr', 'Antonio Brown', 'WR', 'Retired', 5700, [
     '7× Pro Bowl', '4× AP 1st-Team', '1× AP 2nd-Team',
     '1× Super Bowl Champion (LV)',
     '2× receiving yards title (2014, 2017)', '2× receptions title (2014, 2015)', '1× receiving TDs title (2018)',
@@ -189,7 +186,7 @@ export const WR_POOL_V7: NFLPlayer[] = [
     'NFL record: 4 games of 175+ receiving yards in a single season (2015)',
     'NFL 2010s All-Decade Team', 'Consensus top-5 WR all-time (HOF caliber)',
   ]),
-  pl('cjo', 'Calvin Johnson', 'WR', 'Retired (HOF 2021)', 5200, [
+  pl('cjo', 'Calvin Johnson', 'WR', 'Retired (HOF 2021)', 7080, [
     '6× Pro Bowl', '3× AP 1st-Team', '1× AP 2nd-Team',
     '2× receiving yards title (2011, 2012)', '1× receiving TDs title (2008)', '1× receptions title (2012)',
     '2012: 1,964 yards — NFL single-season record',
@@ -211,18 +208,22 @@ export const TE_POOL_V7: NFLPlayer[] = [
     'Invented the modern tight end — first true pass-catching TE in NFL',
     'Also became legendary as head coach (Bears Super Bowl XX)',
   ]),
-  pl('sha2','Shannon Sharpe', 'TE', 'Retired (HOF 2011)', 4800, [
+  pl('sha2','Shannon Sharpe', 'TE', 'Retired (HOF 2011)', 5850, [
     '3× Super Bowl Champion (XXXII, XXXIII, XXXVII)', '8× Pro Bowl', '3× AP 1st-Team',
     '10,060 career yards — most ever by a TE at retirement',
     '62 career TDs', '2000: 1,002 yards — first TE with three 1,000-yard seasons',
   ]),
-  pl('kte', 'Kellen Winslow Sr.', 'TE', 'Retired (HOF 1995)', 4200, [
+  pl('tgo','Tony Gonzalez', 'TE', 'Retired (HOF 2019)', 6370, [
+    'Most career rec, yards, tds (all TEs)', '14× Pro Bowl, 6× AP 1st-Team',
+    '15.127 career yards — most ever by a TE',
+  ]),
+  pl('kte', 'Kellen Winslow Sr.', 'TE', 'Retired (HOF 1995)', 4300, [
     '5× Pro Bowl', '3× AP 1st-Team',
     '1981 Playoffs vs. Miami: 13 catches, 166 yards — legendary performance',
     'Revolutionized TE as a receiving weapon — "Air Coryell" pillar',
     'HOF-caliber pioneer — closer to elite tier',
   ]),
-  pl('gro2','Rob Gronkowski','TE','New England Patriots (Ret.)', 5150, [
+  pl('gro2','Rob Gronkowski','TE','Retired', 6550, [
     '5× Pro Bowl','4× AP 1st-Team','4× Super Bowl Champion',
     '2011 AP Offensive Player of Year','94th Pick (2010)',
     'All-time TE leader in TDs (92) at retirement',
@@ -352,13 +353,13 @@ export const C_POOL_V7: NFLPlayer[] = [
     '"Double Zero" — AFL All-Time First Team C',
     'Oakland Raiders franchise anchor for their championship dynasty',
   ]),
-  pl('kce', 'Kevin Mawae', 'C', 'Retired (HOF 2019)', 4200, [
+  pl('kce', 'Kevin Mawae', 'C', 'Retired (HOF 2019)', 4600, [
     '8× Pro Bowl', '4× AP 1st-Team',
     '1996–2009: 14 seasons as dominant starting C across 4 teams',
     '191 consecutive starts — tied for iron man at center position',
     'Blocked for multiple Hall of Fame QBs across career',
   ]),
-  pl('jke','Jason Kelce','C','Philadelphia Eagles (ret.)', 4650, [
+  pl('jke','Jason Kelce','C','Philadelphia Eagles (ret.)', 4750, [
     '7× Pro Bowl','6× AP 1st-Team',
     'Super Bowl LII Champion','3× Super Bowl appearances',
     'Considered the greatest center in NFL history',
