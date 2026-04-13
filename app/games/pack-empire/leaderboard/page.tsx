@@ -284,13 +284,13 @@ const LB_STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Barlow Condensed',sans-serif;background:#050a18}
-.lb-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:.7rem 1.4rem;
+.lb-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:1.3rem 1.2rem;
   border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
-.lb-back{color:#2a4060;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:.08em;transition:.15s;justify-self:start}
+.lb-back{color:#ffd700;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:.08em;transition:.15s;justify-self:start;font-weight:700}
 .lb-back:hover{color:#d4e8f8}
-.lb-hub{color:#2a4060;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:.08em;transition:.15s;justify-self:end}
+.lb-hub{color:#ffd700;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:.08em;transition:.15s;justify-self:end;font-weight:700}
 .lb-hub:hover{color:#d4e8f8}
-.lb-nav-title{display:flex;align-items:center;gap:.55rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.22em;color:#ffd700;justify-self:center;text-shadow:0 0 20px rgba(255,215,0,.5)}
+.lb-nav-title{display:flex;align-items:center;gap:.55rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:1.3rem;letter-spacing:.22em;color:#ffd700;justify-self:center;text-shadow:0 0 20px rgba(255,215,0,.5)}
 .lb-pip{width:8px;height:8px;border-radius:50%;background:#ffd700;flex-shrink:0;box-shadow:0 0 10px #ffd700;animation:pip-pulse 2s ease-in-out infinite}
 @keyframes pip-pulse{0%,100%{box-shadow:0 0 10px #ffd700}50%{box-shadow:0 0 22px #ffd700}}
 .lb-root{max-width:860px;margin:0 auto;padding:0 1.2rem 4rem;background:#050a18;min-height:100vh}
