@@ -611,7 +611,7 @@ const STYLES = `
 .md-layout{background:#050a18;min-height:calc(100vh - 90px);padding:0 0 3rem}
 
 /* ── Lineups row ── */
-.md-lineups-row{display:grid;grid-template-columns:1fr auto 1fr;gap:0;border-bottom:2px solid #0d1835;background:rgba(4,8,16,.6);max-width: 70%;margin: 0 auto;}
+.md-lineups-row{display:grid;grid-template-columns:1fr auto 1fr;gap:0;border-bottom:2px solid #0d1835;background:rgba(4,8,16,.6);max-width: 70%;margin: 0 auto}
 
 /* ── Lineup column ── */
 .md-lineup-col{padding:.6rem .5rem}
@@ -704,6 +704,6 @@ const STYLES = `
 }
 @media(max-width:420px){
   .md-pool-grid{grid-template-columns:repeat(3,1fr)}
-  .md-lineups-row{font-size:.9em}
+  .md-lineups-row{font-size:.9em;max-width: 85%;margin: 0 auto}
 }
 `;

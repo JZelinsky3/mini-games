@@ -491,4 +491,9 @@ const VERSUS_STYLES = `
   font-family:'Barlow Condensed',sans-serif;font-weight:700}
 .pe-invite-url{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;color:#28dc78;
   word-break:break-all;line-height:1.5;letter-spacing:.02em}
+
+@media(max-width:420px){
+  .pe-vs-nav-title{font-size:.9rem}
+  .pe-vs-nav-lb{font-size:.5rem}
+}
 `;
