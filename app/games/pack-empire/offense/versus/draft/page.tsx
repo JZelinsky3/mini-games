@@ -515,7 +515,7 @@ function VersusDraft() {
         <div className="pe-nav-c"><span className="pe-pip" />VERSUS DRAFT</div>
         <div className="pe-nav-r">
           {challengeId && (
-            <span style={{ fontFamily:'Barlow Condensed,sans-serif', fontSize:'.65rem', color:'#2a4060', letterSpacing:'.1em' }}>
+            <span style={{ fontFamily:'Barlow Condensed,sans-serif', fontSize:'.75rem', color:'#d4e8f8', letterSpacing:'.1em' }}>
               #{challengeId.slice(-6).toUpperCase()}
             </span>
           )}
