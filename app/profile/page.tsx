@@ -588,7 +588,7 @@ export default function ProfilePage() {
 
         {/* Top nav */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 36 }}>
-          <Link href="/" style={{ color: '#34d399', textDecoration: 'none', fontSize: 14 }}>← Home</Link>
+          <button onClick={() => window.history.back()} style={{ color: '#34d399', textDecoration: 'none', fontSize: 14}}>← Back</button>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             {/* Notification bell */}
             <div style={{ position: 'relative' }}>

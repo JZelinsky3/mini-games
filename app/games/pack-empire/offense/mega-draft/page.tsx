@@ -4,6 +4,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
+function parseCSVRow(row: string): string[] {
+  const cols: string[] = []; let cur = ''; let inQ = false;
+  for (const c of row) { if (c === '"') { inQ = !inQ; continue; } if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; continue; } cur += c; }
+  cols.push(cur.trim()); return cols;
+}
+
 /* ─── Player Pools ───────────────────────────────────────────────────── */
 import { ALL_PLAYERS } from '@/lib/packs/current-offense-qb';
 import { ALL_PLAYERS_V2 } from '@/lib/packs/current-offense-rb';
@@ -124,6 +130,9 @@ function MegaDraftLobby() {
   const router   = useRouter();
   const supabase = createClient();
 
+  const [userInit, setUserInit]     = useState<string | null>(null);
+  const [isReturning, setIsRet]     = useState(false);
+
   const [user, setUser]     = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [guestName, setGuestName] = useState('');
@@ -132,6 +141,22 @@ function MegaDraftLobby() {
   const [draftId, setDraftId] = useState<string | null>(null);
   const [activeDrafts, setActiveDrafts] = useState<any[]>([]);
   const [error, setError]   = useState('');
+
+  useEffect(() => {
+        createClient().auth.getUser().then(({ data: { user } }) => {
+          if (user) { const n = user.user_metadata?.full_name || user.email || 'U'; setUserInit(n[0].toUpperCase()); }
+        });
+        try { if (localStorage.getItem('pe-has-played')) setIsRet(true); } catch { }
+        fetch('/players.csv').then(r => r.ok ? r.text() : Promise.reject()).then(text => {
+          const map: Record<string, string> = {};
+          text.split('\n').forEach(line => {
+            if (!line.trim()) return;
+            const cols = parseCSVRow(line);
+            const name = cols[1]; const url = cols[22];
+            if (name && url && url.startsWith('http')) map[name] = url;
+          });
+        }).catch(() => { });
+      }, []);
 
   useEffect(() => {
     async function init() {
@@ -256,9 +281,13 @@ function MegaDraftLobby() {
     <>
       <style dangerouslySetInnerHTML={{ __html: STYLES }} />
       <nav className="md-nav">
-        <Link href="/games/pack-empire" className="md-back">← Pack Empire</Link>
+        <button onClick={() => window.history.back()} className="mega-back">← Back</button>
         <div className="md-nav-title"><span className="md-pip" />MEGA DRAFT</div>
-        <div />
+        <div className="pe-nav-r">
+          {userInit
+            ? <Link href="/profile" className="pe-nb">{userInit}</Link>
+            : <Link href="/login" className="pe-si">SIGN IN</Link>}
+        </div>
       </nav>
 
       <div className="md-root">
@@ -441,9 +470,21 @@ const STYLES = `
 .md-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:1.3rem 1.2rem;border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
 .md-back{color:#9a28dcff;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.06em;transition:.15s}
 .md-back:hover{color: #d4e8f8}
-.md-nav-title{display:flex;align-items:center;gap:.6rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.22em;color:#9a28dcff;justify-self:center;text-shadow:0 0 24px rgba(40,220,120,.5)}
+.md-nav-title{display:flex;align-items:center;gap:.6rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:1.3rem;letter-spacing:.22em;color:#9a28dcff;justify-self:center;text-shadow:0 0 24px rgba(40,220,120,.5)}
 .md-pip{width:9px;height:9px;border-radius:50%;background:#9a28dcff;box-shadow:0 0 12px #9a28dcff;animation:pip 2s ease-in-out infinite}
 @keyframes pip{0%,100%{box-shadow:0 0 12px #9a28dcff}50%{box-shadow:0 0 22px #9a28dcff,0 0 48px rgba(40,220,120,.8)}}
+
+.mega-back{color: #9a28dcff;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:.08em;transition:.15s;justify-self:start;font-weight:700}
+.mega-back:hover{color:#d4e8f8}
+
+.pe-nav-r{justify-self:end}
+.pe-nb{width:30px;height:30px;border-radius:50%;background:#0a1428;border:2px solid #9a28dcff;
+  color:#9a28dcff;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.85rem;
+  display:flex;align-items:center;justify-content:center;text-decoration:none}
+.pe-nb:hover{background:#9a28dcff;color:#050a18}
+.pe-si{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;
+  color: #9a28dcff;text-decoration:none;border:1px solid #9a28dcff;padding:.25rem .65rem;border-radius:4px;transition:.15s}
+.pe-si:hover{color:#d4e8f8;border-color:#d4e8f8}
 
 .md-root{min-height:calc(100vh - 52px);background:#050a18;background-image:radial-gradient(ellipse at 50% 0%,rgba(40,220,120,.05),transparent 55%)}
 .md-container{max-width:540px;margin:2.5rem auto;padding:0 1.2rem}

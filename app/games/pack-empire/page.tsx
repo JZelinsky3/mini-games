@@ -153,6 +153,22 @@ export default function PackEmpireHub() {
                   </div>
                   <div className="pe-mode-option-cta mega-cta">Play →</div>
                 </Link>
+
+                {/* League */}
+                <Link 
+                  href="/games/pack-empire/offense/league"
+                  className="pe-mode-option league"
+                  onClick={() => setShowModeSelector(false)}
+                >
+                  <div className="pe-mode-option-icon">⚡ bo</div>
+                  <div className="pe-mode-option-title">League</div>
+                  <div className="pe-mode-option-desc">
+                    League<br />
+                    League
+                  </div>
+                  <div className="pe-mode-option-cta league-cta">Play →</div>
+                </Link>
+
               </div>
             </div>
           </div>

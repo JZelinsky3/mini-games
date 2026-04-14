@@ -4,6 +4,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
+function parseCSVRow(row: string): string[] {
+  const cols: string[] = []; let cur = ''; let inQ = false;
+  for (const c of row) { if (c === '"') { inQ = !inQ; continue; } if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; continue; } cur += c; }
+  cols.push(cur.trim()); return cols;
+}
+
 export default function VersusChallenge() {
   const [phase, setPhase] = useState<'loading' | 'sign-in' | 'lobby' | 'invite'>('loading');
   const [user, setUser]   = useState<any>(null);
@@ -16,10 +22,29 @@ export default function VersusChallenge() {
   const [copied, setCopied]   = useState(false);
   const [origin, setOrigin]   = useState('');
 
+  const [userInit, setUserInit]     = useState<string | null>(null);
+  const [isReturning, setIsRet]     = useState(false);
+
   const router   = useRouter();
   const supabase = createClient();
 
   useEffect(() => { setOrigin(window.location.origin); }, []);
+
+  useEffect(() => {
+      createClient().auth.getUser().then(({ data: { user } }) => {
+        if (user) { const n = user.user_metadata?.full_name || user.email || 'U'; setUserInit(n[0].toUpperCase()); }
+      });
+      try { if (localStorage.getItem('pe-has-played')) setIsRet(true); } catch { }
+      fetch('/players.csv').then(r => r.ok ? r.text() : Promise.reject()).then(text => {
+        const map: Record<string, string> = {};
+        text.split('\n').forEach(line => {
+          if (!line.trim()) return;
+          const cols = parseCSVRow(line);
+          const name = cols[1]; const url = cols[22];
+          if (name && url && url.startsWith('http')) map[name] = url;
+        });
+      }).catch(() => { });
+    }, []);
 
   /* ── Init ── */
   useEffect(() => {
@@ -208,9 +233,13 @@ export default function VersusChallenge() {
       <style dangerouslySetInnerHTML={{ __html: VERSUS_STYLES }} />
 
       <nav className="pe-vs-nav">
-        <Link href="/games/pack-empire" className="pe-vs-back">← Hub</Link>
+        <button onClick={() => window.history.back()} className="versus-back">← Back</button>
         <div className="pe-vs-nav-title"><span className="pe-vs-pip" />VERSUS CHALLENGE</div>
-        <Link href="/games/pack-empire/leaderboard" className="pe-vs-nav-lb">🏆 Leaderboard</Link>
+        <div className="pe-nav-r">
+          {userInit
+            ? <Link href="/profile" className="pe-nb">{userInit}</Link>
+            : <Link href="/login" className="pe-si">SIGN IN</Link>}
+        </div>
       </nav>
 
       <div className="pe-versus-container">
@@ -403,7 +432,19 @@ const VERSUS_STYLES = `
 @keyframes pip-pulse{0%,100%{box-shadow:0 0 12px #28dc78,0 0 28px rgba(40,220,120,.6)}50%{box-shadow:0 0 22px #28dc78,0 0 48px rgba(40,220,120,.8)}}
 .pe-vs-nav-lb{color:#28dc78;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;
   font-weight:700;letter-spacing:.06em;transition:.15s;justify-self:end}
-.pe-vs-nav-lb:hover{color:#d4e8f8}
+.pe-vs-nav-lb:hover{color: #d4e8f8}
+
+.versus-back{color: #28dc78;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:.08em;transition:.15s;justify-self:start;font-weight:700}
+.versus-back:hover{color:#d4e8f8}
+
+.pe-nav-r{justify-self:end}
+.pe-nb{width:30px;height:30px;border-radius:50%;background:#0a1428;border:2px solid #28dc78;
+  color:#28dc78;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.85rem;
+  display:flex;align-items:center;justify-content:center;text-decoration:none}
+.pe-nb:hover{background:#28dc78;color:#050a18}
+.pe-si{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;
+  color: #28dc78;text-decoration:none;border:1px solid #28dc78;padding:.25rem .65rem;border-radius:4px;transition:.15s}
+.pe-si:hover{color:#d4e8f8;border-color:#d4e8f8}
 
 /* ── Container & card ── */
 .pe-versus-container{max-width:580px;margin:2rem auto;padding:0 1.2rem}
@@ -493,6 +534,16 @@ const VERSUS_STYLES = `
   word-break:break-all;line-height:1.5;letter-spacing:.02em}
 
 @media(max-width:420px){
+  .pe-vs-nav-title{font-size:.7rem}
+  .pe-vs-nav-lb{font-size:.4rem}
+}
+
+@media(max-width:700px){
+  .pe-vs-nav-title{font-size:.7rem}
+  .pe-vs-nav-lb{font-size:.4rem}
+}
+
+@media(max-width:900px){
   .pe-vs-nav-title{font-size:.9rem}
   .pe-vs-nav-lb{font-size:.5rem}
 }
