@@ -415,10 +415,10 @@ const VERSUS_STYLES = `
 /* ── Buttons ── */
 .pe-versus-btn{display:inline-block;padding:13px 22px;font-family:'Barlow Condensed',sans-serif;font-weight:700;
   font-size:1rem;letter-spacing:.1em;border-radius:10px;cursor:pointer;transition:all .2s;border:none;text-decoration:none;text-align:center}
-.pe-versus-btn.primary{background:linear-gradient(135deg,#167440ff,#28dc78);color:#1a3050}
+.pe-versus-btn.primary{background:linear-gradient(135deg, #167440ff, #28dc78);color: #1a3050}
 .pe-versus-btn.primary:hover{filter:brightness(1.1);transform:scale(1.02);color:#d4e8f8}
-.pe-versus-btn.secondary{background:transparent;border:2px solid #1a3050;color:#3a6080}
-.pe-versus-btn.secondary:hover{border-color:#28dc78;color:#28dc78}
+.pe-versus-btn.secondary{background:transparent;border:2px solid #1a3050;color: #3a6080}
+.pe-versus-btn.secondary:hover{border-color: #28dc78;color: #28dc78}
 .pe-versus-btn.small{padding:8px 14px;font-size:.78rem}
 .pe-vs-cancel{background:none;border:none;color:#1a3050;font-family:'Barlow Condensed',sans-serif;
   font-size:.8rem;letter-spacing:.12em;cursor:pointer;transition:.15s}
@@ -459,10 +459,10 @@ const VERSUS_STYLES = `
 .pe-fp-info{flex:1;min-width:0}
 .pe-fp-name{font-size:.88rem;font-weight:700;color:#d4e8f8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pe-fp-un{font-size:.65rem;color:#2a4060}
-.pe-fp-btn{background:linear-gradient(135deg,#a07020,#28dc78);border:none;color:#050a18;border-radius:7px;
+.pe-fp-btn{background:linear-gradient(135deg, #146c3bff, #28dc78);border:none;color:#050a18;border-radius:7px;
   padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.75rem;
   letter-spacing:.08em;cursor:pointer;transition:.2s;flex-shrink:0}
-.pe-fp-btn:hover{filter:brightness(1.1)}
+.pe-fp-btn:hover{filter:brightness(1.1);color:#d4e8f8}
 
 /* ── Section title ── */
 .pe-versus-section-title{font-family:'Orbitron',sans-serif;font-size:.7rem;color:#28dc78;text-align:left;

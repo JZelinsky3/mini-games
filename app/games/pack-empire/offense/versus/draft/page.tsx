@@ -321,9 +321,17 @@ function VersusDraft() {
   const score = finalLineup.reduce((s, p) => s + (p?.score ?? 0), 0);
   const t = getTier(score);
   const roleKey = isHost ? 'host' : 'opponent';
-  const playerName = isHost
-    ? (user?.user_metadata?.full_name || user?.email || 'Host')
-    : (guestName || 'Opponent');
+
+  // Pull username from profiles table for signed-in users
+let playerName = guestName || 'Opponent';
+if (user) {
+  const { data: prof } = await supabase
+    .from('profiles')
+    .select('username, full_name')
+    .eq('id', user.id)
+    .single();
+  playerName = prof?.username || prof?.full_name || user.email || (isHost ? 'Host' : 'Opponent');
+}
 
   const resultData = {
     lineup: finalLineup,
@@ -790,7 +798,8 @@ body{font-family:'Barlow Condensed',sans-serif}
 .pe-nav-l a.pe-back:hover {
     color: #d4e8f8;}
 .pe-nav-l{justify-self:start}
-.pe-nav-c{display:flex;align-items:center;gap:.6rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.22em;color:#28dc78;justify-self:center;text-shadow:0 0 24px rgba(40,220,120,.5)}.pe-nav-r{justify-self:end}
+.pe-nav-c{display:flex;align-items:center;gap:.6rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.22em;color: #28dc78;justify-self:center;text-shadow:0 0 24px rgba(40,220,120,.5)}
+.pe-nav-r{justify-self:end}
 .pe-pip{width:9px;height:9px;border-radius:50%;background:#28dc78;flex-shrink:0;box-shadow:0 0 12px #28dc78,0 0 28px rgba(40,220,120,.6);animation:pip-pulse 2s ease-in-out infinite}
 @keyframes pip-pulse{0%,100%{box-shadow:0 0 12px #28dc78,0 0 28px rgba(40,220,120,.6)}50%{box-shadow:0 0 22px #28dc78,0 0 48px rgba(40,220,120,.8)}}
 .pe-back{color:#2a4060;text-decoration:none;font-size:.85rem;transition:.15s}.pe-back:hover{color:#28dc78}

@@ -411,11 +411,11 @@ body{font-family:'Barlow Condensed',sans-serif}
 .vr-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:1.3rem 1.2rem;border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
 .vr-nav-l{justify-self:start}
 .vr-nav-c{display:flex;align-items:center;gap:.6rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:1.3rem;letter-spacing:.22em;color:#28dc78;justify-self:center;text-shadow:0 0 24px rgba(40,220,120,.5)}
-.vr-nav-r{justify-self:end}
+.vr-nav-r{justify-self:end;color:#d4e8f8;}
 .vr-pip{width:9px;height:9px;border-radius:50%;background:#28dc78;flex-shrink:0;box-shadow:0 0 12px #28dc78,0 0 28px rgba(40,220,120,.6);animation:pip-pulse 2s ease-in-out infinite}
 @keyframes pip-pulse{0%,100%{box-shadow:0 0 12px #28dc78,0 0 28px rgba(40,220,120,.6)}50%{box-shadow:0 0 22px #28dc78,0 0 48px rgba(40,220,120,.8)}}
 .vr-back{color:#28dc78;text-decoration:none;font-size:1rem;transition:.15s;font-weight:500}.vr-back:hover{color:#ffffff}
-.vr-challenge-id{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;color:#1a3050;letter-spacing:.14em}
+.vr-challenge-id{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;color:#d4e8f8;;letter-spacing:.14em}
 
 /* ── Root ── */
 .vr-root{min-height:calc(100vh - 52px);background:#050a18;background-image:radial-gradient(ellipse at 50% 0%,rgba(40,220,120,.04),transparent 50%),repeating-linear-gradient(0deg,transparent,transparent 70px,rgba(255,255,255,.012) 70px,rgba(255,255,255,.012) 71px);padding-bottom:3rem}
@@ -432,8 +432,8 @@ body{font-family:'Barlow Condensed',sans-serif}
 .vr-winner-banner.tie{background:linear-gradient(135deg,rgba(66,192,248,.06),rgba(66,192,248,.02));border-bottom-color:rgba(66,192,248,.2)}
 .vr-banner-inner{display:flex;align-items:center;justify-content:center;gap:1rem;max-width:900px;margin:0 auto}
 .vr-banner-center{display:flex;flex-direction:column;align-items:center;gap:.3rem}
-.vr-banner-icon{font-size:2rem}
-.vr-banner-text{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(1.2rem,4vw,1.8rem);letter-spacing:.1em;color:#ffd700;text-shadow:0 0 24px rgba(255,215,0,.6)}
+.vr-banner-icon{font-size:1.5rem}
+.vr-banner-text{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(1rem,4vw,1.4rem);letter-spacing:.1em;color:#ffd700;text-shadow:0 0 24px rgba(255,215,0,.6)}
 .vr-banner-arrow-row{display:flex;align-items:center;gap:.6rem}
 .vr-banner-sub{font-size:.75rem;color:#3a6080;letter-spacing:.1em}
 .vr-banner-arrow{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.2rem;color:#ffd700;text-shadow:0 0 16px rgba(255,215,0,.8);animation:arrow-pulse 1.2s ease-in-out infinite}

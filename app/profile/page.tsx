@@ -333,9 +333,9 @@ export default function ProfilePage() {
 
         // Versus match history — challenges where user is host or opponent
         const { data: challenges } = await supabase
-          .from('versus_challenges')
-          .select('*')
-          .or(`creator_id.eq.${user.id},opponent_id.eq.${user.id}`)
+          .from('profiles')
+          .select('id, username, full_name')
+          .or(`username.ilike.%${friendSearch.trim()}%,full_name.ilike.%${friendSearch.trim()}%`)
           .not('host_result', 'is', null)
           .not('opponent_result', 'is', null)
           .order('created_at', { ascending: false })
