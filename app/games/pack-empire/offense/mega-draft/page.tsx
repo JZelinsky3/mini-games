@@ -1,0 +1,491 @@
+'use client';
+import { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
+
+/* ─── Player Pools ───────────────────────────────────────────────────── */
+import { ALL_PLAYERS } from '@/lib/packs/current-offense-qb';
+import { ALL_PLAYERS_V2 } from '@/lib/packs/current-offense-rb';
+import { ALL_PLAYERS_V3 } from '@/lib/packs/current-offense-wr';
+import { ALL_PLAYERS_V4 } from '@/lib/packs/current-offense-te';
+import { ALL_PLAYERS_V5 } from '@/lib/packs/current-offense-ot';
+import { ALL_PLAYERS_V6 } from '@/lib/packs/current-offense-iol';
+import { ALL_PLAYERS_V7 } from '@/lib/packs/legend-offense';
+
+type Rarity = 'common' | 'rare' | 'dynasty' | 'transcendent' | 'immortal';
+interface Player { id: string; name: string; pos: string; team: string; score: number; rarity: Rarity; accolades: string[]; }
+
+const RARITY_MAP: Record<string, Rarity> = {
+  epic: 'dynasty', legendary: 'transcendent',
+  common: 'common', rare: 'rare', dynasty: 'dynasty', transcendent: 'transcendent', immortal: 'immortal',
+};
+
+const FULL_POOL: Record<string, Player[]> = (() => {
+  const keys = ['QB', 'RB', 'WR', 'TE', 'OT', 'OG', 'C'] as const;
+  return Object.fromEntries(keys.map(k => [k, [
+    ...ALL_PLAYERS[k], ...ALL_PLAYERS_V2[k], ...ALL_PLAYERS_V3[k],
+    ...ALL_PLAYERS_V4[k], ...ALL_PLAYERS_V5[k], ...ALL_PLAYERS_V6[k], ...ALL_PLAYERS_V7[k],
+  ].map(p => ({ ...p, rarity: (RARITY_MAP[p.rarity] ?? p.rarity) as Rarity }))]));
+})() as Record<string, Player[]>;
+
+/* ── Pool counts per position ── */
+const POOL_COUNTS: Record<string, number> = {
+  QB: 4, RB: 4, WR: 8, TE: 4, OT: 6, OG: 6, C: 4,
+};
+
+/* ── Mega draft weights ── */
+const MEGA_WEIGHTS: Record<Rarity, number> = {
+  common: 30, rare: 35, dynasty: 22, transcendent: 10, immortal: 3,
+};
+
+/* ── Generate the shared pool ── */
+function generatePool(): Player[] {
+  const result: Player[] = [];
+
+  for (const [pos, count] of Object.entries(POOL_COUNTS)) {
+    const players = FULL_POOL[pos] ?? [];
+    const picked = new Set<string>();
+    const posResult: Player[] = [];
+
+    // Guarantee at least 1 dynasty+ per position group
+    const dynastyPlus = players.filter(p => ['dynasty','transcendent','immortal'].includes(p.rarity));
+    if (dynastyPlus.length > 0) {
+      const pick = dynastyPlus[Math.floor(Math.random() * dynastyPlus.length)];
+      posResult.push(pick);
+      picked.add(pick.id);
+    }
+
+    // Fill the rest with weighted draw
+    let attempts = 0;
+    while (posResult.length < count && attempts < 500) {
+      attempts++;
+      const available = players.filter(p => !picked.has(p.id));
+      if (available.length === 0) break;
+      const total = available.reduce((s, p) => s + (MEGA_WEIGHTS[p.rarity] ?? 1), 0);
+      let roll = Math.random() * total;
+      for (const p of available) {
+        roll -= MEGA_WEIGHTS[p.rarity] ?? 1;
+        if (roll <= 0) { posResult.push(p); picked.add(p.id); break; }
+      }
+    }
+
+    result.push(...posResult);
+  }
+
+  // Shuffle final pool
+  return result.sort(() => Math.random() - 0.5);
+}
+
+/* ── Snake draft order for 22 picks, 2 players ── */
+export function buildSnakeOrder(totalPicks: number): number[] {
+  // Returns array of player index (0=P1, 1=P2) for each pick
+  const order: number[] = [];
+  let round = 0;
+  while (order.length < totalPicks) {
+    if (round % 2 === 0) {
+      order.push(0); // P1
+    } else {
+      order.push(1); // P2
+    }
+    round++;
+  }
+  // Snake: odd rounds go in reverse
+  const result: number[] = [];
+  let i = 0;
+  let r = 0;
+  while (result.length < totalPicks) {
+    const picksThisRound = 1;
+    if (r % 2 === 0) {
+      result.push(0);
+    } else {
+      result.push(1);
+    }
+    r++;
+  }
+  // Correct snake: P1 P2 P2 P1 P1 P2 P2 ...
+  const snake: number[] = [];
+  for (let pick = 0; pick < totalPicks; pick++) {
+    const round = Math.floor(pick / 2);
+    if (pick % 4 < 2) snake.push(0);
+    else snake.push(1);
+  }
+  // Proper snake: alternating pairs
+  const proper: number[] = [];
+  for (let pick = 0; pick < totalPicks; pick++) {
+    const pair = Math.floor(pick / 2);
+    if (pair % 2 === 0) proper.push(pick % 2 === 0 ? 0 : 1);
+    else proper.push(pick % 2 === 0 ? 1 : 0);
+  }
+  return proper;
+}
+
+function MegaDraftLobby() {
+  const router   = useRouter();
+  const supabase = createClient();
+
+  const [user, setUser]     = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
+  const [guestName, setGuestName] = useState('');
+  const [needsName, setNeedsName] = useState(false);
+  const [phase, setPhase]   = useState<'loading'|'lobby'|'waiting'|'creating'>('loading');
+  const [draftId, setDraftId] = useState<string | null>(null);
+  const [activeDrafts, setActiveDrafts] = useState<any[]>([]);
+  const [error, setError]   = useState('');
+
+  useEffect(() => {
+    async function init() {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      if (user) {
+        const { data: prof } = await supabase.from('profiles').select('username, full_name').eq('id', user.id).single();
+        setProfile(prof);
+      }
+      loadActiveDrafts();
+      setPhase('lobby');
+    }
+    init();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const loadActiveDrafts = () => {
+    try {
+      const drafts = JSON.parse(localStorage.getItem('mega-draft-active') || '[]');
+      setActiveDrafts(drafts);
+    } catch { }
+  };
+
+  const getMyName = () => {
+    if (user) return profile?.username || profile?.full_name || user.email || 'Player';
+    return guestName.trim() || 'Guest';
+  };
+
+  const createDraft = async () => {
+    const name = getMyName();
+    if (!name) { setNeedsName(true); return; }
+
+    setPhase('creating');
+    setError('');
+
+    try {
+      const id = 'md-' + Date.now().toString(36).slice(0, 9);
+      const pool = generatePool();
+
+      const { error: err } = await supabase.from('mega_drafts').insert({
+        id,
+        pool,
+        picks: [],
+        current_pick: 0,
+        p1_id: user?.id ?? `guest-${Date.now()}`,
+        p1_name: name,
+        p2_id: null,
+        p2_name: null,
+        status: 'waiting',
+      });
+
+      if (err) throw err;
+
+      // Save to local list
+      const entry = { id, role: 'p1', createdAt: Date.now(), opponentName: null };
+      const existing = JSON.parse(localStorage.getItem('mega-draft-active') || '[]');
+      localStorage.setItem('mega-draft-active', JSON.stringify([entry, ...existing]));
+      if (!user) localStorage.setItem(`mega-guest-${id}`, name);
+
+      setDraftId(id);
+      setPhase('waiting');
+    } catch (e: any) {
+      setError(e.message || 'Failed to create draft');
+      setPhase('lobby');
+    }
+  };
+
+  const joinDraft = async (id: string) => {
+    const name = getMyName();
+    if (!name) { setNeedsName(true); return; }
+
+    setError('');
+    try {
+      const { data: draft } = await supabase.from('mega_drafts').select('*').eq('id', id).single();
+      if (!draft) { setError('Draft not found'); return; }
+      if (draft.status !== 'waiting') { setError('This draft already started'); return; }
+
+      // Randomly assign who goes first
+      const p1GoesFirst = Math.random() < 0.5;
+      const myId = user?.id ?? `guest-${Date.now()}`;
+
+      await supabase.from('mega_drafts').update({
+        p2_id: p1GoesFirst ? draft.p1_id : myId,
+        p2_name: p1GoesFirst ? draft.p1_name : name,
+        p1_id: p1GoesFirst ? myId : draft.p1_id,
+        p1_name: p1GoesFirst ? name : draft.p1_name,
+        status: 'active',
+        current_pick: 0,
+      }).eq('id', id);
+
+      const entry = { id, role: 'p2', createdAt: Date.now() };
+      const existing = JSON.parse(localStorage.getItem('mega-draft-active') || '[]');
+      localStorage.setItem('mega-draft-active', JSON.stringify([entry, ...existing]));
+      if (!user) localStorage.setItem(`mega-guest-${id}`, name);
+
+      router.push(`/games/pack-empire/offense/mega-draft/${id}`);
+    } catch (e: any) {
+      setError(e.message || 'Failed to join');
+    }
+  };
+
+  // Poll waiting draft to see if opponent joined
+  useEffect(() => {
+    if (phase !== 'waiting' || !draftId) return;
+    const interval = setInterval(async () => {
+      const { data } = await supabase.from('mega_drafts').select('status').eq('id', draftId).single();
+      if (data?.status === 'active') {
+        clearInterval(interval);
+        router.push(`/games/pack-empire/offense/mega-draft/${draftId}`);
+      }
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [phase, draftId, supabase, router]);
+
+  const deleteActiveDraft = (id: string) => {
+    const updated = activeDrafts.filter(d => d.id !== id);
+    localStorage.setItem('mega-draft-active', JSON.stringify(updated));
+    setActiveDrafts(updated);
+  };
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: STYLES }} />
+      <nav className="md-nav">
+        <Link href="/games/pack-empire" className="md-back">← Pack Empire</Link>
+        <div className="md-nav-title"><span className="md-pip" />MEGA DRAFT</div>
+        <div />
+      </nav>
+
+      <div className="md-root">
+        <div className="md-container">
+
+          {/* Guest name gate */}
+          {needsName && !user && (
+            <div className="md-card" style={{ marginBottom: '1rem' }}>
+              <div style={{ fontSize: '.7rem', letterSpacing: '.2em', color: '#2a4060', marginBottom: '.6rem' }}>YOUR NAME</div>
+              <div style={{ display: 'flex', gap: '.5rem' }}>
+                <input
+                  value={guestName}
+                  onChange={e => setGuestName(e.target.value)}
+                  placeholder="Enter your name..."
+                  maxLength={24}
+                  className="md-input"
+                  style={{ flex: 1 }}
+                  autoFocus
+                />
+                <button onClick={() => setNeedsName(false)} className="md-btn primary" disabled={!guestName.trim()}>OK</button>
+              </div>
+            </div>
+          )}
+
+          {/* Lobby */}
+          {phase === 'lobby' && (
+            <div className="md-card">
+              <div className="md-hero-icon">🏟️</div>
+              <h1 className="md-title">MEGA DRAFT</h1>
+              <p className="md-desc">Snake draft from a shared pool — steal the best players before your opponent does.</p>
+
+              <div className="md-rules">
+                {[
+                  { icon: '🎯', text: '36 shared players — QB×4, RB×4, WR×8, TE×4, OT×6, OG×6, C×4' },
+                  { icon: '🐍', text: 'Snake draft order — P1 P2 P2 P1 P1 P2... fair for both sides' },
+                  { icon: '⚡', text: 'Real-time picks — see your opponent draft live' },
+                  { icon: '🔒', text: 'Position locks — fill all 11 slots to complete your lineup' },
+                ].map((r, i) => (
+                  <div key={i} className="md-rule-row">
+                    <span className="md-rule-icon">{r.icon}</span>
+                    <span className="md-rule-text">{r.text}</span>
+                  </div>
+                ))}
+              </div>
+
+              {error && <div className="md-error">{error}</div>}
+
+              <button onClick={createDraft} className="md-btn primary" style={{ width: '100%', marginBottom: '.75rem' }}>
+                + Create New Draft
+              </button>
+
+              {/* Join by ID */}
+              <JoinByIdSection onJoin={joinDraft} />
+            </div>
+          )}
+
+          {/* Creating */}
+          {phase === 'creating' && (
+            <div className="md-card" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+              <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>⚙️</div>
+              <div className="md-title" style={{ fontSize: '1.1rem' }}>GENERATING POOL...</div>
+              <div style={{ color: '#2a4060', fontSize: '.85rem', marginTop: '.5rem' }}>Building your 36-player draft pool</div>
+            </div>
+          )}
+
+          {/* Waiting for opponent */}
+          {phase === 'waiting' && draftId && (
+            <div className="md-card" style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>⏳</div>
+              <h2 className="md-title">DRAFT CREATED</h2>
+              <p className="md-desc">Share this ID with your opponent — they join and the draft begins instantly.</p>
+
+              <div className="md-invite-box">
+                <div className="md-invite-label">DRAFT ID</div>
+                <div className="md-invite-id">{draftId.toUpperCase()}</div>
+              </div>
+
+              <CopyButton text={draftId.toUpperCase()} label="Copy Draft ID" />
+
+              <div className="md-waiting-row">
+                <div className="md-wait-dot" />
+                <span style={{ color: '#3a6080', fontSize: '.82rem', letterSpacing: '.06em' }}>Waiting for opponent to join</span>
+                <div className="md-wait-dot" style={{ animationDelay: '.3s' }} />
+              </div>
+
+              <button onClick={() => setPhase('lobby')} className="md-cancel-btn">Cancel</button>
+            </div>
+          )}
+
+          {/* Active drafts */}
+          {activeDrafts.length > 0 && phase === 'lobby' && (
+            <div style={{ marginTop: '1rem' }}>
+              <div className="md-section-title">ACTIVE DRAFTS</div>
+              {activeDrafts.map(d => (
+                <div key={d.id} className="md-draft-row">
+                  <div>
+                    <div className="md-dr-id">{d.id.toUpperCase()}</div>
+                    <div className="md-dr-meta">
+                      {new Date(d.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                      {' · '}
+                      {d.role === 'p1' ? 'You created' : 'You joined'}
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '.5rem' }}>
+                    <button onClick={() => router.push(`/games/pack-empire/offense/mega-draft/${d.id}`)} className="md-btn secondary small">
+                      Rejoin →
+                    </button>
+                    <button onClick={() => deleteActiveDraft(d.id)} className="md-delete-btn">✕</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ── Join by ID subcomponent ── */
+function JoinByIdSection({ onJoin }: { onJoin: (id: string) => void }) {
+  const [id, setId]     = useState('');
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ marginTop: '.5rem' }}>
+      {!open ? (
+        <button onClick={() => setOpen(true)} className="md-btn secondary" style={{ width: '100%' }}>
+          Join Existing Draft
+        </button>
+      ) : (
+        <div style={{ display: 'flex', gap: '.5rem' }}>
+          <input
+            value={id}
+            onChange={e => setId(e.target.value.trim().toLowerCase())}
+            placeholder="Enter draft ID..."
+            className="md-input"
+            style={{ flex: 1 }}
+            autoFocus
+          />
+          <button onClick={() => onJoin(id)} disabled={!id} className="md-btn primary">Join</button>
+          <button onClick={() => setOpen(false)} className="md-btn secondary">✕</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Copy button ── */
+function CopyButton({ text, label }: { text: string; label: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+      className="md-btn primary"
+      style={{ width: '100%', marginBottom: '1rem' }}
+    >
+      {copied ? '✓ Copied!' : label}
+    </button>
+  );
+}
+
+function Fallback() {
+  return (
+    <div style={{ minHeight: '100vh', background: '#050a18', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ color: '#2a4060', fontFamily: 'Barlow Condensed', letterSpacing: '.2em', fontSize: '.85rem' }}>LOADING...</div>
+    </div>
+  );
+}
+
+export default function MegaDraftLobbyPage() {
+  return <Suspense fallback={<Fallback />}><MegaDraftLobby /></Suspense>;
+}
+
+/* ── Styles ── */
+const STYLES = `
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+.md-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:1.3rem 1.2rem;border-bottom:2px solid #0d1835;position:sticky;top:0;background:#050a18;z-index:30}
+.md-back{color:#9a28dcff;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.06em;transition:.15s}
+.md-back:hover{color: #d4e8f8}
+.md-nav-title{display:flex;align-items:center;gap:.6rem;font-family:'Orbitron',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.22em;color:#9a28dcff;justify-self:center;text-shadow:0 0 24px rgba(40,220,120,.5)}
+.md-pip{width:9px;height:9px;border-radius:50%;background:#9a28dcff;box-shadow:0 0 12px #9a28dcff;animation:pip 2s ease-in-out infinite}
+@keyframes pip{0%,100%{box-shadow:0 0 12px #9a28dcff}50%{box-shadow:0 0 22px #9a28dcff,0 0 48px rgba(40,220,120,.8)}}
+
+.md-root{min-height:calc(100vh - 52px);background:#050a18;background-image:radial-gradient(ellipse at 50% 0%,rgba(40,220,120,.05),transparent 55%)}
+.md-container{max-width:540px;margin:2.5rem auto;padding:0 1.2rem}
+
+.md-card{background:#07101e;border:2px solid #1a3050;border-radius:16px;padding:2rem 1.8rem;text-align:center}
+.md-hero-icon{font-size:3rem;margin-bottom:.8rem}
+.md-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:.08em;color:#d4e8f8;margin-bottom:.5rem}
+.md-desc{color:#3a6080;font-family:'Barlow',sans-serif;font-size:.9rem;line-height:1.6;margin-bottom:1.4rem}
+
+.md-rules{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.6rem;background:rgba(4,8,16,.6);border:1px solid #0d1835;border-radius:10px;padding:1rem;text-align:left}
+.md-rule-row{display:flex;gap:.8rem;align-items:flex-start}
+.md-rule-icon{font-size:1rem;flex-shrink:0;margin-top:.05rem}
+.md-rule-text{font-family:'Barlow',sans-serif;font-size:.82rem;color:#5a8ab0;line-height:1.5}
+
+.md-btn{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.92rem;letter-spacing:.1em;border-radius:10px;cursor:pointer;transition:all .2s;border:none;padding:13px 22px;text-align:center}
+.md-btn.primary{background:linear-gradient(135deg,#5d108aff,#9a28dcff);color:#d4e8f8}
+.md-btn.primary:hover{filter:brightness(1.1);transform:scale(1.02);color:#050a18}
+.md-btn.primary:disabled{background:#0d1835;color:#2a4060;cursor:default;transform:none}
+.md-btn.secondary{background:transparent;border:2px solid #1a3050;color:#3a6080}
+.md-btn.secondary:hover{border-color:#9a28dcff;color:#9a28dcff}
+.md-btn.small{padding:8px 14px;font-size:.78rem}
+
+.md-input{background:#040810;border:1px solid #1a3050;border-radius:8px;padding:10px 14px;color:#d4e8f8;font-family:'Barlow Condensed',sans-serif;font-size:.9rem;outline:none;transition:border-color .15s;width:100%}
+.md-input:focus{border-color:#9a28dcff}
+.md-input::placeholder{color:#2a4060}
+
+.md-error{background:rgba(224,64,64,.1);border:1px solid rgba(224,64,64,.25);border-radius:8px;color:#e04040;font-size:.82rem;padding:.55rem .8rem;margin-bottom:.8rem}
+
+.md-invite-box{background:rgba(4,8,16,.8);border:1px solid #1a3050;border-radius:10px;padding:1rem 1.2rem;margin:1.1rem 0;text-align:center}
+.md-invite-label{font-size:.52rem;letter-spacing:.28em;color:#2a4060;margin-bottom:.4rem;font-family:'Barlow Condensed',sans-serif;font-weight:700}
+.md-invite-id{font-family:'Orbitron',sans-serif;font-weight:700;font-size:1.2rem;letter-spacing:.16em;color:#9a28dcff}
+
+.md-waiting-row{display:flex;align-items:center;justify-content:center;gap:.6rem;padding:.8rem 0;margin-bottom:.8rem}
+.md-wait-dot{width:7px;height:7px;border-radius:50%;background:#9a28dcff;animation:wait-dot 1.4s ease-in-out infinite}
+@keyframes wait-dot{0%,100%{opacity:.3;transform:scale(.7)}50%{opacity:1;transform:scale(1.2)}}
+.md-cancel-btn{background:none;border:none;color:#1a3050;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:.12em;cursor:pointer;transition:.15s}
+.md-cancel-btn:hover{color:#3a6080}
+
+.md-section-title{font-family:'Orbitron',sans-serif;font-size:.7rem;color:#9a28dcff;letter-spacing:.18em;font-weight:700;margin-bottom:.7rem}
+.md-draft-row{background:rgba(4,8,16,.7);border:1px solid #0d1835;border-radius:10px;padding:.8rem .9rem;margin-bottom:.55rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.md-dr-id{font-family:'Orbitron',sans-serif;font-size:.75rem;color:#9a28dcff;letter-spacing:.1em;font-weight:700}
+.md-dr-meta{font-size:.62rem;color:#1a3050;letter-spacing:.06em;margin-top:.15rem}
+.md-delete-btn{background:none;border:none;color:#1a3050;cursor:pointer;font-size:.82rem;padding:.2rem .4rem;border-radius:4px;transition:.15s}
+.md-delete-btn:hover{color:#e04040}
+`;

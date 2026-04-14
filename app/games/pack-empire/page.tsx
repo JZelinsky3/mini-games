@@ -138,6 +138,21 @@ export default function PackEmpireHub() {
                   </div>
                   <div className="pe-mode-option-cta versus-cta">Challenge Friend →</div>
                 </Link>
+
+                {/* Mega Draft */}
+                <Link 
+                  href="/games/pack-empire/offense/mega-draft"
+                  className="pe-mode-option mega"
+                  onClick={() => setShowModeSelector(false)}
+                >
+                  <div className="pe-mode-option-icon">⚡</div>
+                  <div className="pe-mode-option-title">Mega Draft</div>
+                  <div className="pe-mode-option-desc">
+                    Go head-to-head in a full draft.<br />
+                    Outpick your opponent and build the highest scoring offense.
+                  </div>
+                  <div className="pe-mode-option-cta mega-cta">Play →</div>
+                </Link>
               </div>
             </div>
           </div>
@@ -277,7 +292,7 @@ body{font-family:'Barlow Condensed',sans-serif;background:#050a18}
   border: 2px solid #ffd700;
   border-radius: 16px;
   width: 100%;
-  max-width: 560px;
+  max-width: 590px;
   margin: 20px;
   overflow: hidden;
 }
@@ -338,6 +353,25 @@ body{font-family:'Barlow Condensed',sans-serif;background:#050a18}
   border-color: #42c0f8;
 }
 
+.pe-mode-option.versus:hover {
+  border-color: #28dc78;
+}
+.pe-mode-option.versus:hover .versus-cta {
+  color: #28dc78 !important;
+}
+
+.pe-mode-option.mega {
+  background: rgba(40, 60, 100, 0.6);
+  border-color: #d4e8f8;
+}
+.pe-mode-option.mega:hover {
+  border-color: #9a28dcff;
+}
+.pe-mode-option.mega:hover .mega-cta {
+  border-color: #9a28dcff;
+  color: #9a28dcff !important;
+}
+
 .pe-mode-option-icon {
   font-size: 2.8rem;
   margin-bottom: 0.8rem;
@@ -368,5 +402,9 @@ body{font-family:'Barlow Condensed',sans-serif;background:#050a18}
 
 .versus-cta {
   color: #42c0f8 !important;
+}
+
+.mega-cta {
+  color: #d4e8f8 !important;
 }
 `;

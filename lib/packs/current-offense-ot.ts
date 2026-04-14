@@ -72,7 +72,7 @@ export const OT_POOL_V1: NFLPlayer[] = [
   pl('jma','Jordan Mailata','OT','Philadelphia Eagles', 2420, [
 'Dominant left tackle','Elite run blocker & pass protector'
 ]),
-pl('ofa','Olu Fashanu','OT','New York Jets', 1580, [
+pl('ofa','Olumuyiwa Fashanu','OT','New York Jets', 1580, [
 'Rising blind-side star','High-upside young protector'
 ]),
 pl('wca','Will Campbell','OT','New Orleans Saints', 1250, [
