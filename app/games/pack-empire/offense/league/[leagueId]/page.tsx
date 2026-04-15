@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { getLeague, getLeagueMembers, getMyMembership, joinLeague, updateTeamName } from '@/lib/league/db';
+import { getLeague, getLeagueMembers, getMyMembership, joinLeague, updateTeamName, leaveLeague, deleteLeague } from '@/lib/league/db';
 import type { DBLeague, DBLeagueMember } from '@/lib/league/db';
 import { PACK_TIER_LABELS, PACK_TIER_COLORS, packsForWeek } from '@/lib/league/packs';
 
@@ -30,6 +30,10 @@ export default function LeagueHomePage() {
   const [loading, setLoading]       = useState(true);
   const [copying, setCopying]       = useState(false);
   const [joining, setJoining]       = useState(false);
+  const [leaving, setLeaving]       = useState(false);
+  const [showLeave, setShowLeave]   = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleting, setDeleting]     = useState(false);
 
   // Team name editor
   const [editingName, setEditingName]   = useState(false);
@@ -74,6 +78,30 @@ export default function LeagueHomePage() {
       await reload(userId);
     } finally {
       setJoining(false);
+    }
+  }
+
+  async function handleLeave() {
+    if (!userId || !league || isCommissioner) return;
+    setLeaving(true);
+    try {
+      await leaveLeague(league.id, userId);
+      router.replace('/games/pack-empire/offense/league');
+    } catch {
+      setLeaving(false);
+      setShowLeave(false);
+    }
+  }
+
+  async function handleDelete() {
+    if (!userId || !league || !isCommissioner) return;
+    setDeleting(true);
+    try {
+      await deleteLeague(league.id);
+      router.replace('/games/pack-empire/offense/league');
+    } catch {
+      setDeleting(false);
+      setShowDelete(false);
     }
   }
 
@@ -269,17 +297,55 @@ export default function LeagueHomePage() {
               )}
 
               {/* Commissioner */}
-              {isCommissioner && league.phase === 'pregame' && (
+              {isCommissioner && (
                 <div className="llh-comm-block">
                   <div className="llh-comm-label">COMMISSIONER</div>
-                  {members.length >= league.min_players ? (
-                    <button className="llh-start-btn">
-                      START SEASON ({members.length} teams ready)
-                    </button>
-                  ) : (
-                    <div className="llh-comm-hint">
-                      Need {league.min_players - members.length} more player{league.min_players - members.length !== 1 ? 's' : ''} to start
+                  {league.phase === 'pregame' && (
+                    members.length >= league.min_players ? (
+                      <button className="llh-start-btn">
+                        START SEASON ({members.length} teams ready)
+                      </button>
+                    ) : (
+                      <div className="llh-comm-hint">
+                        Need {league.min_players - members.length} more player{league.min_players - members.length !== 1 ? 's' : ''} to start
+                      </div>
+                    )
+                  )}
+                  {showDelete ? (
+                    <div className="llh-delete-confirm">
+                      <div className="llh-delete-msg">Delete this league permanently? All data will be lost and cannot be recovered.</div>
+                      <div className="llh-leave-btns">
+                        <button className="llh-leave-yes" onClick={handleDelete} disabled={deleting}>
+                          {deleting ? 'DELETING…' : 'YES, DELETE'}
+                        </button>
+                        <button className="llh-leave-no" onClick={() => setShowDelete(false)}>CANCEL</button>
+                      </div>
                     </div>
+                  ) : (
+                    <button className="llh-delete-btn" onClick={() => setShowDelete(true)}>
+                      Delete League
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* Leave league */}
+              {me && !isCommissioner && league.phase !== 'complete' && (
+                <div className="llh-leave-block">
+                  {showLeave ? (
+                    <div className="llh-leave-confirm">
+                      <div className="llh-leave-msg">Leave this league? You'll need the code to rejoin.</div>
+                      <div className="llh-leave-btns">
+                        <button className="llh-leave-yes" onClick={handleLeave} disabled={leaving}>
+                          {leaving ? 'LEAVING…' : 'YES, LEAVE'}
+                        </button>
+                        <button className="llh-leave-no" onClick={() => setShowLeave(false)}>CANCEL</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <button className="llh-leave-btn" onClick={() => setShowLeave(true)}>
+                      Leave League
+                    </button>
                   )}
                 </div>
               )}
@@ -409,10 +475,10 @@ export default function LeagueHomePage() {
         @keyframes llh-spin{to{transform:rotate(360deg)}}
 
         /* Nav */
-        .llh-nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 2rem;background:rgba(28,10,0,.98);border-bottom:1px solid #4a2000;position:sticky;top:0;z-index:40;gap:1rem}
+        .llh-nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 2rem;background:rgba(28,10,0,.98);border-bottom:1px solid #4a2000;position:sticky;top:0;z-index:40;gap:1rem;overflow:hidden}
         .llh-back{color:#7a3a10;font-size:.82rem;letter-spacing:.1em;font-weight:600;text-decoration:none;transition:.15s;white-space:nowrap;flex-shrink:0}
         .llh-back:hover{color:#ff8c00}
-        .llh-nav-mid{display:flex;align-items:center;gap:.4rem;font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:.18em;color:#7a3a10;flex:1;justify-content:center}
+        .llh-nav-mid{display:flex;align-items:center;gap:.4rem;font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:.18em;color:#7a3a10;position:absolute;left:50%;transform:translateX(-50%);pointer-events:none}
         .llh-nav-dot{width:6px;height:6px;border-radius:50%;background:#ff4500;box-shadow:0 0 6px #ff4500;flex-shrink:0}
         .llh-nav-right{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
         .llh-invite-nav-btn{background:linear-gradient(135deg,#8a2000,#ff4500);color:#fff0e8;border:none;border-radius:6px;padding:.28rem .7rem;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.1em;cursor:pointer;transition:.15s;white-space:nowrap}
@@ -534,6 +600,25 @@ export default function LeagueHomePage() {
         .llh-modal-copy-link-btn{width:100%;background:linear-gradient(135deg,#cc2200,#ff4500,#ff8c00);color:#fff0e8;border:none;border-radius:9px;padding:.75rem;font-family:'Orbitron',sans-serif;font-weight:800;font-size:.75rem;letter-spacing:.14em;cursor:pointer;transition:.2s}
         .llh-modal-copy-link-btn:hover{filter:brightness(1.1)}
         .llh-friends-coming-soon{font-size:.8rem;color:#4a2000;text-align:center;padding:.8rem;font-weight:500;font-style:italic}
+
+        /* Leave */
+        .llh-leave-block{padding:.3rem 0}
+        .llh-leave-btn{background:transparent;border:none;color:#4a2000;font-family:'Rajdhani',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;text-decoration:underline;transition:.15s;padding:.2rem 0}
+        .llh-leave-btn:hover{color:#ff6060}
+        .llh-leave-confirm{background:#2e1200;border:1px solid rgba(255,60,60,.25);border-radius:9px;padding:.8rem 1rem}
+        .llh-leave-msg{font-size:.8rem;color:#a05030;margin-bottom:.6rem;font-weight:500}
+        .llh-leave-btns{display:flex;gap:.4rem}
+        .llh-leave-yes{flex:1;background:rgba(180,0,0,.3);border:1.5px solid rgba(255,60,60,.4);color:#ff8080;border-radius:6px;padding:.45rem;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:.08em;cursor:pointer;transition:.15s}
+        .llh-leave-yes:hover:not(:disabled){background:rgba(180,0,0,.5)}
+        .llh-leave-yes:disabled{opacity:.5}
+        .llh-leave-no{flex:1;background:transparent;border:1px solid #4a2000;color:#7a3a10;border-radius:6px;padding:.45rem;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;transition:.15s}
+        .llh-leave-no:hover{border-color:#7a3a10;color:#ffd4a8}
+
+        /* Delete */
+        .llh-delete-btn{background:transparent;border:none;color:#4a2000;font-family:'Rajdhani',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;text-decoration:underline;transition:.15s;padding:.3rem 0;display:block;margin-top:.5rem}
+        .llh-delete-btn:hover{color:#ff6060}
+        .llh-delete-confirm{background:rgba(80,0,0,.2);border:1px solid rgba(255,60,60,.25);border-radius:9px;padding:.8rem 1rem;margin-top:.6rem}
+        .llh-delete-msg{font-size:.78rem;color:#a05030;margin-bottom:.6rem;font-weight:500;line-height:1.4}
 
         /* Responsive */
         @media(max-width:860px){

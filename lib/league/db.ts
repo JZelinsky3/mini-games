@@ -290,3 +290,20 @@ export async function setLeaguePhase(
     .update({ phase })
     .eq('id', leagueId);
 }
+
+export async function leaveLeague(leagueId: string, userId: string): Promise<void> {
+  const { error } = await sb()
+    .from('league_members')
+    .delete()
+    .eq('league_id', leagueId)
+    .eq('user_id', userId);
+  if (error) throw error;
+}
+
+export async function deleteLeague(leagueId: string): Promise<void> {
+  const { error } = await sb()
+    .from('leagues')
+    .delete()
+    .eq('id', leagueId);
+  if (error) throw error;
+}
