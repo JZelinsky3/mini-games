@@ -9,7 +9,10 @@ import {
   packsForWeek,
   PLAYOFF_PACK_COUNT,
 } from './types';
+
 import { calculateChemistry, finalScore } from './chemistry';
+
+import type { ChemPlayer } from './chemistry';
 
 // ─── Standings ────────────────────────────────────────────────────────────────
 
@@ -151,8 +154,15 @@ export function submitDraft(
 
   if (member.currentDraft) throw new Error('Draft already submitted this week');
 
-  const chemistry = calculateChemistry(roster);
-  const fs = finalScore(draftScore, chemistry);
+const chemRoster: ChemPlayer[] = roster.map((p: any) => ({
+  id: p.id,
+  name: p.name,
+  pos: p.pos || p.position || p.Pos || '',
+  team: p.team || '',
+}));
+
+const chemistry = calculateChemistry(chemRoster);
+const fs = finalScore(draftScore, chemistry);
 
   const isPlayoff = s.phase === 'gauntlet' || s.phase === 'finals';
 

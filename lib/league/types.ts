@@ -1,5 +1,5 @@
 import { Player } from './player';
-import { ChemistryResult } from './chemistry';
+import { ChemResult } from './chemistry';
 
 // ─── League Config ────────────────────────────────────────────────────────────
 
@@ -61,7 +61,7 @@ export interface DraftEntry {
   roster: Player[];            // full 11-player lineup
   lockedPlayerIds: string[];   // IDs of players in locked slots (regular season only)
   draftScore: number;          // raw sum from pack game logic
-  chemistry: ChemistryResult;
+  chemistry: ChemResult;
   finalScore: number;          // draftScore + chemistry.totalChemistryPoints
   completedAt: number;         // unix ms
   packTierEarned: PackTier;    // boosted pack for next week
