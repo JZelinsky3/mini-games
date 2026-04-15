@@ -5,10 +5,15 @@ import { createClient } from '@/lib/supabase/client';
 import type { PackTier } from './packs';
 import type { ChemResult } from './chemistry';
 
-// Single shared client instance — avoids creating a new unauthenticated
-// client on every call which would make auth.uid() return null in RLS
-const supabaseClient = createClient();
-const sb = () => supabaseClient;
+// Lazy singleton — client is created on first call, not at module import time.
+// This ensures localStorage is available when createBrowserClient reads the session.
+// Module-level instantiation runs during SSR where localStorage doesn't exist,
+// producing an unauthenticated client that makes auth.uid() return null in RLS.
+let _client: ReturnType<typeof createClient> | null = null;
+const sb = () => {
+  if (!_client) _client = createClient();
+  return _client;
+};
 
 // ─── Types mirroring DB rows ──────────────────────────────────────────────────
 

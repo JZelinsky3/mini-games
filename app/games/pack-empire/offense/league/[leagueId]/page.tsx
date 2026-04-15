@@ -47,17 +47,20 @@ export default function LeagueHomePage() {
   const [inviteCopied, setInviteCopied] = useState(false);
 
   async function reload(uid: string) {
-    const [lg, mems, membership] = await Promise.all([
-      getLeague(leagueId),
-      getLeagueMembers(leagueId),
-      getMyMembership(leagueId, uid),
-    ]);
-    setLeague(lg);
-    const merged = membership && !mems.find(m => m.user_id === uid)
-      ? [membership, ...mems] : mems;
-    setMembers(merged);
-    setMe(membership ?? merged.find(m => m.user_id === uid) ?? null);
-  }
+  const [lgRes, memRes, myRes] = await Promise.all([
+    supabase.from('leagues').select('*').eq('id', leagueId).single(),
+    supabase.from('league_members').select('*, profiles(username, avatar_url)').eq('league_id', leagueId).order('team_score', { ascending: false }),
+    supabase.from('league_members').select('*').eq('league_id', leagueId).eq('user_id', uid).single(),
+  ]);
+  const lg   = lgRes.data as DBLeague | null;
+  const mems = (memRes.data ?? []) as DBLeagueMember[];
+  const membership = myRes.data as DBLeagueMember | null;
+  setLeague(lg);
+  const merged = membership && !mems.find(m => m.user_id === uid)
+    ? [membership, ...mems] : mems;
+  setMembers(merged);
+  setMe(membership ?? merged.find(m => m.user_id === uid) ?? null);
+}
 
   useEffect(() => {
     (async () => {
