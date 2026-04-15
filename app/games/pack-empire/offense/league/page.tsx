@@ -66,6 +66,9 @@ export default function LeagueHubPage() {
             <div className="lhub-scanline" />
           </div>
           <div className="lhub-hero-inner">
+            <Link href="/games/pack-empire/offense" className="lhub-back-pe">
+  ← Pack Empire
+</Link>
             <div className="lhub-eyebrow">
               <span className="lhub-dot" /><span className="lhub-dot" /><span className="lhub-dot" />
               &nbsp;PACK EMPIRE&nbsp;
@@ -202,6 +205,9 @@ export default function LeagueHubPage() {
         .lhub-flare-2{position:absolute;bottom:0;right:8%;width:280px;height:280px;background:radial-gradient(ellipse,rgba(255,140,0,.14) 0%,transparent 70%);pointer-events:none;animation:lhub-pulse 6s ease-in-out infinite reverse}
         @keyframes lhub-pulse{0%,100%{opacity:.7}50%{opacity:1}}
         .lhub-scanline{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.1) 3px,rgba(0,0,0,.1) 4px);pointer-events:none;opacity:.35}
+
+        .lhub-back-pe{color:#7a3a10;font-size:.82rem;letter-spacing:.1em;font-weight:600;text-decoration:none;transition:.15s;display:block;padding:.8rem 2rem;border-bottom:1px solid #2e1200}
+        .lhub-back-pe:hover{color:#ff8c00}
 
         .lhub-hero-inner{position:relative;z-index:2;text-align:center;padding:3rem 2rem 2.5rem;max-width:900px;margin:0 auto}
         .lhub-eyebrow{display:flex;align-items:center;justify-content:center;gap:.35rem;font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:.28em;color:#7a3a10;margin-bottom:.8rem}
