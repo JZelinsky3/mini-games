@@ -1,6 +1,6 @@
 'use client';
 // nfl-minigames-hub/app/games/pack-empire/offense/league/[leagueId]/draft/page.tsx
-
+ 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -9,7 +9,7 @@ import { getLeague, getMyMembership, getMyDraft, submitDraft as dbSubmitDraft } 
 import { leagueWeightedDraw, packsForWeek, PLAYOFF_PACK_COUNT, PACK_TIER_LABELS, PACK_TIER_COLORS } from '@/lib/league/packs';
 import type { PackTier } from '@/lib/league/packs';
 import { calculateChemistry, finalScore, chemistryLabel } from '@/lib/league';
-
+ 
 import { ALL_PLAYERS }    from '@/lib/packs/current-offense-qb';
 import { ALL_PLAYERS_V2 } from '@/lib/packs/current-offense-rb';
 import { ALL_PLAYERS_V3 } from '@/lib/packs/current-offense-wr';
@@ -17,22 +17,22 @@ import { ALL_PLAYERS_V4 } from '@/lib/packs/current-offense-te';
 import { ALL_PLAYERS_V5 } from '@/lib/packs/current-offense-ot';
 import { ALL_PLAYERS_V6 } from '@/lib/packs/current-offense-iol';
 import { ALL_PLAYERS_V7 } from '@/lib/packs/legend-offense';
-
+ 
 function parseCSVRow(row: string): string[] {
   const cols: string[] = []; let cur = ''; let inQ = false;
   for (const c of row) { if (c === '"') { inQ = !inQ; continue; } if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; continue; } cur += c; }
   cols.push(cur.trim()); return cols;
 }
-
+ 
 /* ─── Types ──────────────────────────────────────────────────────────── */
 type Rarity = 'common' | 'rare' | 'dynasty' | 'transcendent' | 'immortal';
 type Phase = 'loading' | 'boosted_pick' | 'packing' | 'complete';
-
+ 
 interface Player {
   id: string; name: string; pos: string; team: string;
   score: number; rarity: Rarity; accolades: string[];
 }
-
+ 
 /* ─── Rarity config — same visual system, now themed to crimson palette ─ */
 const RC: Record<Rarity, { label: string; color: string; glow: string; art: string; shimmer: string }> = {
   common:       { label: 'COMMON',       color: '#c87840', glow: 'rgba(200,120,60,.6)',   art: 'linear-gradient(150deg,#3d2210,#7a4820)', shimmer: '#a06030' },
@@ -41,7 +41,7 @@ const RC: Record<Rarity, { label: string; color: string; glow: string; art: stri
   transcendent: { label: 'TRANSCENDENT', color: '#e040ff', glow: 'rgba(224,64,255,.85)',  art: 'linear-gradient(150deg,#280048,#6010b0)', shimmer: '#c020f0' },
   immortal:     { label: 'IMMORTAL',     color: '#28dc78', glow: 'rgba(40,220,120,.8)',   art: 'linear-gradient(150deg,#021a0a,#04401a)', shimmer: '#20a050' },
 };
-
+ 
 /* ─── Player pool ────────────────────────────────────────────────────── */
 const POOL: Record<string, Player[]> = (() => {
   const keys = ['QB','RB','WR','TE','OT','OG','C'] as const;
@@ -50,13 +50,13 @@ const POOL: Record<string, Player[]> = (() => {
     ...ALL_PLAYERS_V4[k], ...ALL_PLAYERS_V5[k], ...ALL_PLAYERS_V6[k], ...ALL_PLAYERS_V7[k],
   ]]));
 })() as Record<string, Player[]>;
-
+ 
 const RARITY_MAP: Record<string, Rarity> = {
   epic: 'dynasty', legendary: 'transcendent',
   common: 'common', rare: 'rare', dynasty: 'dynasty', transcendent: 'transcendent', immortal: 'immortal',
 };
 Object.values(POOL).forEach(arr => arr.forEach(p => { p.rarity = RARITY_MAP[p.rarity] as Rarity ?? p.rarity; }));
-
+ 
 /* ─── Slots ──────────────────────────────────────────────────────────── */
 const SLOTS = [
   { key: 'QB',  label: 'Quarterback',   short: 'QB',  pool: 'QB' },
@@ -71,19 +71,19 @@ const SLOTS = [
   { key: 'RG',  label: 'Right Guard',   short: 'RG',  pool: 'OG' },
   { key: 'RT',  label: 'Right Tackle',  short: 'RT',  pool: 'OT' },
 ] as const;
-
+ 
 const OL_ROW   = [6, 7, 8, 9, 10];
 const WR_LEFT  = [2, 3];
 const WR_RIGHT = [5, 4];
 const QB_ROW   = [0, 1];
-
+ 
 const PACK_IMG: Record<string, string> = {
   QB: '/pack-covers/tombrady.png',   RB: '/pack-covers/toddgurley.png',
   WR: '/pack-covers/julio.png',      TE: '/pack-covers/gronk.png',
   OT: '/pack-covers/trentwilliams.png', OG: '/pack-covers/zackmartin.png',
   C:  '/pack-covers/jasonkelce.png',
 };
-
+ 
 /* ─── Tiers ──────────────────────────────────────────────────────────── */
 const TIERS = [
   { min: 20001, label: 'GOAT OFFENSE',      icon: '🐐', color: '#e040ff' },
@@ -96,7 +96,7 @@ const TIERS = [
   { min: 0,     label: 'PRACTICE SQUAD',     icon: '🏈', color: '#e8a060' },
 ];
 function getTier(s: number) { return TIERS.find(t => s >= t.min)!; }
-
+ 
 /* ─── Rarity effects (imported from offense — same components) ──────── */
 // Re-use your existing RarityEffects component here in your actual codebase.
 // For this file we inline a lightweight placeholder that calls the same CSS classes.
@@ -104,44 +104,31 @@ function RarityEffects({ rarity, position = 'inner' }: { rarity: Rarity; positio
   if (position === 'outer') {
     return (
       <>
-        {rarity === 'rare' && (<div className="pe-ra-spin-wrap"><div className="pe-ra-spin-arc" /><div className="pe-ra-spin-inner" /></div>)}
-        {rarity === 'dynasty' && (<div className="pe-ep-dual-wrap"><div className="pe-ep-dual-arc1" /><div className="pe-ep-dual-arc2" /><div className="pe-ep-dual-inner" /></div>)}
-        {rarity === 'transcendent' && (<div className="pe-le-plasma-wrap"><div className="pe-le-plasma-arc1" /><div className="pe-le-plasma-arc2" /><div className="pe-le-plasma-inner" /></div>)}
-        {rarity === 'immortal' && (
-          <>
-            <div className="pe-imm-glow-1" /><div className="pe-imm-glow-2" /><div className="pe-imm-glow-3" /><div className="pe-imm-glow-4" />
-            <div className="pe-imm-corner-arcs">
-              <svg viewBox="0 0 125 183" xmlns="http://www.w3.org/2000/svg" style={{ position:'absolute',inset:0,width:'100%',height:'100%',overflow:'visible' } as React.CSSProperties}>
-                <path className="pe-imm-arc-glow a1" d="M -6,34 Q -6,-6 34,-6" /><path className="pe-imm-arc-line a1" d="M -6,34 Q -6,-6 34,-6" />
-                <path className="pe-imm-arc-glow a2" d="M 91,-6 Q 131,-6 131,34" /><path className="pe-imm-arc-line a2" d="M 91,-6 Q 131,-6 131,34" />
-                <path className="pe-imm-arc-glow a3" d="M 131,149 Q 131,189 91,189" /><path className="pe-imm-arc-line a3" d="M 131,149 Q 131,189 91,189" />
-                <path className="pe-imm-arc-glow a4" d="M 34,189 Q -6,189 -6,149" /><path className="pe-imm-arc-line a4" d="M 34,189 Q -6,189 -6,149" />
-              </svg>
-            </div>
-            <div className="pe-imm-plasma-wrap"><div className="pe-imm-plasma-arc1" /><div className="pe-imm-plasma-arc2" /><div className="pe-imm-plasma-arc3" /><div className="pe-imm-plasma-inner" /></div>
-          </>
-        )}
+        {rarity === 'rare' && <div className="pe-ra-spin-wrap"><div className="pe-ra-spin-arc" /><div className="pe-ra-spin-inner" /></div>}
+        {rarity === 'dynasty' && <div className="pe-ep-dual-wrap"><div className="pe-ep-dual-arc1" /><div className="pe-ep-dual-arc2" /><div className="pe-ep-dual-inner" /></div>}
+        {rarity === 'transcendent' && <div className="pe-le-plasma-wrap"><div className="pe-le-plasma-arc1" /><div className="pe-le-plasma-arc2" /><div className="pe-le-plasma-inner" /></div>}
+        {rarity === 'immortal' && <><div className="pe-imm-glow-1" /><div className="pe-imm-glow-2" /><div className="pe-imm-glow-3" /><div className="pe-imm-glow-4" /></>}
       </>
     );
   }
   return (
     <>
-      {rarity === 'common' && (<><div className="pe-cm-scan" /><div className="pe-cm-corner tl" /><div className="pe-cm-corner tr" /><div className="pe-cm-corner bl" /><div className="pe-cm-corner br" /><div className="pe-cm-heat"><div className="pe-cm-heat-wave" /><div className="pe-cm-heat-wave" /><div className="pe-cm-heat-wave" /><div className="pe-cm-heat-wave" /></div><div className="pe-cm-geo"><div className="pe-cm-geo-line" /><div className="pe-cm-geo-line" /><div className="pe-cm-geo-line" /><div className="pe-cm-geo-line" /></div><div className="pe-cm-scratch-layer"><div className="pe-cm-scratch" /><div className="pe-cm-scratch" /><div className="pe-cm-scratch" /></div><div className="pe-cm-ember-layer"><div className="pe-cm-ember" /><div className="pe-cm-ember" /><div className="pe-cm-ember" /><div className="pe-cm-ember" /><div className="pe-cm-ember" /></div><div className="pe-cm-bottom-glow" /></>)}
-      {rarity === 'rare' && (<><div className="pe-ra-depth-vig" /><div className="pe-ra-center-glow" /><div className="pe-ra-pulse-layer"><div className="pe-ra-pulse-ring" /><div className="pe-ra-pulse-ring" /><div className="pe-ra-pulse-ring" /></div><div className="pe-ra-crackle-layer"><div className="pe-ra-crackle"><svg width="100%" height="100%" viewBox="0 0 125 183"><polyline className="pe-ra-crackle-path" points="0,18 12,20 8,28 22,24 16,34" /><polyline className="pe-ra-crackle-path" points="113,88 121,84 117,94 125,90" /></svg></div><div className="pe-ra-crackle"><svg width="100%" height="100%" viewBox="0 0 125 183"><polyline className="pe-ra-crackle-path" points="0,62 12,58 8,68 20,64 14,76" /><polyline className="pe-ra-crackle-path" points="109,14 119,18 115,28 123,22" /></svg></div><div className="pe-ra-crackle"><svg width="100%" height="100%" viewBox="0 0 125 183"><polyline className="pe-ra-crackle-path" points="2,108 14,104 10,114 24,108" /><polyline className="pe-ra-crackle-path" points="105,50 115,46 111,58 121,52 117,64" /></svg></div></div></>)}
-      {rarity === 'dynasty' && (<><div className="pe-ep-burst"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100,100)"><line x1="0" y1="-95" x2="0" y2="95" stroke="rgba(255,215,0,.35)" strokeWidth=".8" /><line x1="-95" y1="0" x2="95" y2="0" stroke="rgba(255,215,0,.35)" strokeWidth=".8" /><line x1="-67" y1="-67" x2="67" y2="67" stroke="rgba(255,215,0,.25)" strokeWidth=".8" /><line x1="67" y1="-67" x2="-67" y2="67" stroke="rgba(255,215,0,.25)" strokeWidth=".8" /></g></svg></div><div className="pe-ep-sparkle-layer"><div className="pe-ep-sparkle" /><div className="pe-ep-sparkle" /><div className="pe-ep-sparkle" /><div className="pe-ep-sparkle" /><div className="pe-ep-sparkle" /><div className="pe-ep-sparkle" /><div className="pe-ep-sparkle" /></div><div className="pe-ep-foil" /><div className="pe-ep-shine" /></>)}
-      {rarity === 'transcendent' && (<><div className="pe-le-aurora"><div className="pe-le-aurora-band" /><div className="pe-le-aurora-band" /><div className="pe-le-aurora-band" /><div className="pe-le-aurora-band" /></div><div className="pe-le-orb-layer"><div className="pe-le-orb" /><div className="pe-le-orb" /><div className="pe-le-orb" /><div className="pe-le-orb" /><div className="pe-le-orb" /></div><div className="pe-le-holo" /><div className="pe-le-depth-rings"><div className="pe-le-depth-ring" /><div className="pe-le-depth-ring" /><div className="pe-le-depth-ring" /></div><div className="pe-le-bolt-layer"><svg className="pe-le-bolt b1" viewBox="0 0 125 183"><polyline className="pe-le-bolt-glow" points="8,2 20,28 10,27 26,58 14,56 32,98" /><polyline className="pe-le-bolt-mid" points="8,2 20,28 10,27 26,58 14,56 32,98" /><polyline className="pe-le-bolt-core" points="8,2 20,28 10,27 26,58 14,56 32,98" /><polyline className="pe-le-bolt-branch" points="26,58 40,68 34,82" /></svg><svg className="pe-le-bolt b2" viewBox="0 0 125 183"><polyline className="pe-le-bolt-glow" points="36,0 50,30 38,28 56,62 42,60 62,110" /><polyline className="pe-le-bolt-mid" points="36,0 50,30 38,28 56,62 42,60 62,110" /><polyline className="pe-le-bolt-core" points="36,0 50,30 38,28 56,62 42,60 62,110" /><polyline className="pe-le-bolt-branch" points="56,62 70,74 62,90" /></svg><svg className="pe-le-bolt b3" viewBox="0 0 125 183"><polyline className="pe-le-bolt-glow" points="62,0 76,28 63,26 84,60 68,58 92,108 74,106 88,150" /><polyline className="pe-le-bolt-mid" points="62,0 76,28 63,26 84,60 68,58 92,108 74,106 88,150" /><polyline className="pe-le-bolt-core" points="62,0 76,28 63,26 84,60 68,58 92,108 74,106 88,150" /><polyline className="pe-le-bolt-branch" points="84,60 100,74 90,90" /></svg><svg className="pe-le-bolt b4" viewBox="0 0 125 183"><polyline className="pe-le-bolt-glow" points="88,2 100,30 88,28 106,62 92,60 112,104" /><polyline className="pe-le-bolt-mid" points="88,2 100,30 88,28 106,62 92,60 112,104" /><polyline className="pe-le-bolt-core" points="88,2 100,30 88,28 106,62 92,60 112,104" /><polyline className="pe-le-bolt-branch" points="106,62 118,76 110,92" /></svg><svg className="pe-le-bolt b5" viewBox="0 0 125 183"><polyline className="pe-le-bolt-glow" points="116,10 108,36 118,34 104,68 116,66 96,118" /><polyline className="pe-le-bolt-mid" points="116,10 108,36 118,34 104,68 116,66 96,118" /><polyline className="pe-le-bolt-core" points="116,10 108,36 118,34 104,68 116,66 96,118" /></svg><svg className="pe-le-bolt b6" viewBox="0 0 125 183"><polyline className="pe-le-bolt-glow" points="22,15 10,44 22,42 6,78 20,76 2,130" /><polyline className="pe-le-bolt-mid" points="22,15 10,44 22,42 6,78 20,76 2,130" /><polyline className="pe-le-bolt-core" points="22,15 10,44 22,42 6,78 20,76 2,130" /></svg></div><div className="pe-le-tear-layer"><div className="pe-le-tear"><div className="pe-le-tear-inner" /></div><div className="pe-le-tear"><div className="pe-le-tear-inner" /></div><div className="pe-le-tear"><div className="pe-le-tear-inner" /></div></div><div className="pe-le-whiteout w1" /><div className="pe-le-whiteout w2" /><div className="pe-le-whiteout w3" /></>)}
-      {rarity === 'immortal' && (<><div className="pe-imm-slab-layer"><div className="pe-imm-slab" /><div className="pe-imm-slab" /><div className="pe-imm-slab" /><div className="pe-imm-slab" /><div className="pe-imm-slab" /></div><div className="pe-imm-aurora"><div className="pe-imm-aurora-band" /><div className="pe-imm-aurora-band" /><div className="pe-imm-aurora-band" /><div className="pe-imm-aurora-band" /></div><div className="pe-imm-rings"><div className="pe-imm-ring" /><div className="pe-imm-ring" /><div className="pe-imm-ring" /></div><div className="pe-imm-orb-layer"><div className="pe-imm-orb" /><div className="pe-imm-orb" /><div className="pe-imm-orb" /><div className="pe-imm-orb" /><div className="pe-imm-orb" /><div className="pe-imm-orb" /></div><div className="pe-imm-holo" /><div className="pe-imm-foil" /><div className="pe-imm-shock"><div className="pe-imm-shock-ring" /><div className="pe-imm-shock-ring" /><div className="pe-imm-shock-ring" /><div className="pe-imm-shock-ring" /><div className="pe-imm-shock-core" /></div><div className="pe-imm-spark-layer"><div className="pe-imm-spark" /><div className="pe-imm-spark" /><div className="pe-imm-spark" /><div className="pe-imm-spark" /><div className="pe-imm-spark" /><div className="pe-imm-spark" /><div className="pe-imm-spark" /><div className="pe-imm-spark" /></div><div className="pe-imm-tear-layer"><div className="pe-imm-tear"><div className="pe-imm-tear-inner" /></div><div className="pe-imm-tear"><div className="pe-imm-tear-inner" /></div><div className="pe-imm-tear"><div className="pe-imm-tear-inner" /></div></div><div className="pe-imm-shine" /><div className="pe-imm-shock-flash" /><div className="pe-imm-inner-border" /></>)}
+      {rarity === 'common' && <><div className="pe-cm-scan" /><div className="pe-cm-bottom-glow" /></>}
+      {rarity === 'rare' && <><div className="pe-ra-depth-vig" /><div className="pe-ra-center-glow" /></>}
+      {rarity === 'dynasty' && <div className="pe-ep-burst"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100,100)"><line x1="0" y1="-95" x2="0" y2="95" stroke="rgba(255,215,0,.35)" strokeWidth=".8" /><line x1="-95" y1="0" x2="95" y2="0" stroke="rgba(255,215,0,.35)" strokeWidth=".8" /></g></svg></div>}
+      {rarity === 'transcendent' && <><div className="pe-imm-holo" /></>}
+      {rarity === 'immortal' && <><div className="pe-imm-aurora"><div className="pe-imm-aurora-band" /><div className="pe-imm-aurora-band" /><div className="pe-imm-aurora-band" /></div><div className="pe-imm-holo" /><div className="pe-imm-shine" /></>}
     </>
   );
 }
-
+ 
 /* ══════════════════════════════════════════════════════════════════════
    MAIN COMPONENT
 ══════════════════════════════════════════════════════════════════════ */
 export default function LeagueDraftPage() {
   const { leagueId } = useParams<{ leagueId: string }>();
   const router = useRouter();
-
+ 
   /* ── League state ── */
   const [leagueName, setLeagueName]   = useState('');
   const [weekNumber, setWeekNumber]   = useState(1);
@@ -152,11 +139,11 @@ export default function LeagueDraftPage() {
   const [lockedPlayers, setLockedPlayers] = useState<Player[]>([]);
   const [totalPackCount, setTotalPackCount] = useState(11);
   const [alreadyDrafted, setAlreadyDrafted] = useState(false);
-
+ 
   /* ── Boosted pack position picker ── */
   const [boostedPos, setBoostedPos]   = useState<string | null>(null);   // pool key e.g. 'QB'
   const [boostedPicked, setBoostedPicked] = useState(false);
-
+ 
   /* ── Draft state ── */
   const [phase, setPhase]             = useState<Phase>('loading');
   const [lineup, setLineup]           = useState<(Player | null)[]>(Array(11).fill(null));
@@ -169,7 +156,7 @@ export default function LeagueDraftPage() {
   const [submitting, setSubmitting]   = useState(false);
   const [submitDone, setSubmitDone]   = useState(false);
   const cardsRef = useRef<HTMLDivElement>(null);
-
+ 
   /* ── Load league + player images ── */
   useEffect(() => {
     (async () => {
@@ -177,30 +164,60 @@ export default function LeagueDraftPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace('/login'); return; }
       setMyUserId(user.id);
-
+ 
       const [league, membership] = await Promise.all([
         getLeague(leagueId),
         getMyMembership(leagueId, user.id),
       ]);
-
+ 
       if (!league || !membership) { router.replace(`/games/pack-empire/offense/league/${leagueId}`); return; }
       if (league.phase === 'pregame') { router.replace(`/games/pack-empire/offense/league/${leagueId}`); return; }
-
+ 
       setLeagueName(league.name);
       setWeekNumber(league.current_week);
       setLeaguePhase(league.phase);
       setMyMemberId(membership.id);
       setMyPackTier(membership.next_pack_tier);
       setLockedPlayers((membership.permanent_locks as Player[]) ?? []);
-
+ 
       const isPlayoff = league.phase === 'gauntlet' || league.phase === 'finals';
       const packCount = isPlayoff ? PLAYOFF_PACK_COUNT : packsForWeek(league.current_week);
       setTotalPackCount(packCount);
-
+ 
       // Check if already drafted this week
       const existing = await getMyDraft(leagueId, membership.id, league.current_week, league.phase);
       if (existing) { setAlreadyDrafted(true); setPhase('complete'); return; }
-
+ 
+      // Restore in-progress draft if exists — prevents refreshing to reroll packs
+      const supabase2 = createClient();
+      const { data: progress } = await supabase2
+        .from('league_draft_progress')
+        .select('*')
+        .eq('league_id', leagueId)
+        .eq('user_id', user.id)
+        .eq('week_number', league.current_week)
+        .eq('phase', league.phase)
+        .single();
+ 
+      if (progress) {
+        const restoredLineup = (progress.lineup as (Player|null)[]) ?? Array(11).fill(null);
+        setLineup(restoredLineup);
+        setBoostedPicked(progress.boosted_picked ?? false);
+        if (progress.boosted_pos) setBoostedPos(progress.boosted_pos);
+        // If they had a pack open, restore those exact cards
+        if (progress.open_pack_si !== null && progress.open_pack_cards?.length) {
+          setPackSi(progress.open_pack_si);
+          setPackCards(progress.open_pack_cards as Player[]);
+          setRevealed(Array(progress.open_pack_cards.length).fill(false));
+        }
+        const filledCount = restoredLineup.filter(Boolean).length;
+        if (filledCount < 11) {
+          setPhase(progress.boosted_picked || isPlayoff ? 'packing' : 
+            (membership.next_pack_tier === 'standard_pack' ? 'packing' : 'boosted_pick'));
+        }
+        return;
+      }
+ 
       // Pre-fill locked players into lineup for regular season
       if (!isPlayoff && (membership.permanent_locks as Player[]).length > 0) {
         const locks = membership.permanent_locks as Player[];
@@ -208,7 +225,7 @@ export default function LeagueDraftPage() {
         locks.forEach((p, idx) => { if (idx < 11) newLineup[idx] = p; });
         setLineup(newLineup);
       }
-
+ 
       // Skip boosted picker if tier is standard or already in playoffs
       if (membership.next_pack_tier === 'standard_pack' || isPlayoff) {
         setBoostedPicked(true);
@@ -218,7 +235,7 @@ export default function LeagueDraftPage() {
       }
     })();
   }, [leagueId]);
-
+ 
   useEffect(() => {
   fetch('/players.csv')
     .then(r => r.ok ? r.text() : Promise.reject())
@@ -235,7 +252,7 @@ export default function LeagueDraftPage() {
     })
     .catch(() => {});
 }, []);
-
+ 
   /* ── Pack opening ── */
   const isBusy      = packCards.length > 0;
   const filled      = lineup.filter(Boolean).length;
@@ -244,15 +261,15 @@ export default function LeagueDraftPage() {
   const hiddenCount = revealed.filter(r => !r).length;
   const anyRevealed = revealed.some(Boolean);
   const openSlotsLeft = 11 - filled; // includes locked (already filled) and open
-
+ 
   function isBoostedSlot(si: number): boolean {
     return boostedPos !== null && SLOTS[si].pool === boostedPos;
   }
-
+ 
   function isLockedSlot(si: number): boolean {
     return lockedPlayers.some(lp => lp.id === lineup[si]?.id);
   }
-
+ 
   const openPack = useCallback((si: number, curLineup: (Player | null)[]) => {
     const excl = curLineup.filter(Boolean).map(p => p!.id);
     const poolKey = SLOTS[si].pool;
@@ -260,28 +277,30 @@ export default function LeagueDraftPage() {
     const tier: PackTier = useBoostedTier ? myPackTier : 'standard_pack';
     const pool = POOL[poolKey] ?? [];
     const cards = leagueWeightedDraw(pool, 5, tier, excl);
-
+ 
     setPackSi(si); setPackCards(cards);
     setRevealed(Array(cards.length).fill(false)); setPickedId(null);
-
+    // Save pack state immediately — player can't refresh to reroll
+    saveProgress({ lineup, packSi: si, packCards: cards });
+ 
     if (cards.some(c => c.rarity === 'immortal')) {
       setTimeout(() => { setImmFlash(true); setTimeout(() => setImmFlash(false), 2400); }, 300);
     }
     setTimeout(() => cardsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
   }, [myPackTier, boostedPos, lineup]);
-
+ 
   const clickSlot = useCallback((si: number) => {
     if (isBusy || pickedId !== null) return;
     if (isLockedSlot(si)) return; // locked — can't reopen
     openPack(si, lineup);
   }, [isBusy, pickedId, lineup, openPack]);
-
+ 
   const revealOne = useCallback((i: number) => {
     setRevealed(prev => { const n = [...prev]; n[i] = true; return n; });
     if (packCards[i]?.rarity === 'immortal')
       setTimeout(() => { setImmFlash(true); setTimeout(() => setImmFlash(false), 2400); }, 200);
   }, [packCards]);
-
+ 
   const revealAll = useCallback(() => {
     packCards.forEach((_, i) => {
       if (!revealed[i]) setTimeout(() => {
@@ -289,7 +308,7 @@ export default function LeagueDraftPage() {
       }, i * 130);
     });
   }, [packCards, revealed]);
-
+ 
   const handleCardClick = useCallback((i: number) => {
     if (pickedId) return;
     if (!revealed[i]) { revealOne(i); return; }
@@ -305,9 +324,14 @@ export default function LeagueDraftPage() {
         return n;
       });
       setPackCards([]); setRevealed([]); setPickedId(null); setPackSi(null);
+      // Save updated lineup — player can't refresh to undo pick
+      setLineup(prev2 => {
+        saveProgress({ lineup: prev2, packSi: null, packCards: [] });
+        return prev2;
+      });
     }, 650);
   }, [pickedId, revealed, revealOne, packCards, packSi, boostedPos]);
-
+ 
   /* ── Submit draft to Supabase ── */
   const handleSubmit = useCallback(async () => {
     if (submitting || submitDone) return;
@@ -317,7 +341,7 @@ export default function LeagueDraftPage() {
       const chem = calculateChemistry(roster);
       const draftScore = totalScore;
       const fs = finalScore(draftScore, chem);
-
+ 
       await dbSubmitDraft({
         leagueId,
         memberId: myMemberId,
@@ -332,16 +356,49 @@ export default function LeagueDraftPage() {
         packTierEarned: myPackTier,
       });
       setSubmitDone(true);
+      // Clear progress — draft is officially submitted
+      const supabase3 = createClient();
+      await supabase3.from('league_draft_progress')
+        .delete()
+        .eq('league_id', leagueId)
+        .eq('user_id', myUserId)
+        .eq('week_number', weekNumber)
+        .eq('phase', leaguePhase);
     } catch (e) {
       console.error(e);
     } finally {
       setSubmitting(false);
     }
   }, [submitting, submitDone, lineup, totalScore, leagueId, myMemberId, myUserId, weekNumber, leaguePhase, lockedPlayers, myPackTier]);
-
+ 
+  /* ── Draft progress persistence ── */
+  const saveProgress = useCallback(async (params: {
+    lineup: (Player|null)[];
+    packSi?: number|null;
+    packCards?: Player[];
+    boostedPicked?: boolean;
+    boostedPos?: string|null;
+  }) => {
+    if (!myMemberId || !myUserId || !leagueId) return;
+    const supabase = createClient();
+    await supabase.from('league_draft_progress').upsert({
+      league_id: leagueId,
+      member_id: myMemberId,
+      user_id: myUserId,
+      week_number: weekNumber,
+      phase: leaguePhase,
+      lineup: params.lineup,
+      open_pack_si: params.packSi ?? null,
+      open_pack_cards: params.packCards ?? null,
+      boosted_picked: params.boostedPicked ?? boostedPicked,
+      boosted_pos: params.boostedPos ?? boostedPos,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'league_id,user_id,week_number,phase' });
+  }, [myMemberId, myUserId, leagueId, weekNumber, leaguePhase, boostedPicked, boostedPos]);
+ 
   /* ── Chemistry for display ── */
   const chemResult = calculateChemistry(lineup.filter(Boolean) as Player[]);
-
+ 
   /* ── Slot rendering ── */
   const FSlot = ({ si }: { si: number }) => {
     const player   = lineup[si];
@@ -351,7 +408,7 @@ export default function LeagueDraftPage() {
     const canOpen  = !player && !isAct && !isBusy && phase === 'packing';
     const rc       = player ? RC[player.rarity] : null;
     const imgSrc   = player ? imageMap[player.name] : undefined;
-
+ 
     return (
       <div className="ldr-slot-outer">
         {player ? (
@@ -412,13 +469,13 @@ export default function LeagueDraftPage() {
       </div>
     );
   };
-
+ 
   const FormRow = ({ indices }: { indices: readonly number[] }) => (
     <div className="ldr-form-row">
       {indices.map(si => <FSlot key={SLOTS[si].key} si={si} />)}
     </div>
   );
-
+ 
   const FieldLayout = () => (
     <div className="ldr-field">
       <FormRow indices={OL_ROW} />
@@ -429,18 +486,18 @@ export default function LeagueDraftPage() {
       <FormRow indices={QB_ROW} />
     </div>
   );
-
+ 
   /* ══════════════════ RENDER ══════════════════ */
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: LEAGUE_DRAFT_STYLES }} />
-
+ 
       {immFlash && (
         <div className="ldr-imm-flash" aria-hidden="true">
           <div className="ldr-imm-text">💎 IMMORTAL PULL!</div>
         </div>
       )}
-
+ 
       {/* Nav */}
       <nav className="ldr-nav">
         <Link href={`/games/pack-empire/offense/league/${leagueId}`} className="ldr-back">
@@ -454,7 +511,7 @@ export default function LeagueDraftPage() {
           {PACK_TIER_LABELS[myPackTier]}
         </div>
       </nav>
-
+ 
       {/* Score strip */}
       {(phase === 'packing' || phase === 'complete') && (
         <div className="ldr-strip">
@@ -484,9 +541,9 @@ export default function LeagueDraftPage() {
           <div className="ldr-sbar"><div className="ldr-sfill" style={{ width: `${(filled / 11) * 100}%` }} /></div>
         </div>
       )}
-
+ 
       <div className="ldr-root">
-
+ 
         {/* ════ LOADING ════ */}
         {phase === 'loading' && (
           <div className="ldr-loading">
@@ -494,7 +551,7 @@ export default function LeagueDraftPage() {
             <div className="ldr-loading-text">LOADING LEAGUE DRAFT…</div>
           </div>
         )}
-
+ 
         {/* ════ ALREADY DRAFTED ════ */}
         {alreadyDrafted && (
           <div className="ldr-already">
@@ -506,7 +563,7 @@ export default function LeagueDraftPage() {
             </Link>
           </div>
         )}
-
+ 
         {/* ════ BOOSTED PACK POSITION PICKER ════ */}
         {phase === 'boosted_pick' && (
           <div className="ldr-boost-pick">
@@ -543,7 +600,7 @@ export default function LeagueDraftPage() {
             </button>
           </div>
         )}
-
+ 
         {/* ════ PACKING ════ */}
         {phase === 'packing' && (
           <div className="ldr-packing">
@@ -564,11 +621,11 @@ export default function LeagueDraftPage() {
                 </div>
               )}
             </div>
-
+ 
             <div className="ldr-formation-wrap">
               <FieldLayout />
             </div>
-
+ 
             {/* Pack cards */}
             {packCards.length > 0 && (
               <div className="ldr-cards-area" ref={cardsRef}>
@@ -638,7 +695,7 @@ export default function LeagueDraftPage() {
                 )}
               </div>
             )}
-
+ 
             {!isBusy && filled < 11 && (
               <div className="ldr-empty-prompt">
                 <div className="ldr-ep-arrow">↑</div>
@@ -647,7 +704,7 @@ export default function LeagueDraftPage() {
             )}
           </div>
         )}
-
+ 
         {/* ════ COMPLETE ════ */}
         {phase === 'complete' && !alreadyDrafted && (
           <div className="ldr-complete">
@@ -658,7 +715,7 @@ export default function LeagueDraftPage() {
               </div>
               <div className="ldr-cmp-label">FINAL SCORE</div>
             </div>
-
+ 
             {/* Score breakdown */}
             <div className="ldr-cmp-breakdown">
               <div className="ldr-cmp-bd-row">
@@ -691,12 +748,12 @@ export default function LeagueDraftPage() {
                 </span>
               </div>
             </div>
-
+ 
             {/* Tier */}
             <div className="ldr-cmp-tier" style={{ color: tier.color }}>
               {tier.icon} {tier.label}
             </div>
-
+ 
             {/* Submit */}
             {!submitDone ? (
               <button
@@ -715,7 +772,7 @@ export default function LeagueDraftPage() {
                 </Link>
               </div>
             )}
-
+ 
             {/* Roster preview */}
             <div className="ldr-cmp-field-wrap">
               <div className="ldr-cmp-field-label">YOUR LINEUP</div>
