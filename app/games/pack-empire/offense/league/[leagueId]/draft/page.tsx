@@ -196,19 +196,6 @@ export default function LeagueDraftPage() {
         setLineup(newLineup);
       }
 
-      // Load player images from CSV
-      useEffect(() => {
-          fetch('/players.csv').then(r => r.ok ? r.text() : Promise.reject()).then(text => {
-            const map: Record<string, string> = {};
-            text.split('\n').forEach(line => {
-              if (!line.trim()) return;
-              const cols = parseCSVRow(line);
-              if (cols[1] && cols[22]?.startsWith('http')) map[cols[1]] = cols[22];
-            });
-            setImageMap(map);
-          }).catch(() => {});
-        }, []);
-
       // Skip boosted picker if tier is standard or already in playoffs
       if (membership.next_pack_tier === 'standard_pack' || isPlayoff) {
         setBoostedPicked(true);
@@ -218,6 +205,23 @@ export default function LeagueDraftPage() {
       }
     })();
   }, [leagueId]);
+
+  useEffect(() => {
+  fetch('/players.csv')
+    .then(r => r.ok ? r.text() : Promise.reject())
+    .then(text => {
+      const map: Record<string, string> = {};
+      text.split('\n').forEach(line => {
+        if (!line.trim()) return;
+        const cols = parseCSVRow(line);
+        const name = cols[1];
+        const url = cols[22];
+        if (name && url && url.startsWith('http')) map[name] = url;
+      });
+      setImageMap(map);  // ← this line was missing before
+    })
+    .catch(() => {});
+}, []);
 
   /* ── Pack opening ── */
   const isBusy      = packCards.length > 0;
