@@ -9,8 +9,6 @@ import { getLeague } from '@/lib/league/db';
 import type { DBLeague } from '@/lib/league/db';
 import { chemistryLabel } from '@/lib/league';
 
-const supabase = createClient();
-
 type Rarity = 'common' | 'rare' | 'dynasty' | 'transcendent' | 'immortal';
 interface Player {
   id: string; name: string; pos: string; team: string;
@@ -34,6 +32,7 @@ const SLOTS = [
 ];
 
 export default function TeamViewPage() {
+  const supabase = createClient();
   const { leagueId, memberId } = useParams<{ leagueId: string; memberId: string }>();
   const router = useRouter();
 

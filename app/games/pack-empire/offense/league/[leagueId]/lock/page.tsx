@@ -8,8 +8,6 @@ import { createClient } from '@/lib/supabase/client';
 import { getLeague, getMyMembership, saveLockChoice, savePermanentLock } from '@/lib/league/db';
 import type { DBLeague, DBLeagueMember } from '@/lib/league/db';
 
-const supabase = createClient();
-
 type Rarity = 'common' | 'rare' | 'dynasty' | 'transcendent' | 'immortal';
 interface Player { id: string; name: string; pos: string; team: string; score: number; rarity: Rarity; accolades: string[]; }
 
@@ -25,6 +23,7 @@ const RC: Record<Rarity, { color: string }> = {
 const LOCK_COLORS = ['#c8a020', '#1a3020', '#1a4020'];
 
 export default function LockPickPage() {
+  const supabase = createClient();
   const { leagueId } = useParams<{ leagueId: string }>();
   const router = useRouter();
 

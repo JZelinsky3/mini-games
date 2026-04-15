@@ -8,8 +8,6 @@ import { createClient } from '@/lib/supabase/client';
 import { getLeague, getLeagueMembers, getMyMembership } from '@/lib/league/db';
 import type { DBLeague, DBLeagueMember } from '@/lib/league/db';
 
-const supabase = createClient();
-
 interface PlayoffRound {
   id: string;
   round_number: number;
@@ -39,6 +37,7 @@ interface FinalsState {
 }
 
 export default function PlayoffsPage() {
+  const supabase = createClient();
   const { leagueId } = useParams<{ leagueId: string }>();
   const router = useRouter();
 

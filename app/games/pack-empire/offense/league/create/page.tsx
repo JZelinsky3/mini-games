@@ -7,9 +7,8 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { createLeague, joinLeague } from '@/lib/league/db';
 
-const supabase = createClient();
-
 export default function CreateLeaguePage() {
+  const supabase = createClient();
   const router = useRouter();
   const [userId, setUserId]      = useState<string | null>(null);
   const [name, setName]          = useState('');

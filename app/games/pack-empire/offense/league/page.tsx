@@ -7,9 +7,8 @@ import { createClient } from '@/lib/supabase/client';
 import { getMyLeagues, getLeagueByJoinCode, joinLeague, getMyMembership, getLeagueMembers } from '@/lib/league/db';
 import type { DBLeague } from '@/lib/league/db';
 
-const supabase = createClient();
-
 export default function LeagueHubPage() {
+  const supabase = createClient();
   const [userId, setUserId]       = useState<string | null>(null);
   const [leagues, setLeagues]     = useState<DBLeague[]>([]);
   const [joinCode, setJoinCode]   = useState('');

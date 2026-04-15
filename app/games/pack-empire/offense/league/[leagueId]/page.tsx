@@ -5,11 +5,9 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { getLeague, getLeagueMembers, getMyMembership, joinLeague, updateTeamName, leaveLeague, deleteLeague } from '@/lib/league/db';
+import { joinLeague, updateTeamName, leaveLeague, deleteLeague } from '@/lib/league/db';
 import type { DBLeague, DBLeagueMember } from '@/lib/league/db';
 import { PACK_TIER_LABELS, PACK_TIER_COLORS, packsForWeek } from '@/lib/league/packs';
-
-const supabase = createClient();
 
 const PHASE_LABEL: Record<string, string> = {
   pregame:  'WAITING TO START',
@@ -20,6 +18,7 @@ const PHASE_LABEL: Record<string, string> = {
 };
 
 export default function LeagueHomePage() {
+  const supabase = createClient();
   const { leagueId } = useParams<{ leagueId: string }>();
   const router = useRouter();
 
@@ -52,14 +51,14 @@ export default function LeagueHomePage() {
     supabase.from('league_members').select('*, profiles(username, avatar_url)').eq('league_id', leagueId).order('team_score', { ascending: false }),
     supabase.from('league_members').select('*').eq('league_id', leagueId).eq('user_id', uid).single(),
   ]);
-  const lg   = lgRes.data as DBLeague | null;
+  const lg = lgRes.data as DBLeague | null;
   const mems = (memRes.data ?? []) as DBLeagueMember[];
   const membership = myRes.data as DBLeagueMember | null;
   setLeague(lg);
-  const merged = membership && !mems.find(m => m.user_id === uid)
+  const merged = membership && !mems.find((m: DBLeagueMember) => m.user_id === uid)
     ? [membership, ...mems] : mems;
   setMembers(merged);
-  setMe(membership ?? merged.find(m => m.user_id === uid) ?? null);
+  setMe(membership ?? merged.find((m: DBLeagueMember) => m.user_id === uid) ?? null);
 }
 
   useEffect(() => {

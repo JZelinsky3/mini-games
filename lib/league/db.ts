@@ -136,21 +136,22 @@ export async function joinLeague(leagueId: string, userId: string): Promise<DBLe
   return data;
 }
 
-export async function getLeagueMembers(
-  leagueId: string,
-  retries = 2,
-): Promise<DBLeagueMember[]> {
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    const { data } = await sb()
-      .from('league_members')
-      .select('*, profiles(username, avatar_url)')
-      .eq('league_id', leagueId)
-      .order('team_score', { ascending: false });
-    if ((data && data.length > 0) || attempt === retries) return data ?? [];
-    // Empty right after insert = RLS hasn't caught up yet — wait and retry
-    await new Promise(r => setTimeout(r, 350));
-  }
-  return [];
+export async function getLeagueMembers(leagueId: string): Promise<DBLeagueMember[]> {
+  const client = sb();
+  const { data: { session } } = await client.auth.getSession();
+  
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/league-members?leagueId=${leagueId}`,
+    {
+      headers: {
+        'Authorization': `Bearer ${session?.access_token ?? ''}`,
+        'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      }
+    }
+  );
+  
+  if (!res.ok) return [];
+  return res.json();
 }
 
 export async function getMyMembership(
