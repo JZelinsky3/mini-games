@@ -5,7 +5,10 @@ import { createClient } from '@/lib/supabase/client';
 import type { PackTier } from './packs';
 import type { ChemResult } from './chemistry';
 
-const sb = () => createClient();
+// Single shared client instance — avoids creating a new unauthenticated
+// client on every call which would make auth.uid() return null in RLS
+const supabaseClient = createClient();
+const sb = () => supabaseClient;
 
 // ─── Types mirroring DB rows ──────────────────────────────────────────────────
 
