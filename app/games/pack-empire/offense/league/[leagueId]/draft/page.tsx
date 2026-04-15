@@ -8,11 +8,7 @@ import { createClient } from '@/lib/supabase/client';
 import { getLeague, getMyMembership, getMyDraft, submitDraft as dbSubmitDraft } from '@/lib/league/db';
 import { leagueWeightedDraw, packsForWeek, PLAYOFF_PACK_COUNT, PACK_TIER_LABELS, PACK_TIER_COLORS } from '@/lib/league/packs';
 import type { PackTier } from '@/lib/league/packs';
-import { 
-  calculateChemistry, 
-  finalScore, 
-  chemistryLabel
-} from '@/lib/league';
+import { calculateChemistry, finalScore, chemistryLabel } from '@/lib/league';
 
 import { ALL_PLAYERS }    from '@/lib/packs/current-offense-qb';
 import { ALL_PLAYERS_V2 } from '@/lib/packs/current-offense-rb';

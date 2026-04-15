@@ -2,16 +2,9 @@
 export { pl }                          from './player';
 export type { Player, Position }       from './player';
 export { areRivals }                   from './rivalries';
-export {
-  calculateChemistry,
-  finalScore,
-  chemistryLabel,
-}                                      from './chemistry';
-
-export type { 
-  ChemBond as ChemistryBond, 
-  ChemResult as ChemistryResult 
-} from './chemistry';
+// Chemistry exports
+export { calculateChemistry, finalScore, chemistryLabel } from './chemistry';
+export type { ChemBond as ChemistryBond, ChemResult as ChemistryResult } from './chemistry';
 
 export {
   submitDraft,
