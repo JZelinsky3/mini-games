@@ -2,7 +2,7 @@
 
 export type Position =
   | 'QB'
-  | 'HB'
+  | 'RB'
   | 'WR'
   | 'TE'
   | 'OT'   // Offensive Tackle

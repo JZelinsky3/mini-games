@@ -155,10 +155,10 @@ export function finalScore(draftScore: number, chem: ChemResult): number {
 }
 
 /** Short label for UI: "+750 chem (3 syn, 1 riv)" */
-export function chemShortLabel(c: ChemResult): string {
+export function chemistryLabel(c: ChemResult): string {
   const sign = c.totalChemPoints >= 0 ? '+' : '';
-  const syn  = c.bonds.filter(b => b.type === 'synergy').length;
-  const riv  = c.bonds.filter(b => b.type === 'rivalry').length;
+  const syn = c.bonds.filter(b => b.type === 'synergy').length;
+  const riv = c.bonds.filter(b => b.type === 'rivalry').length;
   const parts = [];
   if (syn > 0) parts.push(`${syn} syn`);
   if (riv > 0) parts.push(`${riv} riv`);

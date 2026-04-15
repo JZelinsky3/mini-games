@@ -7,7 +7,12 @@ export {
   finalScore,
   chemistryLabel,
 }                                      from './chemistry';
-export type { ChemistryBond, ChemistryResult } from './chemistry';
+
+export type { 
+  ChemBond as ChemistryBond, 
+  ChemResult as ChemistryResult 
+} from './chemistry';
+
 export {
   submitDraft,
   processMidnightReset,
