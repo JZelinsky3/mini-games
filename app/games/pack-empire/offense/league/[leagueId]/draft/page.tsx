@@ -18,6 +18,12 @@ import { ALL_PLAYERS_V5 } from '@/lib/packs/current-offense-ot';
 import { ALL_PLAYERS_V6 } from '@/lib/packs/current-offense-iol';
 import { ALL_PLAYERS_V7 } from '@/lib/packs/legend-offense';
 
+function parseCSVRow(row: string): string[] {
+  const cols: string[] = []; let cur = ''; let inQ = false;
+  for (const c of row) { if (c === '"') { inQ = !inQ; continue; } if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; continue; } cur += c; }
+  cols.push(cur.trim()); return cols;
+}
+
 /* ─── Types ──────────────────────────────────────────────────────────── */
 type Rarity = 'common' | 'rare' | 'dynasty' | 'transcendent' | 'immortal';
 type Phase = 'loading' | 'boosted_pick' | 'packing' | 'complete';
@@ -191,17 +197,17 @@ export default function LeagueDraftPage() {
       }
 
       // Load player images from CSV
-      fetch('/players.csv').then(r => r.ok ? r.text() : Promise.reject()).then(text => {
-        const map: Record<string, string> = {};
-        text.split('\n').forEach(line => {
-          if (!line.trim()) return;
-          const cols = line.split(',');
-          const name = cols[1]?.replace(/"/g, '').trim();
-          const url  = cols[22]?.replace(/"/g, '').trim();
-          if (name && url?.startsWith('http')) map[name] = url;
-        });
-        setImageMap(map);
-      }).catch(() => {});
+      useEffect(() => {
+          fetch('/players.csv').then(r => r.ok ? r.text() : Promise.reject()).then(text => {
+            const map: Record<string, string> = {};
+            text.split('\n').forEach(line => {
+              if (!line.trim()) return;
+              const cols = parseCSVRow(line);
+              if (cols[1] && cols[22]?.startsWith('http')) map[cols[1]] = cols[22];
+            });
+            setImageMap(map);
+          }).catch(() => {});
+        }, []);
 
       // Skip boosted picker if tier is standard or already in playoffs
       if (membership.next_pack_tier === 'standard_pack' || isPlayoff) {
@@ -784,10 +790,10 @@ const LEAGUE_DRAFT_STYLES = `
   scale it cleanly at each breakpoint without transform hacks.
   Desktop default: 110px  (fits 5 OL slots comfortably at 680px)
 */
-.ldr-field{--sw:110px;--sh:173px;--sg:.5rem;display:flex;flex-direction:column;gap:.5rem;align-items:center;padding:.5rem 0;width:100%}
-.ldr-form-row{display:flex;gap:var(--sg);justify-content:center;width:100%}
-.ldr-skill-spread{display:flex;justify-content:space-between;width:100%;padding:0}
-.ldr-skill-side{display:flex;flex-direction:column;gap:var(--sg)}
+.ldr-field{--sw:110px;--sh:173px;--sg:16px;display:flex;flex-direction:column;align-items:center;gap:18px;width:fit-content;margin:0 auto}
+.ldr-form-row{display:flex;gap:var(--sg)}
+.ldr-skill-spread{display:flex;justify-content:space-between;align-items:flex-end;width:calc(100% + 260px);margin:0 -30px}
+.ldr-skill-side{display:flex;gap:var(--sg)}
 .ldr-slot-outer{display:flex;flex-direction:column;align-items:center;gap:.2rem}
 .ldr-slot-label{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.65rem;letter-spacing:.12em;color:#6a3820}
 .ldr-slot-label.locked{color:#c8a020}
@@ -808,7 +814,7 @@ const LEAGUE_DRAFT_STYLES = `
 .ldr-fsl-opening{font-family:'Orbitron',sans-serif;font-size:.8rem;color:#ff6b35;animation:ldr-spin .8s linear infinite}
 
 /* Filled card */
-.ldr-fsl.has-p{width:var(--sw);height:var(--sh);border-radius:9px;position:relative;overflow:visible;border:1.5px solid var(--rc)}
+.ldr-fsl.has-p{width:var(--sw);height:var(--sh);border-radius:9px;position:relative;overflow:visible;border:none}
 .ldr-filled-card{width:100%;height:100%;border-radius:9px;overflow:hidden;position:relative;display:flex;flex-direction:column}
 .ldr-fc-topbar{display:flex;align-items:center;justify-content:space-between;padding:.18rem .3rem;background:rgba(4,2,0,.95);flex-shrink:0}
 .ldr-fc-pos-badge{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.52rem;color:#0e0600;padding:.08rem .25rem;border-radius:2px}
@@ -925,19 +931,20 @@ const LEAGUE_DRAFT_STYLES = `
   At 400px:
     5*72 + 4*4 = 376px — fine.
 */
+
 @media(max-width:640px){
-  .ldr-field{--sw:96px;--sh:152px;--sg:.4rem}
+  .ldr-field{--sw:96px;--sh:152px;--sg:10px}
   .ldr-card{min-width:96px}
-  .ldr-skill-spread{width:calc(100% + 60px);margin:0 -12px}
+  .ldr-skill-spread{width:calc(100% + 160px);margin:0 -20px}
 }
 @media(max-width:480px){
-  .ldr-field{--sw:80px;--sh:126px;--sg:.3rem}
+  .ldr-field{--sw:76px;--sh:120px;--sg:8px}
   .ldr-card{min-width:84px}
-  .ldr-skill-spread{width:calc(100% + 40px);margin:0 -8px}
+  .ldr-skill-spread{width:calc(100% + 120px);margin:0 -16px}
 }
 @media(max-width:380px){
-  .ldr-field{--sw:64px;--sh:101px;--sg:.25rem}
+  .ldr-field{--sw:60px;--sh:94px;--sg:6px}
   .ldr-card{min-width:72px}
-  .ldr-skill-spread{width:calc(100% + 24px);margin:0 -4px}
+  .ldr-skill-spread{width:calc(100% + 80px);margin:0 -10px}
 }
 `;
