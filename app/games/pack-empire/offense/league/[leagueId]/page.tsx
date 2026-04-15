@@ -107,6 +107,19 @@ export default function LeagueHomePage() {
     }
   }
 
+  async function handleStartSeason() {
+  if (!league || !isCommissioner) return;
+  try {
+    await supabase
+      .from('leagues')
+      .update({ phase: 'regular', current_week: 1 })
+      .eq('id', league.id);
+    setLeague(prev => prev ? { ...prev, phase: 'regular', current_week: 1 } : prev);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
   async function handleSaveTeamName() {
     if (!me || !teamNameInput.trim()) return;
     if (teamNameInput.trim().length < 2) { setNameError('Min 2 characters'); return; }
@@ -304,7 +317,7 @@ export default function LeagueHomePage() {
                   <div className="llh-comm-label">COMMISSIONER</div>
                   {league.phase === 'pregame' && (
                     members.length >= league.min_players ? (
-                      <button className="llh-start-btn">
+                      <button className="llh-start-btn" onClick={handleStartSeason}>
                         START SEASON ({members.length} teams ready)
                       </button>
                     ) : (
