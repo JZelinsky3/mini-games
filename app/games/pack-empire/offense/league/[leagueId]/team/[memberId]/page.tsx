@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { getLeague } from '@/lib/league/db';
 import type { DBLeague } from '@/lib/league/db';
-import { chemShortLabel } from '@/lib/league/chemistry';
+import { chemistryLabel } from '@/lib/league';
 
 const supabase = createClient();
 
