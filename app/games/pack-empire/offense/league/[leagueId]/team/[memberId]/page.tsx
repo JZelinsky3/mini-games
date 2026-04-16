@@ -7,7 +7,9 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { getLeague } from '@/lib/league/db';
 import type { DBLeague } from '@/lib/league/db';
-import { chemistryLabel } from '@/lib/league';
+import { chemistryLabel } from '@/lib/league/chemistry';
+
+const supabase = createClient();
 
 type Rarity = 'common' | 'rare' | 'dynasty' | 'transcendent' | 'immortal';
 interface Player {
@@ -32,7 +34,6 @@ const SLOTS = [
 ];
 
 export default function TeamViewPage() {
-  const supabase = createClient();
   const { leagueId, memberId } = useParams<{ leagueId: string; memberId: string }>();
   const router = useRouter();
 
@@ -43,6 +44,21 @@ export default function TeamViewPage() {
   const [username, setUsername]     = useState('');
   const [loading, setLoading]       = useState(true);
   const [myUserId, setMyUserId]     = useState<string | null>(null);
+  const [imageMap, setImageMap]     = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    fetch('/players.csv').then(r => r.ok ? r.text() : Promise.reject()).then(text => {
+      const map: Record<string, string> = {};
+      text.split('\n').forEach(line => {
+        if (!line.trim()) return;
+        const cols: string[] = []; let cur = ''; let inQ = false;
+        for (const c of line) { if (c === '"') { inQ = !inQ; continue; } if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; continue; } cur += c; }
+        cols.push(cur.trim());
+        if (cols[1] && cols[22]?.startsWith('http')) map[cols[1]] = cols[22];
+      });
+      setImageMap(map);
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -207,6 +223,7 @@ export default function TeamViewPage() {
                     const player  = slotPlayers[idx];
                     const locked  = player ? lockedIds.includes(player.id) : false;
                     const rc      = player ? RC[player.rarity] ?? RC.common : null;
+                    const imgSrc  = player ? imageMap[player.name] : undefined;
                     return (
                       <div
                         key={slot.key}
@@ -217,7 +234,9 @@ export default function TeamViewPage() {
                         <div className="ltv-card-pos">{slot.key.replace(/\d/, '')}</div>
                         {player ? (
                           <>
-                            <div className="ltv-card-art" style={{ background: rc!.art }} />
+                            <div className="ltv-card-art" style={{ background: rc!.art }}>
+                              {imgSrc && <img src={imgSrc} alt={player!.name} className="ltv-card-img" onError={e => (e.currentTarget.style.display='none')} />}
+                            </div>
                             <div className="ltv-card-name">{player.name}</div>
                             <div className="ltv-card-team">{player.team}</div>
                             <div className="ltv-card-score" style={{ color: rc!.color }}>
@@ -299,6 +318,8 @@ export default function TeamViewPage() {
         .ltv-col-right{}
         .ltv-roster-label{font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:.2em;color:#7a3a10;margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem}
         .ltv-roster-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#4a2000,transparent)}
+        .ltv-card-art{position:relative;overflow:hidden}
+        .ltv-card-img{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:110%;width:auto;object-fit:contain;object-position:center bottom;z-index:2}
         .ltv-roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.5rem}
 
         .ltv-card{background:#2e1200;border:1px solid #3a1800;border-radius:10px;padding:.75rem .7rem;position:relative;overflow:hidden;transition:.15s;min-height:100px}
@@ -315,6 +336,29 @@ export default function TeamViewPage() {
         .ltv-card-empty{color:#2e1200;font-size:1rem;padding-top:.3rem}
 
         /* Responsive */
+        /* Lock section */
+        .ltv-lock-section{background:rgba(14,6,0,.8);border:1.5px solid rgba(200,160,32,.3);border-radius:10px;padding:.9rem 1rem;margin-bottom:1rem}
+        .ltv-lock-eyebrow{font-family:'Orbitron',sans-serif;font-size:.58rem;letter-spacing:.2em;color:#c8a020;margin-bottom:.3rem}
+        .ltv-lock-sub{font-size:.78rem;color:#8a5030;line-height:1.5;margin-bottom:.8rem}
+        .ltv-lock-sub strong{color:#c8a020}
+        .ltv-lock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:.4rem;margin-bottom:.8rem}
+        .ltv-lock-card{background:rgba(30,12,4,.9);border:1.5px solid #3a1008;border-radius:7px;padding:.5rem .4rem;cursor:pointer;text-align:center;transition:.15s}
+        .ltv-lock-card:hover{border-color:var(--rc,#ff6b35)}
+        .ltv-lock-card.selected{border-color:var(--rc,#c8a020);background:rgba(200,160,32,.08);box-shadow:0 0 10px rgba(200,160,32,.2)}
+        .ltv-lc-pos{font-family:'Rajdhani',sans-serif;font-size:.6rem;font-weight:700;color:#6a3820;letter-spacing:.1em}
+        .ltv-lc-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.78rem;color:#f0d8c8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .ltv-lc-score{font-family:'Orbitron',sans-serif;font-size:.68rem;font-weight:800}
+        .ltv-lock-btn{width:100%;background:linear-gradient(135deg,#4a2000,#8a4000,#c87020);border:none;border-radius:8px;padding:.75rem;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.12em;color:#fff5ee;cursor:pointer;transition:.2s;margin-top:.4rem}
+        .ltv-lock-btn:hover{filter:brightness(1.1)}
+        .ltv-lock-warning{background:rgba(60,20,0,.9);border:1px solid rgba(200,160,32,.4);border-radius:8px;padding:.8rem;margin-top:.5rem}
+        .ltv-lw-msg{font-size:.8rem;color:#c8a020;margin-bottom:.6rem;font-weight:600}
+        .ltv-lw-btns{display:flex;gap:.4rem}
+        .ltv-lw-confirm{flex:1;background:rgba(200,160,32,.2);border:1.5px solid #c8a020;color:#c8a020;border-radius:6px;padding:.5rem;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;transition:.15s}
+        .ltv-lw-confirm:hover:not(:disabled){background:rgba(200,160,32,.35)}
+        .ltv-lw-cancel{flex:1;background:transparent;border:1px solid #3a1008;color:#6a3820;border-radius:6px;padding:.5rem;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;transition:.15s}
+        .ltv-lw-cancel:hover{border-color:#6a3820;color:#f0d8c8}
+        .ltv-lock-done{background:rgba(30,20,4,.8);border:1px solid rgba(200,160,32,.25);border-radius:8px;padding:.7rem 1rem;margin-bottom:1rem;font-size:.82rem;color:#c8a020;font-family:'Rajdhani',sans-serif;font-weight:600}
+
         @media(max-width:800px){
           .ltv-cols{grid-template-columns:1fr}
           .ltv-col-left{order:2}

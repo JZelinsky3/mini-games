@@ -104,24 +104,185 @@ function RarityEffects({ rarity, position = 'inner' }: { rarity: Rarity; positio
   if (position === 'outer') {
     return (
       <>
-        {rarity === 'rare' && <div className="pe-ra-spin-wrap"><div className="pe-ra-spin-arc" /><div className="pe-ra-spin-inner" /></div>}
-        {rarity === 'dynasty' && <div className="pe-ep-dual-wrap"><div className="pe-ep-dual-arc1" /><div className="pe-ep-dual-arc2" /><div className="pe-ep-dual-inner" /></div>}
-        {rarity === 'transcendent' && <div className="pe-le-plasma-wrap"><div className="pe-le-plasma-arc1" /><div className="pe-le-plasma-arc2" /><div className="pe-le-plasma-inner" /></div>}
-        {rarity === 'immortal' && <><div className="pe-imm-glow-1" /><div className="pe-imm-glow-2" /><div className="pe-imm-glow-3" /><div className="pe-imm-glow-4" /></>}
+        {rarity === 'rare' && (
+          <div className="pe-ra-spin-wrap">
+            <div className="pe-ra-spin-arc"/><div className="pe-ra-spin-inner"/>
+          </div>
+        )}
+        {rarity === 'dynasty' && (
+          <div className="pe-ep-dual-wrap">
+            <div className="pe-ep-dual-arc1"/><div className="pe-ep-dual-arc2"/><div className="pe-ep-dual-inner"/>
+          </div>
+        )}
+        {rarity === 'transcendent' && (
+          <div className="pe-le-plasma-wrap">
+            <div className="pe-le-plasma-arc1"/><div className="pe-le-plasma-arc2"/><div className="pe-le-plasma-inner"/>
+          </div>
+        )}
+        {rarity === 'immortal' && <>
+          <div className="pe-imm-glow-1"/><div className="pe-imm-glow-2"/>
+          <div className="pe-imm-glow-3"/><div className="pe-imm-glow-4"/>
+          <div className="pe-imm-corner-arcs">
+            <svg viewBox="0 0 125 183" xmlns="http://www.w3.org/2000/svg"
+                 style={{position:'absolute',inset:0,width:'100%',height:'100%',overflow:'visible'} as React.CSSProperties}>
+              <path className="pe-imm-arc-glow a1" d="M -6,34 Q -6,-6 34,-6"/>
+              <path className="pe-imm-arc-line a1" d="M -6,34 Q -6,-6 34,-6"/>
+              <path className="pe-imm-arc-glow a2" d="M 91,-6 Q 131,-6 131,34"/>
+              <path className="pe-imm-arc-line a2" d="M 91,-6 Q 131,-6 131,34"/>
+              <path className="pe-imm-arc-glow a3" d="M 131,149 Q 131,189 91,189"/>
+              <path className="pe-imm-arc-line a3" d="M 131,149 Q 131,189 91,189"/>
+              <path className="pe-imm-arc-glow a4" d="M 34,189 Q -6,189 -6,149"/>
+              <path className="pe-imm-arc-line a4" d="M 34,189 Q -6,189 -6,149"/>
+            </svg>
+          </div>
+          <div className="pe-imm-plasma-wrap">
+            <div className="pe-imm-plasma-arc1"/><div className="pe-imm-plasma-arc2"/>
+            <div className="pe-imm-plasma-arc3"/><div className="pe-imm-plasma-inner"/>
+          </div>
+        </>}
       </>
     );
   }
+
   return (
     <>
-      {rarity === 'common' && <><div className="pe-cm-scan" /><div className="pe-cm-bottom-glow" /></>}
-      {rarity === 'rare' && <><div className="pe-ra-depth-vig" /><div className="pe-ra-center-glow" /></>}
-      {rarity === 'dynasty' && <div className="pe-ep-burst"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g transform="translate(100,100)"><line x1="0" y1="-95" x2="0" y2="95" stroke="rgba(255,215,0,.35)" strokeWidth=".8" /><line x1="-95" y1="0" x2="95" y2="0" stroke="rgba(255,215,0,.35)" strokeWidth=".8" /></g></svg></div>}
-      {rarity === 'transcendent' && <><div className="pe-imm-holo" /></>}
-      {rarity === 'immortal' && <><div className="pe-imm-aurora"><div className="pe-imm-aurora-band" /><div className="pe-imm-aurora-band" /><div className="pe-imm-aurora-band" /></div><div className="pe-imm-holo" /><div className="pe-imm-shine" /></>}
+      {rarity === 'common' && <>
+        <div className="pe-cm-scan"/>
+        <div className="pe-cm-heat">
+          <div className="pe-cm-heat-wave"/><div className="pe-cm-heat-wave"/>
+          <div className="pe-cm-heat-wave"/><div className="pe-cm-heat-wave"/>
+        </div>
+        <div className="pe-cm-geo">
+          <div className="pe-cm-geo-line"/><div className="pe-cm-geo-line"/>
+          <div className="pe-cm-geo-line"/><div className="pe-cm-geo-line"/>
+        </div>
+        <div className="pe-cm-scratch-layer">
+          <div className="pe-cm-scratch"/><div className="pe-cm-scratch"/><div className="pe-cm-scratch"/>
+        </div>
+        <div className="pe-cm-ember-layer">
+          <div className="pe-cm-ember"/><div className="pe-cm-ember"/><div className="pe-cm-ember"/>
+          <div className="pe-cm-ember"/><div className="pe-cm-ember"/>
+        </div>
+        <div className="pe-cm-bottom-glow"/>
+      </>}
+
+      {rarity === 'rare' && <>
+        <div className="pe-ra-depth-vig"/>
+        <div className="pe-ra-center-glow"/>
+        <div className="pe-ra-pulse-layer">
+          <div className="pe-ra-pulse-ring"/><div className="pe-ra-pulse-ring"/><div className="pe-ra-pulse-ring"/>
+        </div>
+        <div className="pe-ra-crackle-layer">
+          <div className="pe-ra-crackle">
+            <svg width="100%" height="100%" viewBox="0 0 125 183">
+              <polyline className="pe-ra-crackle-path" points="0,18 12,20 8,28 22,24 16,34"/>
+              <polyline className="pe-ra-crackle-path" points="113,88 121,84 117,94 125,90"/>
+            </svg>
+          </div>
+          <div className="pe-ra-crackle">
+            <svg width="100%" height="100%" viewBox="0 0 125 183">
+              <polyline className="pe-ra-crackle-path" points="0,62 12,58 8,68 20,64 14,76"/>
+              <polyline className="pe-ra-crackle-path" points="109,14 119,18 115,28 123,22"/>
+            </svg>
+          </div>
+          <div className="pe-ra-crackle">
+            <svg width="100%" height="100%" viewBox="0 0 125 183">
+              <polyline className="pe-ra-crackle-path" points="2,108 14,104 10,114 24,108"/>
+              <polyline className="pe-ra-crackle-path" points="105,50 115,46 111,58 121,52 117,64"/>
+            </svg>
+          </div>
+        </div>
+      </>}
+
+      {rarity === 'dynasty' && <>
+        <div className="pe-ep-burst">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(100,100)">
+              <line x1="0" y1="-95" x2="0" y2="95" stroke="rgba(255,215,0,.35)" strokeWidth=".8"/>
+              <line x1="-95" y1="0" x2="95" y2="0" stroke="rgba(255,215,0,.35)" strokeWidth=".8"/>
+              <line x1="-67" y1="-67" x2="67" y2="67" stroke="rgba(255,215,0,.25)" strokeWidth=".8"/>
+              <line x1="67" y1="-67" x2="-67" y2="67" stroke="rgba(255,215,0,.25)" strokeWidth=".8"/>
+            </g>
+          </svg>
+        </div>
+        <div className="pe-ep-sparkle-layer">
+          <div className="pe-ep-sparkle"/><div className="pe-ep-sparkle"/><div className="pe-ep-sparkle"/>
+          <div className="pe-ep-sparkle"/><div className="pe-ep-sparkle"/><div className="pe-ep-sparkle"/>
+          <div className="pe-ep-sparkle"/>
+        </div>
+        <div className="pe-ep-foil"/>
+        <div className="pe-ep-shine"/>
+      </>}
+
+      {rarity === 'transcendent' && <>
+        <div className="pe-le-aurora">
+          <div className="pe-le-aurora-band"/><div className="pe-le-aurora-band"/>
+          <div className="pe-le-aurora-band"/><div className="pe-le-aurora-band"/>
+        </div>
+        <div className="pe-le-orb-layer">
+          <div className="pe-le-orb"/><div className="pe-le-orb"/><div className="pe-le-orb"/>
+          <div className="pe-le-orb"/><div className="pe-le-orb"/>
+        </div>
+        <div className="pe-le-holo"/>
+        <div className="pe-le-depth-rings">
+          <div className="pe-le-depth-ring"/><div className="pe-le-depth-ring"/><div className="pe-le-depth-ring"/>
+        </div>
+        <div className="pe-le-bolt-layer">
+          <svg className="pe-le-bolt b1" viewBox="0 0 125 183"><polyline className="pe-le-bolt-glow" points="8,2 20,28 10,27 26,58 14,56 32,98"/><polyline className="pe-le-bolt-mid" points="8,2 20,28 10,27 26,58 14,56 32,98"/><polyline className="pe-le-bolt-core" points="8,2 20,28 10,27 26,58 14,56 32,98"/><polyline className="pe-le-bolt-branch" points="26,58 40,68 34,82"/></svg>
+          <svg className="pe-le-bolt b2" viewBox="0 0 125 183"><polyline className="pe-le-bolt-glow" points="36,0 50,30 38,28 56,62 42,60 62,110"/><polyline className="pe-le-bolt-mid" points="36,0 50,30 38,28 56,62 42,60 62,110"/><polyline className="pe-le-bolt-core" points="36,0 50,30 38,28 56,62 42,60 62,110"/><polyline className="pe-le-bolt-branch" points="56,62 70,74 62,90"/></svg>
+          <svg className="pe-le-bolt b3" viewBox="0 0 125 183"><polyline className="pe-le-bolt-glow" points="88,2 100,30 88,28 106,62 92,60 112,104"/><polyline className="pe-le-bolt-mid" points="88,2 100,30 88,28 106,62 92,60 112,104"/><polyline className="pe-le-bolt-core" points="88,2 100,30 88,28 106,62 92,60 112,104"/><polyline className="pe-le-bolt-branch" points="106,62 118,76 110,92"/></svg>
+        </div>
+        <div className="pe-le-tear-layer">
+          <div className="pe-le-tear"><div className="pe-le-tear-inner"/></div>
+          <div className="pe-le-tear"><div className="pe-le-tear-inner"/></div>
+          <div className="pe-le-tear"><div className="pe-le-tear-inner"/></div>
+        </div>
+        <div className="pe-le-whiteout w1"/>
+        <div className="pe-le-whiteout w2"/>
+        <div className="pe-le-whiteout w3"/>
+      </>}
+
+      {rarity === 'immortal' && <>
+        <div className="pe-imm-slab-layer">
+          <div className="pe-imm-slab"/><div className="pe-imm-slab"/><div className="pe-imm-slab"/>
+          <div className="pe-imm-slab"/><div className="pe-imm-slab"/>
+        </div>
+        <div className="pe-imm-aurora">
+          <div className="pe-imm-aurora-band"/><div className="pe-imm-aurora-band"/>
+          <div className="pe-imm-aurora-band"/><div className="pe-imm-aurora-band"/>
+        </div>
+        <div className="pe-imm-rings">
+          <div className="pe-imm-ring"/><div className="pe-imm-ring"/><div className="pe-imm-ring"/>
+        </div>
+        <div className="pe-imm-orb-layer">
+          <div className="pe-imm-orb"/><div className="pe-imm-orb"/><div className="pe-imm-orb"/>
+          <div className="pe-imm-orb"/><div className="pe-imm-orb"/><div className="pe-imm-orb"/>
+        </div>
+        <div className="pe-imm-holo"/>
+        <div className="pe-imm-foil"/>
+        <div className="pe-imm-shock">
+          <div className="pe-imm-shock-ring"/><div className="pe-imm-shock-ring"/>
+          <div className="pe-imm-shock-ring"/><div className="pe-imm-shock-ring"/>
+          <div className="pe-imm-shock-core"/>
+        </div>
+        <div className="pe-imm-spark-layer">
+          <div className="pe-imm-spark"/><div className="pe-imm-spark"/><div className="pe-imm-spark"/>
+          <div className="pe-imm-spark"/><div className="pe-imm-spark"/><div className="pe-imm-spark"/>
+          <div className="pe-imm-spark"/><div className="pe-imm-spark"/>
+        </div>
+        <div className="pe-imm-tear-layer">
+          <div className="pe-imm-tear"><div className="pe-imm-tear-inner"/></div>
+          <div className="pe-imm-tear"><div className="pe-imm-tear-inner"/></div>
+          <div className="pe-imm-tear"><div className="pe-imm-tear-inner"/></div>
+        </div>
+        <div className="pe-imm-shine"/>
+        <div className="pe-imm-shock-flash"/>
+        <div className="pe-imm-inner-border"/>
+      </>}
     </>
   );
 }
- 
+
 /* ══════════════════════════════════════════════════════════════════════
    MAIN COMPONENT
 ══════════════════════════════════════════════════════════════════════ */
@@ -222,7 +383,10 @@ export default function LeagueDraftPage() {
       if (!isPlayoff && (membership.permanent_locks as Player[]).length > 0) {
         const locks = membership.permanent_locks as Player[];
         const newLineup = Array(11).fill(null) as (Player | null)[];
-        locks.forEach((p, idx) => { if (idx < 11) newLineup[idx] = p; });
+        for (const lp of locks) {
+          const si = SLOTS.findIndex((slot, idx) => slot.pool === lp.pos && newLineup[idx] === null);
+          if (si !== -1) newLineup[si] = lp;
+        }
         setLineup(newLineup);
       }
  
@@ -263,7 +427,7 @@ export default function LeagueDraftPage() {
   const openSlotsLeft = 11 - filled; // includes locked (already filled) and open
  
   function isBoostedSlot(si: number): boolean {
-    return boostedPos !== null && SLOTS[si].pool === boostedPos;
+    return boostedPos !== null && SLOTS[si].key === boostedPos;
   }
  
   function isLockedSlot(si: number): boolean {
@@ -412,9 +576,18 @@ export default function LeagueDraftPage() {
     return (
       <div className="ldr-slot-outer">
         {player ? (
-          <div className="ldr-fsl has-p"
+          <div className={`ldr-fsl has-p${locked ? ' is-locked' : ''}`}
             style={{ '--rc': rc!.color, '--rg': rc!.glow, '--art': rc!.art } as React.CSSProperties}>
             <RarityEffects rarity={player.rarity} position="outer" />
+            {locked && (
+              <div className="ldr-lock-plasma-wrap">
+              <div className="ldr-lock-plasma-arc1"/>
+              <div className="ldr-lock-plasma-arc2"/>
+              <div className="ldr-lock-plasma-arc3"/>
+              <div className="ldr-lock-plasma-arc4"/>
+              <div className="ldr-lock-plasma-inner"/>
+              </div>
+            )}
             <div className="ldr-filled-card">
               <div className="ldr-fc-topbar">
                 <div className="ldr-fc-pos-badge" style={{ background: rc!.color }}>{player.pos}</div>
@@ -439,9 +612,10 @@ export default function LeagueDraftPage() {
                 <div className="ldr-fc-score">{player.score.toLocaleString()}</div>
                 <div className="ldr-fc-team-tag">{player.team}</div>
               </div>
-              {locked && <div className="ldr-fc-lock-badge">🔒</div>}
+              {locked && <div className="ldr-fc-lock-overlay" />}
               <div className="ldr-fc-shine" />
             </div>
+            {locked && <div className="ldr-fc-lock-badge">🔒 LOCKED</div>}
           </div>
         ) : isAct ? (
           <div className="ldr-fsl active">
@@ -451,16 +625,20 @@ export default function LeagueDraftPage() {
         ) : (
           <div
             className={`ldr-pack-wrap${boosted ? ' boosted' : ''}${canOpen ? ' clickable' : ''}`}
+            style={boosted ? {
+              '--boost-glow-lo': `drop-shadow(0 0 8px ${PACK_TIER_COLORS[myPackTier]}99)`,
+              '--boost-glow-hi': `drop-shadow(0 0 18px ${PACK_TIER_COLORS[myPackTier]}) drop-shadow(0 0 32px ${PACK_TIER_COLORS[myPackTier]}66)`,
+            } as React.CSSProperties : undefined}
             onClick={() => canOpen ? clickSlot(si) : undefined}
             role={canOpen ? 'button' : undefined}
             tabIndex={canOpen ? 0 : undefined}
           >
             <img src={PACK_IMG[SLOTS[si].pool]} alt={SLOTS[si].short} className="ldr-pack-img" />
-            {boosted && (
-              <div className="ldr-pack-boosted-badge" style={{ color: PACK_TIER_COLORS[myPackTier] }}>
-                {PACK_TIER_LABELS[myPackTier]}
-              </div>
-            )}
+          </div>
+        )}
+        {boosted && (
+          <div className="ldr-pack-boosted-badge" style={{ color: PACK_TIER_COLORS[myPackTier] }}>
+            {PACK_TIER_LABELS[myPackTier]}
           </div>
         )}
         <div className={`ldr-slot-label${locked ? ' locked' : ''}${boosted ? ' boosted-label' : ''}`}>
@@ -575,26 +753,48 @@ export default function LeagueDraftPage() {
               Choose which position slot gets your boosted pack this week.
               All other slots use standard weights.
             </div>
-            <div className="ldr-boost-grid">
-              {(['QB','RB','WR','TE','OT','OG','C'] as const).map(pos => (
-                <button
-                  key={pos}
-                  className={`ldr-boost-btn ${boostedPos === pos ? 'selected' : ''}`}
-                  style={boostedPos === pos ? { borderColor: PACK_TIER_COLORS[myPackTier], color: PACK_TIER_COLORS[myPackTier] } : {}}
-                  onClick={() => setBoostedPos(pos)}
-                >
-                  {pos}
-                </button>
-              ))}
-            </div>
-            <button
-              className="ldr-submit-btn"
-              disabled={!boostedPos}
-              onClick={() => { setBoostedPicked(false); setPhase('packing'); }}
-              style={{ marginTop: '1.5rem' }}
-            >
-              {boostedPos ? `BOOST ${boostedPos} SLOT →` : 'SELECT A POSITION'}
-            </button>
+            <div className="ldr-boost-formation">
+  <div className="ldr-boost-row">
+    {([6,7,8,9,10] as const).map((si, i) => {
+      const slot = SLOTS[si]; const isLocked = lineup[si] !== null;
+      const isSelected = boostedPos === slot.key;
+      const label = ['LT','LG','C','RG','RT'][i];
+      return (
+        <button key={slot.key}
+          className={`ldr-boost-slot${isLocked?' locked':''}${isSelected?' selected':''}`}
+          style={isSelected?{borderColor:PACK_TIER_COLORS[myPackTier],color:PACK_TIER_COLORS[myPackTier]}:{}}
+          disabled={isLocked} onClick={() => !isLocked && setBoostedPos(slot.key)}>
+          {isLocked ? '🔒' : label}
+        </button>
+      );
+    })}
+  </div>
+  <div className="ldr-boost-row" style={{gap:'20px'}}>
+    <div style={{display:'flex',gap:'7px'}}>
+      {([2,3] as const).map((si,i) => {
+        const slot=SLOTS[si]; const isLocked=lineup[si]!==null; const isSelected=boostedPos===slot.key;
+        return <button key={slot.key} className={`ldr-boost-slot${isLocked?' locked':''}${isSelected?' selected':''}`} style={isSelected?{borderColor:PACK_TIER_COLORS[myPackTier],color:PACK_TIER_COLORS[myPackTier]}:{}} disabled={isLocked} onClick={()=>!isLocked&&setBoostedPos(slot.key)}>{isLocked?'🔒':['WR1','WR2'][i]}</button>;
+      })}
+    </div>
+    <div style={{display:'flex',gap:'7px'}}>
+      {([5,4] as const).map((si,i) => {
+        const slot=SLOTS[si]; const isLocked=lineup[si]!==null; const isSelected=boostedPos===slot.key;
+        return <button key={slot.key} className={`ldr-boost-slot${isLocked?' locked':''}${isSelected?' selected':''}`} style={isSelected?{borderColor:PACK_TIER_COLORS[myPackTier],color:PACK_TIER_COLORS[myPackTier]}:{}} disabled={isLocked} onClick={()=>!isLocked&&setBoostedPos(slot.key)}>{isLocked?'🔒':['TE','WR3'][i]}</button>;
+      })}
+    </div>
+  </div>
+  <div className="ldr-boost-row">
+    {([0,1] as const).map((si,i) => {
+      const slot=SLOTS[si]; const isLocked=lineup[si]!==null; const isSelected=boostedPos===slot.key;
+      return <button key={slot.key} className={`ldr-boost-slot${isLocked?' locked':''}${isSelected?' selected':''}`} style={isSelected?{borderColor:PACK_TIER_COLORS[myPackTier],color:PACK_TIER_COLORS[myPackTier]}:{}} disabled={isLocked} onClick={()=>!isLocked&&setBoostedPos(slot.key)}>{isLocked?'🔒':['QB','RB'][i]}</button>;
+    })}
+  </div>
+</div>
+<button className="ldr-submit-btn" disabled={!boostedPos}
+  onClick={() => { setBoostedPicked(false); setPhase('packing'); }}
+  style={{ marginTop: '1rem' }}>
+  {boostedPos ? `BOOST ${boostedPos} →` : 'SELECT A SLOT'}
+</button>
             <button className="ldr-skip-boost" onClick={() => { setBoostedPos(null); setBoostedPicked(true); setPhase('packing'); }}>
               Skip — use standard packs for all slots
             </button>
@@ -877,10 +1077,11 @@ const LEAGUE_DRAFT_STYLES = `
 .ldr-pack-img{width:100% !important;height:100% !important;object-fit:cover;display:block;background:transparent}
 .ldr-pack-wrap.clickable{cursor:pointer;transition:transform .18s ease,filter .18s ease}
 .ldr-pack-wrap.clickable:hover{transform:translateY(-6px) scale(1.07);filter:drop-shadow(0 0 10px rgba(255,69,0,.7))}
-.ldr-pack-wrap.boosted{animation:ldr-boost-pulse 2s ease-in-out infinite}
+.ldr-pack-wrap.boosted{animation:ldr-boost-glow 1.8s ease-in-out infinite}
+@keyframes ldr-boost-glow{0%,100%{filter:var(--boost-glow-lo)}50%{filter:var(--boost-glow-hi)}}
 .ldr-fsl.active{width:125px;height:183px;background:rgba(255,69,0,.06);border:2px solid #ff4500;box-shadow:0 0 20px rgba(255,69,0,.4);border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;flex-shrink:0}
 @keyframes ldr-boost-pulse{0%,100%{box-shadow:0 0 10px #ff6b354d}50%{box-shadow:0 0 22px rgba(255,107,53,.5)}}
-.ldr-pack-boosted-badge{position:absolute;bottom:0;left:0;right:0;background:rgba(14,6,0,.9);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.52rem;letter-spacing:.1em;text-align:center;padding:.2rem}
+.ldr-pack-boosted-badge{position:relative;top:-205px;text-align:center;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:.6rem;letter-spacing:.14em;text-shadow:0 0 8px currentColor;background:rgba(14,6,0,.88);border:1px solid currentColor;border-radius:3px;padding:.1rem .4rem;white-space:nowrap;margin-bottom:2px;margin-left:15px;box-shadow:0 0 6px currentColor}
 
 /* Active slot */
 .ldr-fsl-pos-small{font-family:'Rajdhani',sans-serif;font-size:.65rem;color:#6a3820;letter-spacing:.1em}
@@ -932,15 +1133,15 @@ const LEAGUE_DRAFT_STYLES = `
 
 /* Card flip */
 .ldr-card{width:calc(19vw - 4px);min-width:110px;max-width:140px;aspect-ratio:125/183;border-radius:11px;perspective:700px;cursor:pointer;flex-shrink:0;position:relative}
-.ldr-ci{width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);position:relative;border-radius:11px}
+.ldr-ci{width:100%;height:100%;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);position:relative;border-radius:11px}
 .ldr-card.rev .ldr-ci{transform:rotateY(180deg)}
 .ldr-card-back,.ldr-card-front{position:absolute;inset:0;border-radius:11px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
 .pe-card-back{background:linear-gradient(155deg,#080e24,#0c1840);border:2px solid #1a3060;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;-webkit-backface-visibility:hidden;backface-visibility:hidden;transform:translateZ(0)}
-.ldr-card-back{background:linear-gradient(150deg,#1a0800,#2e0e04);border:1px solid #3a1008;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem}
-.ldr-back-grid{position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(204,34,0,.06),rgba(204,34,0,.06) 1px,transparent 1px,transparent 10px),repeating-linear-gradient(-45deg,rgba(204,34,0,.06),rgba(204,34,0,.06) 1px,transparent 1px,transparent 10px)}
-.ldr-back-icon{font-size:1.5rem;z-index:1}
-.ldr-back-label{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.65rem;letter-spacing:.14em;color:#6a3820;z-index:1}
-.ldr-back-league{font-family:'Orbitron',sans-serif;font-size:.48rem;letter-spacing:.18em;color:#3a1008;z-index:1}
+.ldr-card-back{background:linear-gradient(150deg,#1a0800,#2e0e04);border:1px solid #3a1008;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;-webkit-backface-visibility:hidden;backface-visibility:hidden;transform:translateZ(0)}
+.ldr-back-grid{position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(204,34,0,.06),rgba(204,34,0,.06) 1px,transparent 1px,transparent 10px),repeating-linear-gradient(-45deg,rgba(204,34,0,.06),rgba(204,34,0,.06) 1px,transparent 1px,transparent 10px);-webkit-backface-visibility:hidden}
+.ldr-back-icon{font-size:1.5rem;z-index:1;position:relative}
+.ldr-back-label{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.65rem;letter-spacing:.14em;color:#6a3820;z-index:1;position:relative}
+.ldr-back-league{font-family:'Orbitron',sans-serif;font-size:.48rem;letter-spacing:.18em;color:#3a1008;z-index:1;position:relative}
 .ldr-card-front{background:linear-gradient(170deg,#080e24,#0b1438);border:2px solid var(--sh,#333);transform:rotateY(180deg) translateZ(0);box-shadow:0 0 18px var(--rg,transparent),inset 0 1px 0 rgba(255,255,255,.06);position:relative;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 
 .ldr-cf-topbar{display:flex;align-items:center;justify-content:space-between;padding:.22rem .35rem;background:rgba(4,2,0,.95);flex-shrink:0}
@@ -1023,6 +1224,31 @@ const LEAGUE_DRAFT_STYLES = `
     5*72 + 4*4 = 376px — fine.
 */
 
+.ldr-fc-lock-overlay{position:absolute;inset:0;z-index:9;pointer-events:none;border-radius:9px;background:linear-gradient(135deg,rgba(20,120,60,.12),transparent 60%);border:9px}
+.ldr-fc-lock-badge{position:absolute;top:-27px;left:50%;transform:translateX(-50%);font-family:'Rajdhani',sans-serif;font-weight:800;font-size:.6rem;letter-spacing:.18em;color:#28dc78;text-shadow:0 0 8px rgba(40,220,120,.95);z-index:12;pointer-events:none;background:rgba(2,10,6,.85);border:1px solid rgba(40,220,120,.4);border-radius:3px;padding:.1rem .4rem;white-space:nowrap;box-shadow:0 0 8px rgba(40,220,120,.25)}
+
+.ldr-boost-formation{display:flex;flex-direction:column;align-items:center;gap:8px;margin:0 auto 1rem;width:fit-content}
+.ldr-boost-row{display:flex;gap:7px;justify-content:center}
+.ldr-boost-slot{width:52px;height:50px;border-radius:8px;background:rgba(30,12,4,.9);border:1.5px solid #3a1008;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.75rem;color:#8a5030;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center}
+.ldr-boost-slot:hover:not(:disabled){border-color:#ff6b35;color:#ff6b35;background:rgba(255,107,53,.08)}
+.ldr-boost-slot.selected{background:rgba(255,107,53,.15)}
+.ldr-boost-slot.locked{background:rgba(14,6,0,.6);border-color:#2a1008;color:#3a1808;cursor:default;opacity:.45}
+
+.ldr-fsl.is-locked .pe-ra-spin-wrap,
+.ldr-fsl.is-locked .pe-ep-dual-wrap,
+.ldr-fsl.is-locked .pe-le-plasma-wrap,
+.ldr-fsl.is-locked .pe-imm-glow-1,
+.ldr-fsl.is-locked .pe-imm-glow-2,
+.ldr-fsl.is-locked .pe-imm-glow-3,
+.ldr-fsl.is-locked .pe-imm-glow-4,
+.ldr-fsl.is-locked .pe-imm-plasma-wrap,
+.ldr-fsl.is-locked .pe-imm-corner-arcs{display:none}
+.ldr-lock-plasma-wrap{position:absolute;inset:-4px;border-radius:14px;overflow:hidden;z-index:0;pointer-events:none}
+.ldr-lock-plasma-arc1{position:absolute;inset:0;background:conic-gradient(from 0deg,transparent 20%,rgba(20,160,80,.7) 40%,rgba(80,255,160,1) 50%,rgba(40,220,120,.9) 60%,transparent 80%);animation:border-spin 2s linear infinite}
+.ldr-lock-plasma-arc2{position:absolute;inset:0;background:conic-gradient(from 90deg,transparent 20%,rgba(10,100,50,.5) 40%,rgba(40,180,100,.8) 50%,transparent 70%);animation:border-spin 3.2s linear infinite reverse}
+.ldr-lock-plasma-arc3{position:absolute;inset:0;background:conic-gradient(from 180deg,transparent 25%,rgba(255,255,255,.4) 42%,rgba(255,255,255,.8) 50%,rgba(255,255,255,.5) 58%,transparent 75%);animation:border-spin 2.4s linear infinite}
+.ldr-lock-plasma-arc4{position:absolute;inset:0;background:conic-gradient(from 270deg,transparent 25%,rgba(255,255,255,.3) 42%,rgba(255,255,255,.65) 50%,transparent 72%);animation:border-spin 3.8s linear infinite reverse}
+.ldr-lock-plasma-inner{position:absolute;inset:3px;border-radius:11px;background:#060a06}
 
 @keyframes holo-shift{from{background-position:0%}to{background-position:200%}}
 @keyframes border-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}

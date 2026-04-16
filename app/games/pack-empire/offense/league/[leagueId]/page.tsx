@@ -33,6 +33,8 @@ export default function LeagueHomePage() {
   const [showLeave, setShowLeave]   = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [deleting, setDeleting]     = useState(false);
+  const [advancing, setAdvancing]   = useState(false);
+  const [advanceMsg, setAdvanceMsg] = useState('');
 
   // Team name editor
   const [editingName, setEditingName]   = useState(false);
@@ -106,6 +108,38 @@ export default function LeagueHomePage() {
       setShowDelete(false);
     }
   }
+
+  async function handleAdvanceWeek() {
+  if (!league || !isCommissioner) return;
+  setAdvancing(true);
+  setAdvanceMsg('');
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) { setAdvanceMsg('Not logged in'); setAdvancing(false); return; }
+    
+    const res = await fetch('/api/advance-week', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ leagueId: league.id }),
+});
+
+    const text = await res.text();
+    let result: any;
+    try { result = JSON.parse(text); } 
+    catch { setAdvanceMsg(`Bad response: ${text.slice(0, 100)}`); return; }
+    
+    if (result.ok) {
+      setAdvanceMsg(`✓ Advanced to ${result.advanced_to.replace(/_/g, ' ')}`);
+      await reload(userId!);
+    } else {
+      setAdvanceMsg(`Error: ${result.error}`);
+    }
+  } catch (e) {
+    setAdvanceMsg(`Failed: ${String(e)}`);
+  } finally {
+    setAdvancing(false);
+  }
+}
 
   async function handleStartSeason() {
   if (!league || !isCommissioner) return;
@@ -325,6 +359,14 @@ export default function LeagueHomePage() {
                         Need {league.min_players - members.length} more player{league.min_players - members.length !== 1 ? 's' : ''} to start
                       </div>
                     )
+                  )}
+                  {league.phase === 'regular' && (
+                    <div style={{ marginTop: '.6rem' }}>
+                      <button className="llh-advance-btn" onClick={handleAdvanceWeek} disabled={advancing}>
+                        {advancing ? 'ADVANCING…' : `⏩ ADVANCE WEEK ${league.current_week} → ${league.current_week >= 8 ? 'PLAYOFFS' : `WEEK ${league.current_week + 1}`}`}
+                      </button>
+                      {advanceMsg && <div className="llh-advance-msg">{advanceMsg}</div>}
+                    </div>
                   )}
                   {showDelete ? (
                     <div className="llh-delete-confirm">
@@ -634,6 +676,11 @@ export default function LeagueHomePage() {
         .llh-delete-btn:hover{color:#ff6060}
         .llh-delete-confirm{background:rgba(80,0,0,.2);border:1px solid rgba(255,60,60,.25);border-radius:9px;padding:.8rem 1rem;margin-top:.6rem}
         .llh-delete-msg{font-size:.78rem;color:#a05030;margin-bottom:.6rem;font-weight:500;line-height:1.4}
+
+        .llh-advance-btn{width:100%;background:rgba(255,140,0,.1);border:1.5px solid rgba(255,140,0,.3);color:#ff8c00;border-radius:8px;padding:.7rem;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:.1em;cursor:pointer;transition:.2s}
+        .llh-advance-btn:hover:not(:disabled){background:rgba(255,140,0,.2);border-color:#ff8c00}
+        .llh-advance-btn:disabled{opacity:.5;cursor:default}
+        .llh-advance-msg{font-size:.72rem;color:#ff8c00;margin-top:.3rem;text-align:center;font-family:'Rajdhani',sans-serif;font-weight:600}
 
         /* Responsive */
         @media(max-width:860px){
