@@ -119,7 +119,7 @@ pl('nmu','Nick Mullens','QB','Jacksonville Jaguars', 380, [
 ]),
 
   // === RARE TIER (700–1499) ===
-  pl('tua','Tua Tagovailoa','QB','Miami Dolphins', 980, [
+  pl('tua','Tua Tagovailoa','QB','Atlanta Falcons', 980, [
     'High completion percentage','Accurate rhythm passer'
   ]),
   pl('gof','Jared Goff','QB','Detroit Lions', 1250, [
@@ -131,7 +131,7 @@ pl('nmu','Nick Mullens','QB','Jacksonville Jaguars', 380, [
   pl('bab','Baker Mayfield','QB','Tampa Bay Buccaneers', 1480, [
     'Comeback success story','Tough competitive leader'
   ]),
-  pl('kco2x','Kirk Cousins','QB','Atlanta Falcons', 1020, [
+  pl('kco2x','Kirk Cousins','QB','Las Vegas Raiders', 1020, [
     'Veteran volume passer','Consistent high-yardage seasons'
   ]),
   pl('wat','Deshaun Watson','QB','Cleveland Browns', 920, [
@@ -140,7 +140,7 @@ pl('nmu','Nick Mullens','QB','Jacksonville Jaguars', 380, [
   pl('gen','Geno Smith','QB','Seattle Seahawks', 880, [
     'Comeback Player winner','Efficient veteran'
   ]),
-  pl('fla','Joe Flacco','QB','Indianapolis Colts', 820, [
+  pl('fla','Joe Flacco','QB','Cincinnati Bengals', 820, [
     'Veteran playoff performer','Super Bowl MVP pedigree'
   ]),
   pl('bro','Brock Purdy','QB','San Francisco 49ers', 1080, [
@@ -163,7 +163,7 @@ pl('nmu','Nick Mullens','QB','Jacksonville Jaguars', 380, [
   pl('jga','Jimmy Garoppolo','QB','Los Angeles Rams', 560, [
     'Veteran game manager','Super Bowl experience'
   ]),
-  pl('cas','Carson Wentz','QB','Los Angeles Rams', 540, [
+  pl('cas','Carson Wentz','QB','Minnesota Vikings', 540, [
     'Former high-upside QB','Super Bowl champion backup'
   ]),
   pl('wil','Kyler Murray','QB','Minnesota Vikings', 480, [
@@ -172,19 +172,19 @@ pl('nmu','Nick Mullens','QB','Jacksonville Jaguars', 380, [
   pl('mma','Marcus Mariota','QB','Washington Commanders', 440, [
     'Athletic veteran','Former high draft pick'
   ]),
-  pl('jwo2','Jameis Winston','QB','Cleveland Browns', 420, [
+  pl('jwo2','Jameis Winston','QB','New York Giants', 420, [
     'Cannon arm','High-volume passer'
   ]),
-  pl('how','Sam Howell','QB','Seattle Seahawks', 400, [
+  pl('how','Sam Howell','QB','Dallas Cowboys', 400, [
     'Tough pocket presence','High attempt volume'
   ]),
-  pl('law','Trevor Lawrence','QB','Jacksonville Jaguars', 880, [
+  pl('law','Trevor Lawrence','QB','Jacksonville Jaguars', 980, [
     'High pedigree','Developing franchise QB'
   ]),
-  pl('str','C.J. Stroud','QB','Houston Texans', 760, [
+  pl('str','C.J. Stroud','QB','Houston Texans', 860, [
     'Rookie of the Year winner','Promising young passer'
   ]),
-  pl('lov','Jordan Love','QB','Green Bay Packers', 940, [
+  pl('lov','Jordan Love','QB','Green Bay Packers', 1040, [
     'Emerging starter','Strong arm talent'
   ]),
   pl('jco','Jacoby Brissett','QB','Arizona Cardinals', 520, [

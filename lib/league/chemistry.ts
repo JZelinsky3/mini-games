@@ -32,7 +32,7 @@ const RIVALRY_PENALTIES: Record<string, number> = {
   // Line pairs — less direct relationship, smaller penalty
   'OT||RB':  -50,
   'OG||RB':  -75,
-  'C||RB':   -50,
+  'C ||RB':  -50,
   'OT||OG':  -50,
   'OT||C':   -50,
   'OG||C':   -50,

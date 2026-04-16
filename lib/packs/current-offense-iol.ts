@@ -59,7 +59,7 @@ export const OG_POOL_V1: NFLPlayer[] = [
   pl('vor','Andrew Vorhees','OG','Baltimore Ravens', 2120, [
     'Strong recent starter','Powerful run blocker'
   ]),
-  pl('edw','David Edwards','OG','Free Agent', 2050, [
+  pl('edw','David Edwards','OG','New Orleans Saints', 2050, [
     'Reliable veteran anchor','Consistent high-level starter'
   ]),
   pl('joh2','Zion Johnson','OG','Cleveland Browns', 1980, [
@@ -272,7 +272,7 @@ pl('lro','Layden Robinson','OG','Las Vegas Raiders', 320, [
   ]),
 
   // === DYNASTY TIER CENTERS ===
-  pl('lin4','Tyler Linderbaum','C','Baltimore Ravens', 2580, [
+  pl('lin4','Tyler Linderbaum','C','Las Vegas Raiders', 2580, [
     'One of the best young centers','Multiple Pro Bowl level'
   ]),
   pl('rag','Frank Ragnow','C','Detroit Lions', 2420, [

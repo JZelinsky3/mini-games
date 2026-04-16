@@ -90,7 +90,7 @@ export const WR_POOL_V1: NFLPlayer[] = [
   pl('thi','Tyreek Hill','WR','Free Agent', 1980, [
     'Speed king','Big-play threat (age-adjusted)'
   ]),
-  pl('bna','Brian Thomas Jr.','WR','Jacksonville Jaguars', 1580, [
+  pl('bna','Brian Thomas Jr.','WR','Jacksonville Jaguars', 1480, [
     'Elite rookie production','Big-play ability'
   ]),
   pl('wil2','Garrett Wilson','WR','New York Jets', 1780, [
@@ -114,7 +114,7 @@ export const WR_POOL_V1: NFLPlayer[] = [
   pl('rod','Rome Odunze','WR','Chicago Bears', 1550, [
     'Big-bodied rookie breakout','Strong contested catcher'
   ]),
-  pl('dee','Deebo Samuel','WR','Washington Commanders', 1250, [
+  pl('dee','Deebo Samuel','WR','Washington Commanders', 1150, [
     'Versatile YAC monster','Playmaker when healthy'
   ]),
   pl('sdg','Stefon Diggs','WR','Free Agent', 1320, [
@@ -129,13 +129,13 @@ export const WR_POOL_V1: NFLPlayer[] = [
   pl('mwi','Michael Wilson','WR','Arizona Cardinals', 1280, [
     'Reliable complementary piece','Big target in Arizona'
   ]),
-  pl('mtp','Michael Pittman Jr.','WR','Pittsburgh Steelers', 980, [
+  pl('mtp','Michael Pittman Jr.','WR','Pittsburgh Steelers', 1080, [
     'Contested-catch specialist','High target share'
   ]),
   pl('jre','Jayden Reed','WR','Green Bay Packers', 920, [
     'Dynamic slot weapon','Explosive playmaker'
   ]),
-  pl('dmo','DJ Moore','WR','Chicago Bears', 1020, [
+  pl('dmo','DJ Moore','WR','Buffalo Bills', 1120, [
     'Reliable volume receiver','Multiple 1,000-yard seasons'
   ]),
   pl('wro','Wan\'Dale Robinson','WR','Tennessee Titans', 1150, [
@@ -174,17 +174,17 @@ pl('nbr','Noah Brown','WR','Washington Commanders', 650, [
   pl('add','Jordan Addison','WR','Minnesota Vikings', 820, [
     'Complementary playmaker','Reliable target'
   ]),
-  pl('jme','Jakobi Meyers','WR','Las Vegas Raiders', 710, [
+  pl('jme','Jakobi Meyers','WR','Jacksonville Jaguars', 710, [
     'Slot possession receiver','1,000-yard season'
   ]),
-  pl('obe','Odell Beckham Jr.','WR','Miami Dolphins', 700, [
+  pl('obe','Odell Beckham Jr.','WR','Free Agent', 700, [
     'Iconic playmaker','Veteran big-play threat'
   ]),
   pl('csa','Chris Godwin Jr.','WR','Tampa Bay Buccaneers', 750, [
     'Reliable slot presence','Super Bowl champion'
   ]),
   // === COMMON TIER — Varied scores (205–680) ===
-  pl('thi2','Tyler Boyd','WR','Tennessee Titans', 630, [
+  pl('thi2','Tyler Boyd','WR','Free Agent', 630, [
     'Veteran slot weapon','Consistent producer'
   ]),
   pl('ksh','Khalil Shakir','WR','Buffalo Bills', 610, [
@@ -193,16 +193,13 @@ pl('nbr','Noah Brown','WR','Washington Commanders', 650, [
   pl('hro','Hollywood Brown','WR','Philadelphia Eagles', 580, [
     'Speed deep threat','Explosive when healthy'
   ]),
-  pl('crox','Christian Kirk','WR','Jacksonville Jaguars', 640, [
+  pl('crox','Christian Kirk','WR','Houston Texans', 640, [
     'Reliable route runner','Strong target share'
   ]),
-  pl('dch','D.J. Chark Jr.','WR','Las Vegas Raiders', 580, [
-    'Deep-ball specialist','Breakout potential'
-  ]),
-  pl('jre','Josh Reynolds','WR','Detroit Lions', 500, [
+  pl('jre','Josh Reynolds','WR','Free Agent', 500, [
     'Veteran depth piece','Super Bowl experience'
   ]),
-  pl('rsh','Rashid Shaheed','WR','New Orleans Saints', 680, [
+  pl('rsh','Rashid Shaheed','WR','Seattle Seahawks', 680, [
     'Speed threat','Breakthrough performer'
   ]),
   pl('jsa','Josh Palmer','WR','Los Angeles Chargers', 460, [
@@ -211,46 +208,40 @@ pl('nbr','Noah Brown','WR','Washington Commanders', 650, [
   pl('rme','Romeo Doubs','WR','Green Bay Packers', 640, [
     'Developing target','Strong rapport with Love'
   ]),
-  pl('ava','Allen Lazard','WR','New York Jets', 420, [
+  pl('ava','Allen Lazard','WR','Free Agent', 420, [
     'Reliable hands','Physical receiver'
   ]),
-  pl('dmo2','Darnell Mooney','WR','Atlanta Falcons', 500, [
+  pl('dmo2','Darnell Mooney','WR','New York Giants', 500, [
     'Consistent deep option','Multiple 1,000-yard seasons'
   ]),
   pl('ndl','Tank Dell','WR','Houston Texans', 460, [
     'Undersized competitor','Rookie impact'
   ]),
-  pl('gab','Gabe Davis','WR','Jacksonville Jaguars', 440, [
+  pl('gab','Gabe Davis','WR','Buffalo Bills', 440, [
     'Big-play streak threat','Playoff performer'
   ]),
   pl('chr','Christian Watson','WR','Green Bay Packers', 620, [
     'Size/speed combo','Emerging deep threat'
   ]),
-  pl('tre3','Treylon Burks','WR','Tennessee Titans', 305, [
+  pl('tre3','Treylon Burks','WR','Washington Commanders', 305, [
     'YAC ability','Physical receiver'
   ]),
   pl('qjo','Quentin Johnston','WR','Los Angeles Chargers', 490, [
     'Physical deep threat','Developing WR1'
   ]),
-  pl('par','Josh Palmer','WR','Los Angeles Chargers', 275, [
-    'Complementary piece','Reliable depth'
-  ]),
-  pl('sba2','Sterling Shepard','WR','Free Agent', 460, [
+  pl('sba2','Sterling Shepard','WR','Tampa Bay Buccaneers', 460, [
     'Veteran slot','Resilient veteran'
   ]),
   pl('vsh','Van Jefferson','WR','Los Angeles Rams', 435, [
     'Reliable route runner','Super Bowl champion'
   ]),
-  pl('rma','Rondale Moore','WR','Atlanta Falcons', 325, [
-    'Electric YAC runner','Slot playmaker'
-  ]),
-  pl('hig2x','Hunter Renfrow','WR','Las Vegas Raiders', 415, [
+  pl('hig2x','Hunter Renfrow','WR','Free Agent', 415, [
     'Slot master','High catch rate'
   ]),
   pl('kto','Kadarius Toney','WR','Free Agent', 310, [
     'Electric with ball','Injury recovery'
   ]),
-  pl('cti','Cedric Tillman','WR','Cleveland Browns', 320, [
+  pl('cti','Cedric Tillman','WR','Cleveland Browns', 420, [
     'SEC standout','Developing depth'
   ]),
   pl('trf','Troy Franklin','WR','Denver Broncos', 330, [
@@ -265,7 +256,7 @@ pl('nbr','Noah Brown','WR','Washington Commanders', 650, [
   pl('jmg','Jonathan Mingo','WR','Chicago Bears', 325, [
     'Developing depth','College producer'
   ]),
-  pl('mho','Mack Hollins','WR','Atlanta Falcons', 210, [
+  pl('mho','Mack Hollins','WR','New England Patriots', 210, [
     'Special teams contributor','Veteran depth'
   ]),
   pl('vel','Velus Jones Jr.','WR','Chicago Bears', 220, [
@@ -277,7 +268,7 @@ pl('nbr','Noah Brown','WR','Washington Commanders', 650, [
   pl('par3','Parker Washington','WR','Jacksonville Jaguars', 230, [
     'Big Ten leader','Emerging slot'
   ]),
-  pl('dwi','Dontayvion Wicks','WR','Green Bay Packers', 335, [
+  pl('dwi','Dontayvion Wicks','WR','Philadelphia Eagles', 435, [
     'Route runner','College standout'
   ]),
   pl('xhu','Xavier Hutchinson','WR','Houston Texans', 215, [
@@ -286,7 +277,7 @@ pl('nbr','Noah Brown','WR','Washington Commanders', 650, [
   pl('jml','Jalen McMillan','WR','Tampa Bay Buccaneers', 325, [
     'Rising WR2','Route specialist'
   ]),
-  pl('tua2','Tutu Atwell','WR','Los Angeles Rams', 410, [
+  pl('tua2','Tutu Atwell','WR','Los Angeles Rams', 510, [
     'Explosive speed','Big-play threat'
   ]),
   pl('rpe','Ricky Pearsall','WR','San Francisco 49ers', 320, [
@@ -295,10 +286,10 @@ pl('nbr','Noah Brown','WR','Washington Commanders', 650, [
   pl('ami','Adonai Mitchell','WR','Indianapolis Colts', 405, [
     'Developing complement','College standout'
   ]),
-  pl('lmc','Luke McCaffrey','WR','Washington Commanders', 215, [
+  pl('lmc','Luke McCaffrey','WR','Washington Commanders', 315, [
     'Athletic slot','Bloodline talent'
   ]),
-  pl('jdo','Josh Downs','WR','Indianapolis Colts', 530, [
+  pl('jdo','Josh Downs','WR','Indianapolis Colts', 630, [
     'Slot wizard','High catch rate'
   ]),
 ];

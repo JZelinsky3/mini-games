@@ -287,6 +287,12 @@ export const WR_POOL_OLD: NFLPlayer[] = [
   pl('coo3','Amari Cooper','WR','Cleveland Browns', 1020, [
     'Veteran alpha','Consistent 1,000-yard producer'
   ]),
+  pl('dch','D.J. Chark Jr.','WR','Las Vegas Raiders', 580, [
+    'Deep-ball specialist','Breakout potential'
+  ]),
+  pl('rma','Rondale Moore','WR','Atlanta Falcons', 325, [
+    'Electric YAC runner','Slot playmaker'
+  ]),
 ];
 
 /* ══════════════════════════════════════════════════════════════════════
