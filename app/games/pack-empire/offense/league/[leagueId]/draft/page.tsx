@@ -373,7 +373,7 @@ export default function LeagueDraftPage() {
         }
         const filledCount = restoredLineup.filter(Boolean).length;
         if (filledCount < 11) {
-          setPhase(progress.boosted_picked || isPlayoff ? 'packing' : 
+          setPhase(progress.boosted_picked || progress.boosted_pos || isPlayoff ? 'packing' :
             (membership.next_pack_tier === 'standard_pack' ? 'packing' : 'boosted_pick'));
         }
         return;
@@ -391,7 +391,7 @@ export default function LeagueDraftPage() {
       }
  
       // Skip boosted picker if tier is standard or already in playoffs
-      if (membership.next_pack_tier === 'standard_pack' || isPlayoff) {
+      if (membership.next_pack_tier === 'standard_pack' ) {
         setBoostedPicked(true);
         setPhase('packing');
       } else {
@@ -795,7 +795,11 @@ setTimeout(() => {
   </div>
 </div>
 <button className="ldr-submit-btn" disabled={!boostedPos}
-  onClick={() => { setBoostedPicked(false); setPhase('packing'); }}
+  onClick={() => {
+  setBoostedPicked(false);
+  setPhase('packing');
+  saveProgress({ lineup, boostedPicked: false, boostedPos });
+}}
   style={{ marginTop: '1rem' }}>
   {boostedPos ? `BOOST ${boostedPos} →` : 'SELECT A SLOT'}
 </button>

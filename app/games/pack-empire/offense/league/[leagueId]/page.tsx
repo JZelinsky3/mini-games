@@ -47,6 +47,9 @@ export default function LeagueHomePage() {
   const [showInvite, setShowInvite] = useState(false);
   const [inviteCopied, setInviteCopied] = useState(false);
 
+  const [draftSubmitted, setDraftSubmitted] = useState<Set<string>>(new Set());
+  const [draftLocked, setDraftLocked]       = useState<Set<string>>(new Set());
+
   async function reload(uid: string) {
   const [lgRes, memRes, myRes] = await Promise.all([
     supabase.from('leagues').select('*').eq('id', leagueId).single(),
@@ -60,6 +63,13 @@ export default function LeagueHomePage() {
   const merged = membership && !mems.find((m: DBLeagueMember) => m.user_id === uid)
     ? [membership, ...mems] : mems;
   setMembers(merged);
+  // Load this week's draft status for all members
+if (lg && lg.phase !== 'pregame' && lg.phase !== 'complete') {
+  const { data: statuses } = await supabase
+    .rpc('get_league_draft_status', { p_league_id: leagueId });
+  setDraftSubmitted(new Set((statuses ?? []).filter((s: any) => s.submitted).map((s: any) => s.member_id)));
+  setDraftLocked(new Set((statuses ?? []).filter((s: any) => s.locked).map((s: any) => s.member_id)));
+}
   setMe(membership ?? merged.find((m: DBLeagueMember) => m.user_id === uid) ?? null);
 }
 
@@ -450,9 +460,13 @@ export default function LeagueHomePage() {
                           {displayName(m)}
                           {isMe && <span className="llh-board-you"> YOU</span>}
                           {m.user_id === league.commissioner_id && <span className="llh-board-comm"> ⚡</span>}
-                          {(m.permanent_locks as any[]).length > 0 && (
-                            <span className="llh-board-locks"> 🔒{(m.permanent_locks as any[]).length}</span>
-                          )}
+                          <span className="llh-status-row">
+  <span className={`llh-dot draft${draftSubmitted.has(m.id) ? ' on' : ''}`} title="Drafted" />
+  <span className={`llh-dot lock${draftLocked.has(m.id) ? ' on' : ''}`} title="Locked" />
+  {(m.permanent_locks as any[]).length > 0 && (
+    <span className="llh-board-locks">🔒{(m.permanent_locks as any[]).length}</span>
+  )}
+</span>
                         </div>
                         {m.team_name && (
                           <div className="llh-board-username">{uname}</div>
@@ -657,6 +671,12 @@ export default function LeagueHomePage() {
         .llh-modal-copy-link-btn{width:100%;background:linear-gradient(135deg,#cc2200,#ff4500,#ff8c00);color:#fff0e8;border:none;border-radius:9px;padding:.75rem;font-family:'Orbitron',sans-serif;font-weight:800;font-size:.75rem;letter-spacing:.14em;cursor:pointer;transition:.2s}
         .llh-modal-copy-link-btn:hover{filter:brightness(1.1)}
         .llh-friends-coming-soon{font-size:.8rem;color:#4a2000;text-align:center;padding:.8rem;font-weight:500;font-style:italic}
+
+        /* Packs and Lock count */
+        .llh-status-row{display:flex;align-items:center;gap:.3rem;margin-left:.3rem}
+        .llh-dot{width:7px;height:7px;border-radius:50%;border:1px solid #3a1808;background:#1c0a00;flex-shrink:0;transition:.2s}
+        .llh-dot.draft.on{background:#ff6b35;border-color:#ff6b35;box-shadow:0 0 5px rgba(255,107,53,.7)}
+        .llh-dot.lock.on{background:#c8a020;border-color:#c8a020;box-shadow:0 0 5px rgba(200,160,32,.7)}
 
         /* Leave */
         .llh-leave-block{padding:.3rem 0}

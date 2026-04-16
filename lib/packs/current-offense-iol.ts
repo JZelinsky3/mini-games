@@ -82,52 +82,49 @@ export const OG_POOL_V1: NFLPlayer[] = [
   pl('lin','Chris Lindstrom','OG','Atlanta Falcons', 1420, [
     'Highest-graded guard contender','Consistent Pro Bowl alternate'
   ]),
-  pl('bre','Aaron Brewer','OG','Miami Dolphins', 1380, [
-    'Versatile interior force','Strong recent PFF grades'
-  ]),
-  pl('tan','Tanor Bortolini','OG','Indianapolis Colts', 1350, [
+  pl('tan','Tanor Bortolini','OG','Indianapolis Colts', 1380, [
     'Breakout starter','High-upside young guard'
   ]),
-  pl('neu','Ryan Neuzil','OG','Atlanta Falcons', 1280, [
+  pl('neu','Ryan Neuzil','OG','Atlanta Falcons', 1350, [
     'Reliable run blocker','Steady starter in Falcons system'
   ]),
-  pl('sim','John Simpson','OG','Baltimore Ravens', 1250, [
+  pl('sim','John Simpson','OG','Baltimore Ravens', 1280, [
     'Physical guard','Recent high-value contributor'
   ]),
-  pl('avi','Steve Avila','OG','Los Angeles Rams', 1220, [
+  pl('avi','Steve Avila','OG','Los Angeles Rams', 1250, [
     'Rising young starter','Elite rookie grades in recent past'
   ]),
-  pl('car2','Jonah Jackson','OG','Los Angeles Rams', 1180, [
+  pl('car2','Jonah Jackson','OG','Los Angeles Rams', 1220, [
     'High-graded in recent seasons','Key piece for Stafford'
   ]),
-  pl('hug','Elgton Jenkins','OG','Green Bay Packers', 1080, [
+  pl('hug','Elgton Jenkins','OG','Green Bay Packers', 1180, [
     'Ultra-versatile starter','Multiple Pro Bowl nods'
   ]),
-  pl('sea','Isaac Seumalo','OG','Pittsburgh Steelers', 1020, [
+  pl('sea','Isaac Seumalo','OG','Pittsburgh Steelers', 1120, [
     'Solid veteran starter','Super Bowl experience'
   ]),
-  pl('mas','Shaq Mason','OG','Washington Commanders', 980, [
+  pl('mas','Shaq Mason','OG','Washington Commanders', 1080, [
     'Super Bowl champion guard','Consistent performer'
   ]),
-  pl('zel','Kevin Zeitler','OG','Baltimore Ravens', 950, [
+  pl('zel','Kevin Zeitler','OG','Baltimore Ravens', 1050, [
     'Long-time reliable starter','High consistency'
   ]),
-  pl('bpa','Ben Powers','OG','Denver Broncos', 920, [
+  pl('bpa','Ben Powers','OG','Denver Broncos', 1020, [
     'Strong run blocker','Recent large contract signee'
   ]),
-  pl('sbi','Spencer Brown','OG','Buffalo Bills', 880, [
+  pl('sbi','Spencer Brown','OG','Buffalo Bills', 980, [
     'Athletic development story','Pro Bowl alternate level'
   ]),
-  pl('kdo','Kevin Dotson','OG','Los Angeles Rams', 780, [
+  pl('kdo','Kevin Dotson','OG','Los Angeles Rams', 880, [
 'Strong run blocker','High PFF grades in recent seasons'
 ]),
-pl('rhu','Robert Hunt','OG','Los Angeles Chargers', 720, [
+pl('rhu','Robert Hunt','OG','Los Angeles Chargers', 820, [
 'Powerful interior presence','Massive run-game contributor'
 ]),
 pl('jda','James Daniels','OG','Pittsburgh Steelers', 880, [
 'Experienced starter','Pro Bowl alternate level'
 ]),
-pl('lto','Laken Tomlinson','OG','New York Jets', 700, [
+pl('lto','Laken Tomlinson','OG','New York Jets', 800, [
 'Veteran reliable anchor','Long-time consistent performer'
 ]),
 pl('cwh','Cody Whitehair','OG','Chicago Bears', 720, [
