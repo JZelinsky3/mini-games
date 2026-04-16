@@ -1,6 +1,7 @@
 // nfl-minigames-hub/app/api/advance-week/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createClient as createServiceClient } from '@supabase/supabase-js';
 
 function packTierForRank(rank: number, total: number): string {
   if (rank === 1) return 'elite_drop';
@@ -14,13 +15,12 @@ export async function POST(req: NextRequest) {
     const { leagueId } = await req.json();
     if (!leagueId) return NextResponse.json({ error: 'Missing leagueId' }, { status: 400 });
 
+    // Use cookie-based client to verify the requesting user
     const supabase = await createClient();
-
-    // Verify auth
     const { data: { user }, error: ue } = await supabase.auth.getUser();
     if (ue || !user) return NextResponse.json({ error: 'Not logged in' }, { status: 401 });
 
-    // Load league
+    // Verify commissioner via user client
     const { data: league, error: le } = await supabase
       .from('leagues').select('*').eq('id', leagueId).single();
     if (le || !league) return NextResponse.json({ error: 'League not found' }, { status: 404 });
@@ -29,15 +29,20 @@ export async function POST(req: NextRequest) {
     if (league.phase !== 'regular')
       return NextResponse.json({ error: 'Only works during regular season' }, { status: 400 });
 
-    // Load members
-    const { data: members, error: me } = await supabase
+    // Use service role for all reads/writes — bypasses RLS so we can see ALL members' drafts
+    const admin = createServiceClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    );
+
+    const { data: members, error: me } = await admin
       .from('league_members').select('*').eq('league_id', leagueId);
     if (me || !members?.length)
       return NextResponse.json({ error: 'No members' }, { status: 400 });
     const total = members.length;
 
-    // Load drafts for this week
-    const { data: drafts } = await supabase
+    // Read ALL drafts for this week using admin — commissioner's RLS would block other members' drafts
+    const { data: drafts } = await admin
       .from('league_drafts')
       .select('member_id, final_score')
       .eq('league_id', leagueId)
@@ -50,7 +55,7 @@ export async function POST(req: NextRequest) {
       scoreMap[d.member_id] = d.final_score ?? 0;
     }
 
-    // Rank members by this week's score
+    // Rank members by this week's score (members who didn't draft get 0)
     const ranked = [...members]
       .map(m => ({ ...m, weekScore: scoreMap[m.id] ?? 0 }))
       .sort((a, b) => b.weekScore - a.weekScore);
@@ -58,14 +63,14 @@ export async function POST(req: NextRequest) {
     // Update each member's team_score and next_pack_tier
     for (let i = 0; i < ranked.length; i++) {
       const m = ranked[i];
-      await supabase.from('league_members').update({
+      await admin.from('league_members').update({
         team_score: scoreMap[m.id] ?? m.team_score ?? 0,
         next_pack_tier: packTierForRank(i + 1, total),
       }).eq('id', m.id);
     }
 
     // Clear draft progress for this week
-    await supabase.from('league_draft_progress')
+    await admin.from('league_draft_progress')
       .delete()
       .eq('league_id', leagueId)
       .eq('week_number', league.current_week)
@@ -80,20 +85,20 @@ export async function POST(req: NextRequest) {
 
       for (let i = 0; i < ranked.length; i++) {
         const inPlayoffs = i < playoffSize;
-        await supabase.from('league_members').update({
+        await admin.from('league_members').update({
           playoff_active: inPlayoffs,
           playoff_seed: inPlayoffs ? i + 1 : null,
         }).eq('id', ranked[i].id);
       }
 
-      await supabase.from('leagues').update({
+      await admin.from('leagues').update({
         phase: 'gauntlet',
         current_week: 1,
       }).eq('id', leagueId);
 
       return NextResponse.json({ ok: true, advanced_to: 'gauntlet', playoff_size: playoffSize });
     } else {
-      await supabase.from('leagues').update({
+      await admin.from('leagues').update({
         current_week: league.current_week + 1,
       }).eq('id', leagueId);
 
