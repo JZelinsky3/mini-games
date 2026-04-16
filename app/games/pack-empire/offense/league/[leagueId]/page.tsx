@@ -276,7 +276,11 @@ if (lg && lg.phase !== 'pregame' && lg.phase !== 'complete') {
                     <div className="llh-mycard-rank">#{myRank}</div>
                     <div className="llh-mycard-score-block">
                       <div className="llh-mycard-score">
-                        {league.phase === 'pregame' ? '—' : me.team_score.toLocaleString()}
+                        {league.phase === 'pregame'
+  ? '—'
+  : (league.phase === 'gauntlet' || league.phase === 'finals' || league.phase === 'complete')
+    ? ((me as any).playoff_score ?? 0).toLocaleString()
+    : me.team_score.toLocaleString()}
                       </div>
                       <div className="llh-mycard-score-label">TEAM SCORE</div>
                     </div>
@@ -495,11 +499,18 @@ if (lg && lg.phase !== 'pregame' && lg.phase !== 'complete') {
                         )}
                       </div>
                       <div className="llh-board-score">
-                        {league.phase === 'pregame' ? '—' : m.team_score.toLocaleString()}
-                      </div>
-                      {m.playoff_seed != null && (
-                        <div className="llh-board-seed">SEED {m.playoff_seed}</div>
-                      )}
+  {league.phase === 'pregame'
+    ? '—'
+    : (league.phase === 'gauntlet' || league.phase === 'finals' || league.phase === 'complete')
+      ? ((m as any).playoff_score ?? 0).toLocaleString()
+      : m.team_score.toLocaleString()}
+</div>
+                      {league.phase === 'complete' && m.playoff_active && (
+  <div className="llh-board-champion">🏆 CHAMPION</div>
+)}
+{league.phase !== 'complete' && m.playoff_seed != null && (
+  <div className="llh-board-seed">SEED {m.playoff_seed}</div>
+)}
                       <div className="llh-board-arrow">›</div>
                     </Link>
                   );
@@ -672,6 +683,8 @@ if (lg && lg.phase !== 'pregame' && lg.phase !== 'complete') {
         .llh-board-arrow{color:#4a2000;font-size:1.1rem;flex-shrink:0;transition:.15s}
         .llh-board-row:hover .llh-board-arrow{color:#ff4500}
 
+        .llh-board-champion{font-size:.68rem;letter-spacing:.1em;color:#ffd700;border:1px solid rgba(255,215,0,.5);border-radius:3px;padding:.1rem .4rem;flex-shrink:0;background:rgba(255,215,0,.08);text-shadow:0 0 8px rgba(255,215,0,.5)}
+        
         /* Invite modal */
         .llh-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem}
         .llh-modal{background:#1c0a00;border:1.5px solid #4a2000;border-radius:14px;width:100%;max-width:480px;overflow:hidden;position:relative}

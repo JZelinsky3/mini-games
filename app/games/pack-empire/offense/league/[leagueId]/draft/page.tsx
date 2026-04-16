@@ -389,6 +389,18 @@ export default function LeagueDraftPage() {
         }
         setLineup(newLineup);
       }
+
+      // In useEffect after membership load, before setPhase:
+if (isPlayoff) {
+  const playoffLock = (membership as any).playoff_lock;
+  if (playoffLock) {
+    const newLineup = Array(11).fill(null) as (Player | null)[];
+    const si = SLOTS.findIndex((slot, idx) => slot.pool === playoffLock.pos && newLineup[idx] === null);
+    if (si !== -1) newLineup[si] = playoffLock;
+    setLineup(newLineup);
+    setLockedPlayers([playoffLock]);
+  }
+}
  
       // Skip boosted picker if tier is standard or already in playoffs
       if (membership.next_pack_tier === 'standard_pack' ) {

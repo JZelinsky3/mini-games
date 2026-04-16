@@ -46,6 +46,7 @@ export default function TeamViewPage() {
   const [league, setLeague]               = useState<DBLeague | null>(null);
   const [draft, setDraft]                 = useState<any | null>(null);
   const [currentDraft, setCurrentDraft]   = useState<any | null>(null);
+  const [playoffLockDone, setPlayoffLockDone] = useState(false);
   const [lockedIds, setLockedIds]         = useState<string[]>([]);
   const [teamName, setTeamName]           = useState('');
   const [username, setUsername]           = useState('');
@@ -86,6 +87,9 @@ export default function TeamViewPage() {
         supabase.from('league_members').select('permanent_locks, team_name')
           .eq('league_id', leagueId).eq('user_id', memberId).single(),
       ]);
+      const playoffLockData = (membershipRes.data as any)?.playoff_lock;
+      setPlayoffLockDone(!!playoffLockData);
+
       setUsername(profileRes.data?.username ?? 'Player');
       setTeamName(membershipRes.data?.team_name ?? '');
       const locks = (membershipRes.data?.permanent_locks as Player[]) ?? [];
