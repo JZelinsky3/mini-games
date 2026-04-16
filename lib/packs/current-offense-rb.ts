@@ -214,7 +214,7 @@ pl('tyjo','Ty Johnson','RB','Buffalo Bills', 450, [
   pl('ray','Ray Davis','RB','Buffalo Bills', 235, [
     'Utility college standout','Immediate depth role'
   ]),
-  pl('zmo','Zach Moss','RB','Cincinnati Bengals', 325, [
+  pl('zmo','Zack Moss','RB','Cincinnati Bengals', 325, [
     'Efficient backup','1,000-yard potential'
   ]),
   pl('cha2','Zach Charbonnet','RB','Seattle Seahawks', 615, [

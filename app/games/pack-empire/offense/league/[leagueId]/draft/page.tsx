@@ -478,23 +478,26 @@ export default function LeagueDraftPage() {
     if (!revealed[i]) { revealOne(i); return; }
     const card = packCards[i];
     setPickedId(card.id);
-    setTimeout(() => {
-      setLineup(prev => {
-        const n = [...prev];
-        n[packSi!] = card;
-        // Mark boosted slot as used
-        if (isBoostedSlot(packSi!)) setBoostedPicked(true);
-        if (isBoostedSlot(packSi!)) saveProgress({ lineup: n, boostedPicked: true, boostedPos });
-        if (n.filter(Boolean).length === 11) setPhase('complete');
-        return n;
-      });
-      setPackCards([]); setRevealed([]); setPickedId(null); setPackSi(null);
-      // Save updated lineup — player can't refresh to undo pick
-      setLineup(prev2 => {
-        saveProgress({ lineup: prev2, packSi: null, packCards: [] });
-        return prev2;
-      });
-    }, 650);
+    const capturedSi = packSi!;
+const wasBoosted = isBoostedSlot(packSi!);
+setTimeout(() => {
+  setLineup(prev => {
+    const n = [...prev];
+    n[capturedSi] = card;
+    if (wasBoosted) setBoostedPicked(true);
+    if (n.filter(Boolean).length === 11) setPhase('complete');
+    const sb = createClient();
+    sb.from('league_draft_progress').upsert({
+      league_id: leagueId, member_id: myMemberId, user_id: myUserId,
+      week_number: weekNumber, phase: leaguePhase, lineup: n,
+      open_pack_si: null, open_pack_cards: null,
+      boosted_picked: wasBoosted ? true : boostedPicked,
+      boosted_pos: boostedPos, updated_at: new Date().toISOString(),
+    }, { onConflict: 'league_id,user_id,week_number,phase' });
+    return n;
+  });
+  setPackCards([]); setRevealed([]); setPickedId(null); setPackSi(null);
+}, 650);
   }, [pickedId, revealed, revealOne, packCards, packSi, boostedPos]);
  
   /* ── Submit draft to Supabase ── */
@@ -1235,29 +1238,51 @@ const LEAGUE_DRAFT_STYLES = `
 .ldr-boost-slot.selected{background:rgba(255,107,53,.15)}
 .ldr-boost-slot.locked{background:rgba(14,6,0,.6);border-color:#2a1008;color:#3a1808;cursor:default;opacity:.45}
 
-/* ── Locked card — multi-layer animated border ── */
 .ldr-fsl.is-locked{box-shadow:none !important}
-
-/* Hide the card's own rarity outer effects */
 .ldr-fsl.is-locked .pe-ra-spin-wrap,
 .ldr-fsl.is-locked .pe-ep-dual-wrap,
 .ldr-fsl.is-locked .pe-le-plasma-wrap,
-.ldr-fsl.is-locked .pe-imm-glow-1,
-.ldr-fsl.is-locked .pe-imm-glow-2,
-.ldr-fsl.is-locked .pe-imm-glow-3,
-.ldr-fsl.is-locked .pe-imm-glow-4,
+.ldr-fsl.is-locked .pe-imm-glow-1,.ldr-fsl.is-locked .pe-imm-glow-2,
+.ldr-fsl.is-locked .pe-imm-glow-3,.ldr-fsl.is-locked .pe-imm-glow-4,
 .ldr-fsl.is-locked .pe-imm-plasma-wrap,
 .ldr-fsl.is-locked .pe-imm-corner-arcs{display:none}
 
-/* Plasma wrap container */
-.ldr-lock-plasma-wrap{position:absolute;inset:-4px;border-radius:14px;overflow:hidden;z-index:0;pointer-events:none}
-.ldr-lock-plasma-arc1{position:absolute;inset:0;background:conic-gradient(from 0deg,transparent 20%,rgba(20,180,90,.6) 38%,rgba(80,255,160,.95) 50%,rgba(40,220,120,.7) 62%,transparent 80%);animation:border-spin 1.4s linear infinite}
-.ldr-lock-plasma-arc2{position:absolute;inset:0;background:conic-gradient(from 90deg,transparent 25%,rgba(10,120,60,.5) 42%,rgba(60,200,120,.8) 50%,transparent 68%);animation:border-spin 2.2s linear infinite reverse}
-.ldr-lock-plasma-arc3{position:absolute;inset:0;background:conic-gradient(from 180deg,transparent 30%,rgba(255,255,255,.2) 44%,rgba(255,255,255,.75) 50%,rgba(255,255,255,.3) 56%,transparent 70%);animation:border-spin 1.8s linear infinite}
-.ldr-lock-plasma-arc4{position:absolute;inset:0;background:conic-gradient(from 270deg,transparent 35%,rgba(200,255,220,.15) 46%,rgba(255,255,255,.55) 52%,transparent 65%);animation:border-spin 2.6s linear infinite reverse}
-.ldr-lock-plasma-inner{position:absolute;inset:3px;border-radius:11px;background:#060a06}
-.ldr-lock-plasma-wrap::after{content:'';position:absolute;inset:-4px;border-radius:18px;background:transparent;box-shadow:0 0 10px rgba(40,220,120,.4),0 0 24px rgba(40,220,120,.2);animation:ldr-lock-breathe 2s ease-in-out infinite;pointer-events:none}
-@keyframes ldr-lock-breathe{0%,100%{box-shadow:0 0 8px rgba(40,220,120,.35),0 0 20px rgba(40,220,120,.15)}50%{box-shadow:0 0 16px rgba(80,255,160,.6),0 0 36px rgba(40,220,120,.3)}}
+.ldr-lock-plasma-wrap{position:absolute;inset:-3px;border-radius:13px;z-index:0;pointer-events:none}
+
+/* Solid green border */
+.ldr-lock-plasma-arc1{position:absolute;inset:0;border-radius:13px;border:2px solid rgba(40,220,120,.65)}
+
+/* Marching dashes — offset dash animation fakes movement along border */
+.ldr-lock-plasma-arc2{position:absolute;inset:0;border-radius:13px;
+  border:2px dashed rgba(80,255,160,.7);
+  animation:ldr-lock-march 1.2s linear infinite;
+  background:transparent}
+@keyframes ldr-lock-march{
+  0%{stroke-dashoffset:0}
+  100%{border-color:rgba(80,255,160,.7);outline-offset:0px}
+}
+
+/* Corner L-brackets — thick, bright, static */
+.ldr-lock-plasma-arc3{position:absolute;inset:-1px;pointer-events:none;
+  background:
+    linear-gradient(to right,  #28dc78 10px, transparent 10px) top    left  / 100% 2.5px no-repeat,
+    linear-gradient(to bottom, #28dc78 10px, transparent 10px) top    left  / 2.5px 100% no-repeat,
+    linear-gradient(to left,   #28dc78 10px, transparent 10px) top    right / 100% 2.5px no-repeat,
+    linear-gradient(to bottom, #28dc78 10px, transparent 10px) top    right / 2.5px 100% no-repeat,
+    linear-gradient(to right,  #28dc78 10px, transparent 10px) bottom left  / 100% 2.5px no-repeat,
+    linear-gradient(to top,    #28dc78 10px, transparent 10px) bottom left  / 2.5px 100% no-repeat,
+    linear-gradient(to left,   #28dc78 10px, transparent 10px) bottom right / 100% 2.5px no-repeat,
+    linear-gradient(to top,    #28dc78 10px, transparent 10px) bottom right / 2.5px 100% no-repeat;
+  border-radius:13px;animation:ldr-lock-corners 1.8s ease-in-out infinite alternate}
+@keyframes ldr-lock-corners{0%{opacity:.6}100%{opacity:1;filter:drop-shadow(0 0 3px #28dc78)}}
+
+/* Soft outer breathe */
+.ldr-lock-plasma-arc4{position:absolute;inset:-5px;border-radius:17px;background:transparent;
+  box-shadow:0 0 10px rgba(40,220,120,.25),0 0 22px rgba(40,220,120,.1);
+  animation:ldr-lock-breathe 2.2s ease-in-out infinite}
+@keyframes ldr-lock-breathe{0%,100%{box-shadow:0 0 8px rgba(40,220,120,.2),0 0 18px rgba(40,220,120,.08)}50%{box-shadow:0 0 16px rgba(80,255,160,.45),0 0 32px rgba(40,220,120,.18)}}
+
+.ldr-lock-plasma-inner{position:absolute;inset:3px;border-radius:10px;background:#060a06}
 
 @keyframes holo-shift{from{background-position:0%}to{background-position:200%}}
 @keyframes border-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}

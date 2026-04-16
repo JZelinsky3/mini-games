@@ -32,22 +32,29 @@ const SLOTS = [
   { key: 'C',   pos: 'C'  }, { key: 'RG',  pos: 'OG' }, { key: 'RT',  pos: 'OT' },
 ];
 
+function mapToSlots(roster: Player[]): (Player | null)[] {
+  const q: Record<string, Player[]> = {};
+  for (const p of roster) { if (!q[p.pos]) q[p.pos] = []; q[p.pos].push(p); }
+  const c: Record<string, number> = {};
+  return SLOTS.map(slot => { if (!c[slot.pos]) c[slot.pos] = 0; return (q[slot.pos] ?? [])[c[slot.pos]++] ?? null; });
+}
+
 export default function TeamViewPage() {
   const { leagueId, memberId } = useParams<{ leagueId: string; memberId: string }>();
   const router = useRouter();
 
-  const [league, setLeague]         = useState<DBLeague | null>(null);
-  const [draft, setDraft]           = useState<any | null>(null);
-  const [lockedIds, setLockedIds]   = useState<string[]>([]);
-  const [teamName, setTeamName]     = useState('');
-  const [username, setUsername]     = useState('');
-  const [loading, setLoading]       = useState(true);
-  const [myUserId, setMyUserId]     = useState<string | null>(null);
-  const [imageMap, setImageMap]     = useState<Record<string, string>>({});
-  const [currentDraft, setCurrentDraft] = useState<any | null>(null);
-  const [lockSelected, setLockSelected] = useState<string | null>(null);
-  const [lockSaving, setLockSaving] = useState(false);
-  const [lockDone, setLockDone]     = useState(false);
+  const [league, setLeague]               = useState<DBLeague | null>(null);
+  const [draft, setDraft]                 = useState<any | null>(null);
+  const [currentDraft, setCurrentDraft]   = useState<any | null>(null);
+  const [lockedIds, setLockedIds]         = useState<string[]>([]);
+  const [teamName, setTeamName]           = useState('');
+  const [username, setUsername]           = useState('');
+  const [loading, setLoading]             = useState(true);
+  const [myUserId, setMyUserId]           = useState<string | null>(null);
+  const [imageMap, setImageMap]           = useState<Record<string, string>>({});
+  const [lockSelected, setLockSelected]   = useState<string | null>(null);
+  const [lockSaving, setLockSaving]       = useState(false);
+  const [lockDone, setLockDone]           = useState(false);
   const [showLockWarning, setShowLockWarning] = useState(false);
 
   useEffect(() => {
@@ -87,25 +94,17 @@ export default function TeamViewPage() {
       const revealedWeek = lg.phase === 'regular' ? lg.current_week - 1 : lg.current_week;
       if (revealedWeek >= 1) {
         const { data: draftRow } = await supabase
-          .from('league_drafts')
-          .select('*')
-          .eq('league_id', leagueId)
-          .eq('user_id', memberId)
-          .eq('week_number', revealedWeek)
-          .single();
+          .from('league_drafts').select('*')
+          .eq('league_id', leagueId).eq('user_id', memberId)
+          .eq('week_number', revealedWeek).single();
         setDraft(draftRow ?? null);
       }
 
-      // Load current week draft for self only
       if (user.id === memberId && lg.phase === 'regular') {
         const { data: currentRow } = await supabase
-          .from('league_drafts')
-          .select('*')
-          .eq('league_id', leagueId)
-          .eq('user_id', memberId)
-          .eq('week_number', lg.current_week)
-          .eq('phase', 'regular')
-          .single();
+          .from('league_drafts').select('*')
+          .eq('league_id', leagueId).eq('user_id', memberId)
+          .eq('week_number', lg.current_week).eq('phase', 'regular').single();
         setCurrentDraft(currentRow ?? null);
         if (currentRow?.locked_this_week) setLockDone(true);
       }
@@ -118,57 +117,43 @@ export default function TeamViewPage() {
     if (!lockSelected || lockSaving || lockDone || !currentDraft) return;
     setLockSaving(true);
     try {
-      await supabase.from('league_drafts')
-        .update({ locked_this_week: lockSelected })
-        .eq('id', currentDraft.id);
-
-      const { data: memRow } = await supabase
-        .from('league_members')
-        .select('id, permanent_locks')
-        .eq('league_id', leagueId)
-        .eq('user_id', memberId)
-        .single();
-
+      await supabase.from('league_drafts').update({ locked_this_week: lockSelected }).eq('id', currentDraft.id);
+      const { data: memRow } = await supabase.from('league_members')
+        .select('id, permanent_locks').eq('league_id', leagueId).eq('user_id', memberId).single();
       if (memRow) {
         const player = (currentDraft.roster as Player[]).find((p: Player) => p.id === lockSelected);
         if (player) {
           const newLocks = [...((memRow.permanent_locks as Player[]) ?? []), player];
-          await supabase.from('league_members')
-            .update({ permanent_locks: newLocks })
-            .eq('id', memRow.id);
+          await supabase.from('league_members').update({ permanent_locks: newLocks }).eq('id', memRow.id);
           setLockedIds(prev => [...prev, player.id]);
         }
       }
-      setLockDone(true);
-      setShowLockWarning(false);
-      setLockSelected(null);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLockSaving(false);
-    }
+      setLockDone(true); setShowLockWarning(false); setLockSelected(null);
+    } catch(e) { console.error(e); } finally { setLockSaving(false); }
   }
 
   if (loading) return <div className="ltv-loading"><div className="ltv-spinner" /></div>;
   if (!league) return <div className="ltv-loading">League not found.</div>;
 
   const isMe = myUserId === memberId;
-  const roster: Player[] = draft?.roster ?? [];
   const chem = draft?.chemistry ?? null;
 
-  const posQueues: Record<string, Player[]> = {};
-  for (const p of roster) {
-    if (!posQueues[p.pos]) posQueues[p.pos] = [];
-    posQueues[p.pos].push(p);
-  }
-  const posCounters: Record<string, number> = {};
-  const slotPlayers: (Player | null)[] = SLOTS.map(slot => {
-    const pool = slot.pos;
-    if (!posCounters[pool]) posCounters[pool] = 0;
-    const q = posQueues[pool] ?? [];
-    return q[posCounters[pool]++] ?? null;
+  // Slot players for left column
+  const leftSlots = isMe && currentDraft
+    ? mapToSlots(currentDraft.roster ?? [])
+    : mapToSlots(draft?.roster ?? []);
+
+  // Locked players mapped to slots for right column
+  const lockSlots: (Player | null)[] = Array(11).fill(null);
+  const allRoster: Player[] = [...(currentDraft?.roster ?? []), ...(draft?.roster ?? [])];
+  const seen = new Set<string>();
+  const lockedList = allRoster.filter(p => { if (lockedIds.includes(p.id) && !seen.has(p.id)) { seen.add(p.id); return true; } return false; });
+  lockedList.forEach(lp => {
+    const si = SLOTS.findIndex((slot, idx) => slot.pos === lp.pos && lockSlots[idx] === null);
+    if (si !== -1) lockSlots[si] = lp;
   });
 
+  const pickRoster: Player[] = (currentDraft?.roster ?? draft?.roster ?? []) as Player[];
   const displayTitle = teamName ? teamName : isMe ? 'YOUR LINEUP' : `${username}'s LINEUP`;
 
   return (
@@ -176,18 +161,12 @@ export default function TeamViewPage() {
       <div className="ltv-root">
         <nav className="ltv-nav">
           <Link href={`/games/pack-empire/offense/league/${leagueId}`} className="ltv-back">← {league.name}</Link>
-          <div className="ltv-nav-mid">
-            <span className="ltv-nav-dot" />
-            <span>{isMe ? 'MY LINEUP' : 'TEAM VIEW'}</span>
-          </div>
+          <div className="ltv-nav-mid"><span className="ltv-nav-dot" /><span>{isMe ? 'MY LINEUP' : 'TEAM VIEW'}</span></div>
           <div />
         </nav>
 
         <div className="ltv-header">
-          <div className="ltv-header-bg">
-            <div className="ltv-header-grid" />
-            <div className="ltv-header-glow" />
-          </div>
+          <div className="ltv-header-bg"><div className="ltv-header-grid" /><div className="ltv-header-glow" /></div>
           <div className="ltv-header-inner">
             <h1 className="ltv-title">{displayTitle}</h1>
             {teamName && <div className="ltv-subtitle">{username}</div>}
@@ -198,137 +177,147 @@ export default function TeamViewPage() {
         <div className="ltv-body">
           {!draft && !currentDraft ? (
             <div className="ltv-no-draft">
-              {league.phase === 'pregame'
-                ? "Season hasn't started yet."
-                : 'No revealed draft yet — check back after midnight.'}
+              {league.phase === 'pregame' ? "Season hasn't started yet." : 'No revealed draft yet — check back after midnight.'}
             </div>
-          ) : (
-            <div className="ltv-cols">
-              <div className="ltv-col-left">
-                {draft && (
-                  <div className="ltv-score-card">
-                    <div className="ltv-score-row">
-                      <div className="ltv-score-block main">
-                        <div className="ltv-score-num">{draft.final_score?.toLocaleString()}</div>
-                        <div className="ltv-score-label">FINAL SCORE</div>
-                      </div>
+          ) : (<>
+
+            {/* Score strip */}
+            {draft && (
+              <div className="ltv-score-strip">
+                <div className="ltv-ss-block">
+                  <div className="ltv-ss-num" style={{ color: '#ff8c00' }}>{draft.final_score?.toLocaleString()}</div>
+                  <div className="ltv-ss-label">FINAL SCORE</div>
+                </div>
+                <div className="ltv-ss-div" />
+                <div className="ltv-ss-block">
+                  <div className="ltv-ss-num">{draft.draft_score?.toLocaleString()}</div>
+                  <div className="ltv-ss-label">DRAFT</div>
+                </div>
+                {chem && <><div className="ltv-ss-div" />
+                  <div className="ltv-ss-block">
+                    <div className="ltv-ss-num" style={{ color: chem.totalChemPoints >= 0 ? '#ff8c00' : '#ff6060' }}>
+                      {chem.totalChemPoints >= 0 ? '+' : ''}{chem.totalChemPoints?.toLocaleString()}
                     </div>
-                    <div className="ltv-score-breakdown">
-                      <div className="ltv-sbd-row">
-                        <span className="ltv-sbd-key">Draft score</span>
-                        <span className="ltv-sbd-val">{draft.draft_score?.toLocaleString()}</span>
-                      </div>
-                      {chem && (
-                        <div className="ltv-sbd-row">
-                          <span className="ltv-sbd-key">Chemistry</span>
-                          <span className="ltv-sbd-val" style={{ color: chem.totalChemPoints >= 0 ? '#ff8c00' : '#ff6060' }}>
-                            {chem.totalChemPoints >= 0 ? '+' : ''}{chem.totalChemPoints?.toLocaleString()}
-                          </span>
-                        </div>
-                      )}
-                    </div>
+                    <div className="ltv-ss-label">CHEMISTRY</div>
                   </div>
-                )}
-                {chem?.bonds?.length > 0 && (
-                  <div className="ltv-chem-card">
-                    <div className="ltv-chem-title">CHEMISTRY</div>
-                    {chem.bonds.map((bond: any, i: number) => (
-                      <div key={i} className="ltv-chem-row">
-                        <span className="ltv-chem-icon">{bond.type === 'synergy' ? '⚡' : '⚔️'}</span>
-                        <span className="ltv-chem-reason">{bond.reason}</span>
-                        <span className="ltv-chem-pts" style={{ color: bond.points >= 0 ? '#ff8c00' : '#ff6060' }}>
-                          {bond.points >= 0 ? '+' : ''}{bond.points}
-                        </span>
-                      </div>
+                </>}
+                {chem?.bonds?.length > 0 && <><div className="ltv-ss-div" />
+                  <div className="ltv-ss-bonds">
+                    {chem.bonds.map((b: any, i: number) => (
+                      <span key={i} className="ltv-ss-bond" style={{ color: b.points >= 0 ? '#ff8c00' : '#ff6060' }}>
+                        {b.type === 'synergy' ? '⚡' : '⚔️'} {b.reason} {b.points >= 0 ? '+' : ''}{b.points}
+                      </span>
                     ))}
                   </div>
-                )}
+                </>}
               </div>
+            )}
 
-              <div className="ltv-col-right">
-                {/* Lock section — only visible to self this week */}
-                {isMe && currentDraft && !lockDone && (
-                  <div className="ltv-lock-section">
-                    <div className="ltv-lock-eyebrow">THIS WEEK'S DRAFT · PICK YOUR LOCK</div>
-                    <div className="ltv-lock-sub">
-                      Only you can see this until reset. Pick one player to carry into next week.
-                      {' '}<strong>Once locked, it cannot be changed.</strong>
-                    </div>
-                    <div className="ltv-lock-grid">
-                      {(currentDraft.roster as Player[])
-                        .filter((p: Player) => !lockedIds.includes(p.id))
-                        .map((p: Player) => {
-                          const rc = RC[p.rarity] ?? RC.common;
-                          const isSelected = lockSelected === p.id;
-                          return (
-                            <div key={p.id}
-                              className={`ltv-lock-card${isSelected ? ' selected' : ''}`}
-                              style={{ '--rc': rc.color } as React.CSSProperties}
-                              onClick={() => setLockSelected(isSelected ? null : p.id)}
-                            >
-                              <div className="ltv-lc-pos">{p.pos}</div>
-                              <div className="ltv-lc-name">{p.name.split(' ').slice(-1)[0]}</div>
-                              <div className="ltv-lc-score" style={{ color: rc.color }}>{p.score.toLocaleString()}</div>
-                            </div>
-                          );
-                        })}
-                    </div>
-                    {lockSelected && !showLockWarning && (
-                      <button className="ltv-lock-btn" onClick={() => setShowLockWarning(true)}>
-                        🔒 LOCK {(currentDraft.roster as Player[]).find((p: Player) => p.id === lockSelected)?.name?.split(' ').slice(-1)[0]} →
-                      </button>
-                    )}
-                    {showLockWarning && (
-                      <div className="ltv-lock-warning">
-                        <div className="ltv-lw-msg">⚠️ Cannot be undone. Lock this player for the rest of the season?</div>
-                        <div className="ltv-lw-btns">
-                          <button className="ltv-lw-confirm" onClick={handleLock} disabled={lockSaving}>
-                            {lockSaving ? 'LOCKING…' : 'YES, LOCK THEM'}
-                          </button>
-                          <button className="ltv-lw-cancel" onClick={() => setShowLockWarning(false)}>CANCEL</button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-                {isMe && lockDone && (
-                  <div className="ltv-lock-done">🔒 Player locked for next week.</div>
-                )}
-
-                <div className="ltv-roster-label">ROSTER</div>
-                <div className="ltv-roster-grid">
-                  {SLOTS.map((slot, idx) => {
-                    const player  = slotPlayers[idx];
-                    const locked  = player ? lockedIds.includes(player.id) : false;
-                    const rc      = player ? RC[player.rarity] ?? RC.common : null;
-                    const imgSrc  = player ? imageMap[player.name] : undefined;
+            {/* Lock picker — self only */}
+            {isMe && currentDraft && !lockDone && (
+              <div className="ltv-lock-section">
+                <div className="ltv-lock-eyebrow">PICK YOUR LOCKED PLAYER FOR NEXT WEEK</div>
+                <div className="ltv-lock-sub">Only you see this. Pick one player to carry forward. <strong>Cannot be changed once locked.</strong></div>
+                <div className="ltv-lock-grid">
+                  {pickRoster.filter((p: Player) => !lockedIds.includes(p.id)).map((p: Player) => {
+                    const rc = RC[p.rarity] ?? RC.common;
+                    const isSel = lockSelected === p.id;
                     return (
-                      <div key={slot.key}
-                        className={`ltv-card${locked ? ' locked' : ''}${!player ? ' empty' : ''}`}
-                        style={locked ? { '--lc': '#c8a020' } as React.CSSProperties : undefined}
-                      >
-                        {locked && <div className="ltv-lock-badge">🔒</div>}
-                        <div className="ltv-card-pos">{slot.key.replace(/\d/, '')}</div>
-                        {player ? (
-                          <>
-                            <div className="ltv-card-art" style={{ background: rc!.art }}>
-                              {imgSrc && <img src={imgSrc} alt={player!.name} className="ltv-card-img" onError={e => (e.currentTarget.style.display='none')} />}
-                            </div>
-                            <div className="ltv-card-name">{player.name}</div>
-                            <div className="ltv-card-team">{player.team}</div>
-                            <div className="ltv-card-score" style={{ color: rc!.color }}>{player.score.toLocaleString()}</div>
-                            <div className="ltv-card-rarity" style={{ color: rc!.color }}>{player.rarity.toUpperCase()}</div>
-                          </>
-                        ) : (
-                          <div className="ltv-card-empty">—</div>
-                        )}
+                      <div key={p.id} className={`ltv-lock-card${isSel ? ' selected' : ''}`}
+                        style={{ '--rc': rc.color } as React.CSSProperties}
+                        onClick={() => setLockSelected(isSel ? null : p.id)}>
+                        <div className="ltv-lc-pos">{p.pos}</div>
+                        <div className="ltv-lc-name">{p.name.split(' ').slice(-1)[0]}</div>
+                        <div className="ltv-lc-score" style={{ color: rc.color }}>{p.score.toLocaleString()}</div>
                       </div>
                     );
                   })}
                 </div>
+                {lockSelected && !showLockWarning && (
+                  <button className="ltv-lock-btn" onClick={() => setShowLockWarning(true)}>
+                    🔒 LOCK {pickRoster.find((p: Player) => p.id === lockSelected)?.name?.split(' ').slice(-1)[0]} →
+                  </button>
+                )}
+                {showLockWarning && (
+                  <div className="ltv-lock-warning">
+                    <div className="ltv-lw-msg">⚠️ Cannot be undone. Lock this player for the rest of the season?</div>
+                    <div className="ltv-lw-btns">
+                      <button className="ltv-lw-confirm" onClick={handleLock} disabled={lockSaving}>{lockSaving ? 'LOCKING…' : 'YES, LOCK THEM'}</button>
+                      <button className="ltv-lw-cancel" onClick={() => setShowLockWarning(false)}>CANCEL</button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            {isMe && lockDone && <div className="ltv-lock-done">🔒 Player locked for next week.</div>}
+
+            {/* Dual columns */}
+            <div className="ltv-dual-cols">
+              {/* Left — this week / current draft */}
+              <div className="ltv-dual-col">
+                <div className="ltv-col-hdr">
+                  <span className="ltv-col-hdr-dot" style={{ background: '#ff8c00' }} />
+                  {isMe && currentDraft ? 'THIS WEEK (PRIVATE)' : `WEEK ${draft?.week_number ?? ''} LINEUP`}
+                </div>
+                {SLOTS.map((slot, idx) => {
+                  const player = leftSlots[idx];
+                  const rc = player ? RC[player.rarity] ?? RC.common : null;
+                  const imgSrc = player ? imageMap[player.name] : undefined;
+                  const isLocked = player ? lockedIds.includes(player.id) : false;
+                  return (
+                    <div key={slot.key}
+                      className={`ltv-row${!player ? ' empty' : ''}${isLocked ? ' is-locked' : ''}`}
+                      style={player ? { '--rc': rc!.color, '--art': rc!.art } as React.CSSProperties : undefined}>
+                      <div className="ltv-row-pos">{slot.key}</div>
+                      {player ? <>
+                        <div className="ltv-row-art" style={{ background: rc!.art }}>
+                          {imgSrc && <img src={imgSrc} alt={player.name} className="ltv-row-img" onError={e => (e.currentTarget.style.display = 'none')} />}
+                        </div>
+                        <div className="ltv-row-info">
+                          <div className="ltv-row-name" style={{ color: rc!.color }}>{player.name}</div>
+                          <div className="ltv-row-meta">{player.team} · {player.rarity.toUpperCase()}</div>
+                        </div>
+                        <div className="ltv-row-score" style={{ color: rc!.color }}>{player.score.toLocaleString()}</div>
+                        {isLocked && <div className="ltv-row-lock">🔒</div>}
+                      </> : <div className="ltv-row-empty">—</div>}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Right — locked players */}
+              <div className="ltv-dual-col">
+                <div className="ltv-col-hdr">
+                  <span className="ltv-col-hdr-dot" style={{ background: '#28dc78' }} />
+                  LOCKED IN
+                </div>
+                {SLOTS.map((slot, idx) => {
+                  const player = lockSlots[idx];
+                  const rc = player ? RC[player.rarity] ?? RC.common : null;
+                  const imgSrc = player ? imageMap[player.name] : undefined;
+                  return (
+                    <div key={slot.key}
+                      className={`ltv-row${!player ? ' empty lock-open' : ' locked-slot'}`}
+                      style={player ? { '--rc': rc!.color, '--art': rc!.art } as React.CSSProperties : undefined}>
+                      <div className="ltv-row-pos">{slot.key}</div>
+                      {player ? <>
+                        <div className="ltv-row-art" style={{ background: rc!.art }}>
+                          {imgSrc && <img src={imgSrc} alt={player.name} className="ltv-row-img" onError={e => (e.currentTarget.style.display = 'none')} />}
+                        </div>
+                        <div className="ltv-row-info">
+                          <div className="ltv-row-name" style={{ color: rc!.color }}>{player.name}</div>
+                          <div className="ltv-row-meta">{player.team} · {player.rarity.toUpperCase()}</div>
+                        </div>
+                        <div className="ltv-row-score" style={{ color: rc!.color }}>{player.score.toLocaleString()}</div>
+                        <div className="ltv-row-lock">🔒</div>
+                      </> : <div className="ltv-row-empty open">OPEN</div>}
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          )}
+
+          </>)}
         </div>
       </div>
 
@@ -354,41 +343,15 @@ export default function TeamViewPage() {
         .ltv-week-tag{display:inline-block;font-family:'Orbitron',sans-serif;font-size:.58rem;letter-spacing:.16em;color:#ff8c00;border:1px solid rgba(255,140,0,.3);border-radius:4px;padding:.18rem .5rem}
         .ltv-body{max-width:1100px;margin:0 auto;padding:1.8rem 2rem 4rem}
         .ltv-no-draft{text-align:center;color:#7a3a10;font-size:.9rem;padding:3rem 1rem;font-weight:500}
-        .ltv-cols{display:grid;grid-template-columns:280px 1fr;gap:1.4rem;align-items:start}
-        .ltv-col-left{display:flex;flex-direction:column;gap:1rem}
-        .ltv-score-card{background:#2e1200;border:1.5px solid rgba(255,140,0,.25);border-radius:12px;padding:1.1rem;position:relative;overflow:hidden}
-        .ltv-score-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#ff4500,#ff8c00)}
-        .ltv-score-row{margin-bottom:.8rem}
-        .ltv-score-block.main .ltv-score-num{font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:900;color:#ff8c00;line-height:1;text-shadow:0 0 16px rgba(255,140,0,.3)}
-        .ltv-score-label{font-size:.6rem;letter-spacing:.18em;color:#7a3a10;margin-top:.15rem}
-        .ltv-score-breakdown{border-top:1px solid #3a1800;padding-top:.7rem;display:flex;flex-direction:column;gap:.3rem}
-        .ltv-sbd-row{display:flex;justify-content:space-between;align-items:center}
-        .ltv-sbd-key{font-size:.78rem;color:#7a3a10;font-weight:600}
-        .ltv-sbd-val{font-family:'Orbitron',sans-serif;font-size:.78rem;font-weight:800;color:#ffd4a8}
-        .ltv-chem-card{background:#2e1200;border:1px solid #4a2000;border-radius:10px;padding:.9rem 1rem}
-        .ltv-chem-title{font-family:'Orbitron',sans-serif;font-size:.58rem;letter-spacing:.2em;color:#ff4500;margin-bottom:.6rem}
-        .ltv-chem-row{display:flex;align-items:center;gap:.5rem;padding:.25rem 0;border-bottom:1px solid #2e1200}
-        .ltv-chem-row:last-child{border-bottom:none}
-        .ltv-chem-icon{font-size:.82rem;flex-shrink:0}
-        .ltv-chem-reason{flex:1;font-size:.78rem;color:#7a3a10;font-weight:600}
-        .ltv-chem-pts{font-family:'Orbitron',sans-serif;font-size:.72rem;font-weight:800;flex-shrink:0}
-        .ltv-col-right{}
-        .ltv-roster-label{font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:.2em;color:#7a3a10;margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem}
-        .ltv-roster-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#4a2000,transparent)}
-        .ltv-roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.5rem}
-        .ltv-card{background:#2e1200;border:1px solid #3a1800;border-radius:10px;padding:.75rem .7rem;position:relative;overflow:hidden;transition:.15s;min-height:100px}
-        .ltv-card:hover{border-color:#4a2000;background:#3a1800}
-        .ltv-card.locked{border:2px solid var(--lc,#c8a020);box-shadow:0 0 10px rgba(200,160,32,.15)}
-        .ltv-card.empty{opacity:.3}
-        .ltv-lock-badge{position:absolute;top:.3rem;right:.35rem;font-size:.6rem}
-        .ltv-card-pos{font-size:.58rem;letter-spacing:.14em;color:#4a2000;margin-bottom:.3rem;font-weight:700}
-        .ltv-card-art{height:50px;border-radius:4px;margin-bottom:.35rem;opacity:.8;position:relative;overflow:hidden}
-        .ltv-card-img{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:110%;width:auto;object-fit:contain;object-position:center bottom;z-index:2}
-        .ltv-card-name{font-weight:700;font-size:.85rem;color:#ffd4a8;line-height:1.2;margin-bottom:.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .ltv-card-team{font-size:.65rem;color:#4a2000;margin-bottom:.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .ltv-card-score{font-family:'Orbitron',sans-serif;font-size:.72rem;font-weight:800}
-        .ltv-card-rarity{font-size:.55rem;letter-spacing:.1em;margin-top:.1rem}
-        .ltv-card-empty{color:#2e1200;font-size:1rem;padding-top:.3rem}
+        /* Score strip */
+        .ltv-score-strip{display:flex;align-items:center;background:#2e1200;border:1px solid #3a1800;border-radius:10px;padding:.6rem 1rem;margin-bottom:1.2rem;overflow-x:auto;scrollbar-width:none}
+        .ltv-score-strip::-webkit-scrollbar{display:none}
+        .ltv-ss-block{text-align:center;padding:0 .8rem;flex-shrink:0}
+        .ltv-ss-num{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;color:#ffd4a8;line-height:1}
+        .ltv-ss-label{font-size:.48rem;letter-spacing:.16em;color:#7a3a10;margin-top:.1rem}
+        .ltv-ss-div{width:1px;height:30px;background:#4a2000;flex-shrink:0}
+        .ltv-ss-bonds{display:flex;flex-direction:column;gap:.1rem;padding:0 .8rem}
+        .ltv-ss-bond{font-size:.68rem;color:#8a5030;font-weight:600;white-space:nowrap}
         /* Lock section */
         .ltv-lock-section{background:rgba(14,6,0,.85);border:1.5px solid rgba(200,160,32,.3);border-radius:10px;padding:.9rem 1rem;margin-bottom:1rem}
         .ltv-lock-eyebrow{font-family:'Orbitron',sans-serif;font-size:.55rem;letter-spacing:.2em;color:#c8a020;margin-bottom:.3rem}
@@ -412,16 +375,33 @@ export default function TeamViewPage() {
         .ltv-lw-cancel{flex:1;background:transparent;border:1px solid #3a1008;color:#6a3820;border-radius:6px;padding:.5rem;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;transition:.15s}
         .ltv-lw-cancel:hover{border-color:#6a3820;color:#f0d8c8}
         .ltv-lock-done{background:rgba(30,20,4,.8);border:1px solid rgba(200,160,32,.25);border-radius:8px;padding:.7rem 1rem;margin-bottom:1rem;font-size:.82rem;color:#c8a020;font-family:'Rajdhani',sans-serif;font-weight:600}
-        @media(max-width:800px){
-          .ltv-cols{grid-template-columns:1fr}
-          .ltv-col-left{order:2}
-          .ltv-col-right{order:1}
+        /* Dual columns */
+        .ltv-dual-cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+        .ltv-dual-col{display:flex;flex-direction:column;gap:.25rem}
+        .ltv-col-hdr{display:flex;align-items:center;gap:.4rem;font-family:'Orbitron',sans-serif;font-size:.55rem;letter-spacing:.16em;color:#7a3a10;margin-bottom:.3rem;padding-bottom:.35rem;border-bottom:1px solid #3a1800}
+        .ltv-col-hdr-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+        /* Row cards */
+        .ltv-row{display:flex;align-items:center;gap:.45rem;background:#2e1200;border:1px solid #3a1800;border-radius:7px;padding:.4rem .5rem;min-height:42px;overflow:hidden;transition:.12s}
+        .ltv-row:hover:not(.empty){border-color:#4a2000}
+        .ltv-row.is-locked{border-color:rgba(200,160,32,.3);background:rgba(38,22,0,.9)}
+        .ltv-row.locked-slot{border-color:rgba(40,220,120,.25);background:rgba(4,18,8,.9)}
+        .ltv-row.empty{opacity:.25;border-style:dashed;color: #f0d8c8}
+        .ltv-row.lock-open{opacity:.18;border-style:dashed;border-color:rgba(40,220,120,.3)}
+        .ltv-row-pos{font-family:'Orbitron',sans-serif;font-size:.48rem;font-weight:800;letter-spacing:.08em;color: #f0d8c8;width:2rem;flex-shrink:0;text-align:center}
+        .ltv-row-art{width:30px;height:30px;border-radius:4px;flex-shrink:0;position:relative;overflow:hidden}
+        .ltv-row-img{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:130%;width:auto;object-fit:contain;object-position:center bottom;z-index:2}
+        .ltv-row-info{flex:1;min-width:0}
+        .ltv-row-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .ltv-row-meta{font-size:.52rem;color:#f0d8c8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+        .ltv-row-score{font-family:'Orbitron',sans-serif;font-size:.68rem;font-weight:800;flex-shrink:0}
+        .ltv-row-lock{font-size:.65rem;flex-shrink:0}
+        .ltv-row-empty{font-size:.7rem;color: #f0d8c8;flex:1;letter-spacing:.08em;font-weight:600;padding:.4rem .5rem;min-height:31.8px}
+        .ltv-row-empty.open{color: #f0d8c8;font-family:'Orbitron',sans-serif;font-size:.46rem;letter-spacing:.12em}
+        @media(max-width:700px){
+          .ltv-dual-cols{grid-template-columns:1fr}
           .ltv-body{padding:1.4rem 1rem 3rem}
           .ltv-nav{padding:.8rem 1rem}
           .ltv-header{padding:1.5rem 1rem 1.2rem}
-        }
-        @media(max-width:500px){
-          .ltv-roster-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
         }
       `}</style>
     </>

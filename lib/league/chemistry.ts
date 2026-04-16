@@ -58,6 +58,9 @@ const SYNERGY_PAIRS: { a: string; b: string; tier: Tier }[] = [
   { a: 'OT', b: 'RB',  tier: 'conservative' },
   { a: 'WR', b: 'WR',  tier: 'conservative' },
   { a: 'TE', b: 'OT',  tier: 'conservative' },
+  { a: 'WR1',b: 'WR2', tier: 'conservative' },
+  { a: 'WR1',b: 'WR3', tier: 'conservative' },
+  { a: 'WR2',b: 'WR3', tier: 'conservative' },
 ];
 
 const synergyMap = new Map<string, Tier>();
