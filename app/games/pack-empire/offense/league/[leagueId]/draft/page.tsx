@@ -334,16 +334,16 @@ export default function LeagueDraftPage() {
       if (!league || !membership) { router.replace(`/games/pack-empire/offense/league/${leagueId}`); return; }
       if (league.phase === 'pregame') { router.replace(`/games/pack-empire/offense/league/${leagueId}`); return; }
  
+      const isPlayoff = league.phase === 'gauntlet' || league.phase === 'finals';
+      const packCount = isPlayoff ? PLAYOFF_PACK_COUNT : packsForWeek(league.current_week);
+      setTotalPackCount(packCount);
+
       setLeagueName(league.name);
       setWeekNumber(league.current_week);
       setLeaguePhase(league.phase);
       setMyMemberId(membership.id);
       setMyPackTier(membership.next_pack_tier);
-      setLockedPlayers((membership.permanent_locks as Player[]) ?? []);
- 
-      const isPlayoff = league.phase === 'gauntlet' || league.phase === 'finals';
-      const packCount = isPlayoff ? PLAYOFF_PACK_COUNT : packsForWeek(league.current_week);
-      setTotalPackCount(packCount);
+      setLockedPlayers(isPlayoff ? [] : ((membership.permanent_locks as Player[]) ?? []));
  
       // Check if already drafted this week
       const existing = await getMyDraft(leagueId, membership.id, league.current_week, league.phase);

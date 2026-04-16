@@ -27,19 +27,19 @@ export const PACK_TIER_COLORS: Record<PackTier, string> = {
 type WeightMap = Record<Rarity, number>;
 
 export const LEAGUE_WEIGHTS: Record<PackTier, WeightMap> = {
-  standard_pack: { common: 40, rare: 30, dynasty: 19, transcendent: 10, immortal: 1 },
+  standard_pack: { common: 51, rare: 23, dynasty: 15, transcendent: 10, immortal: 1 },
   rising_pack:   { common: 33, rare: 30, dynasty: 20, transcendent: 15, immortal: 2 },
   prime_pack:    { common: 18,  rare: 35, dynasty: 23, transcendent: 20, immortal: 4 },
-  elite_drop:    { common: 15,  rare: 25,  dynasty: 27, transcendent: 25, immortal: 8 },
+  elite_drop:    { common: 13,  rare: 25,  dynasty: 27, transcendent: 27, immortal: 8 },
 };
 
 // One boosted slot per pack (same pattern as your existing weightedDraw)
 // Boosted slot within a tier escalates one level higher:
 const BOOSTED_WEIGHTS: Record<PackTier, WeightMap> = {
-  standard_pack: { common: 40, rare: 30, dynasty: 19, transcendent: 10, immortal: 1 },
+  standard_pack: { common: 51, rare: 23, dynasty: 15, transcendent: 10, immortal: 1 },
   rising_pack:   { common: 33, rare: 30, dynasty: 20, transcendent: 15, immortal: 2 },
   prime_pack:    { common: 18,  rare: 35, dynasty: 23, transcendent: 20, immortal: 4 },
-  elite_drop:    { common: 15,  rare: 25,  dynasty: 27, transcendent: 25, immortal: 8 },
+  elite_drop:    { common: 13,  rare: 24,  dynasty: 27, transcendent: 27, immortal: 8 },
 };
 
 // ─── Player shape (matches your existing Player interface) ────────────────────

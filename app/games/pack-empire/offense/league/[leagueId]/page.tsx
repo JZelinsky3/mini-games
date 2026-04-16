@@ -460,10 +460,15 @@ if (lg && lg.phase !== 'pregame' && lg.phase !== 'complete') {
             </div>
 
             {/* ── Right col — standings ── */}
-            <div className="llh-col-right">
-              <div className="llh-standings-label">
-                <span className="llh-sl-line" />STANDINGS<span className="llh-sl-line" />
-              </div>
+<div className="llh-col-right">
+  {league.phase === 'complete' && (
+    <Link href={`/games/pack-empire/offense/league/${leagueId}/champion`} className="llh-champ-banner">
+      🏆 SEASON {(league as any).season_number ?? 1} COMPLETE — VIEW CHAMPION
+    </Link>
+  )}
+  <div className="llh-standings-label">
+    <span className="llh-sl-line" />STANDINGS<span className="llh-sl-line" />
+  </div>
               <div className="llh-board">
                 {members.length === 0 ? (
                   <div className="llh-board-empty">
@@ -684,7 +689,7 @@ if (lg && lg.phase !== 'pregame' && lg.phase !== 'complete') {
         .llh-board-row:hover .llh-board-arrow{color:#ff4500}
 
         .llh-board-champion{font-size:.68rem;letter-spacing:.1em;color:#ffd700;border:1px solid rgba(255,215,0,.5);border-radius:3px;padding:.1rem .4rem;flex-shrink:0;background:rgba(255,215,0,.08);text-shadow:0 0 8px rgba(255,215,0,.5)}
-        
+
         /* Invite modal */
         .llh-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem}
         .llh-modal{background:#1c0a00;border:1.5px solid #4a2000;border-radius:14px;width:100%;max-width:480px;overflow:hidden;position:relative}
@@ -738,6 +743,9 @@ if (lg && lg.phase !== 'pregame' && lg.phase !== 'complete') {
         .llh-advance-btn.llh-advance-champion{background:linear-gradient(135deg,#6a4000,#c8a020,#ffd700);border-color:#ffd700;color:#1a0800 !important}
         .llh-advance-btn.llh-advance-champion:hover:not(:disabled){background:linear-gradient(135deg,#8a5000,#e0b830,#ffe040);border-color:#ffe040}
         .llh-advance-msg{font-size:.72rem;color:#ff8c00;margin-top:.3rem;text-align:center;font-family:'Rajdhani',sans-serif;font-weight:600}
+
+        .llh-champ-banner{display:block;text-align:center;background:linear-gradient(135deg,#2e1800,#4a2800);border:1px solid rgba(255,215,0,.4);border-radius:10px;padding:1rem;font-family:'Orbitron',sans-serif;font-size:.72rem;letter-spacing:.16em;color:#ffd700;text-decoration:none;margin-bottom:.8rem;text-shadow:0 0 10px rgba(255,215,0,.4);animation:llh-champ-pulse 2.5s ease-in-out infinite}
+        @keyframes llh-champ-pulse{0%,100%{box-shadow:0 0 10px rgba(255,215,0,.15)}50%{box-shadow:0 0 28px rgba(255,215,0,.4)}}
 
         /* Responsive */
         @media(max-width:860px){
