@@ -231,13 +231,17 @@ if (lg && lg.phase !== 'pregame' && lg.phase !== 'complete') {
             <span className="llh-nav-label">PACK EMPIRE · LEAGUE</span>
           </div>
           <div className="llh-nav-right">
-            <button className="llh-invite-nav-btn" onClick={() => setShowInvite(true)}>
-              + INVITE
-            </button>
-            <button className="llh-code-btn" onClick={() => copyCode(league.join_code)}>
-              {copying ? '✓ COPIED' : `CODE: ${league.join_code}`}
-            </button>
-          </div>
+  {league.phase === 'pregame' && (
+    <>
+      <button className="llh-invite-nav-btn" onClick={() => setShowInvite(true)}>
+        + INVITE
+      </button>
+      <button className="llh-code-btn" onClick={() => copyCode(league.join_code)}>
+        {copying ? '✓ COPIED' : `CODE: ${league.join_code}`}
+      </button>
+    </>
+  )}
+</div>
         </nav>
 
         {/* ── Hero ── */}
@@ -378,6 +382,22 @@ if (lg && lg.phase !== 'pregame' && lg.phase !== 'complete') {
                       {advanceMsg && <div className="llh-advance-msg">{advanceMsg}</div>}
                     </div>
                   )}
+                  {league.phase === 'gauntlet' && (
+  <div style={{ marginTop: '.6rem' }}>
+    <button className="llh-advance-btn" onClick={handleAdvanceWeek} disabled={advancing}>
+      {advancing ? 'ADVANCING…' : '⏩ ADVANCE GAUNTLET → FINALS'}
+    </button>
+    {advanceMsg && <div className="llh-advance-msg">{advanceMsg}</div>}
+  </div>
+)}
+{league.phase === 'finals' && (
+  <div style={{ marginTop: '.6rem' }}>
+    <button className="llh-advance-btn llh-advance-champion" onClick={handleAdvanceWeek} disabled={advancing}>
+      {advancing ? 'FINISHING…' : '🏆 END FINALS — CROWN CHAMPION'}
+    </button>
+    {advanceMsg && <div className="llh-advance-msg">{advanceMsg}</div>}
+  </div>
+)}
                   {showDelete ? (
                     <div className="llh-delete-confirm">
                       <div className="llh-delete-msg">Delete this league permanently? All data will be lost and cannot be recovered.</div>
@@ -417,20 +437,22 @@ if (lg && lg.phase !== 'pregame' && lg.phase !== 'complete') {
                 </div>
               )}
 
-              {/* Invite card */}
-              <div className="llh-invite-card">
-                <div className="llh-invite-card-label">INVITE PLAYERS</div>
-                <div className="llh-invite-code">{league.join_code}</div>
-                <div className="llh-invite-hint">Share code or link with friends</div>
-                <div className="llh-invite-btns">
-                  <button className="llh-copy-code-btn" onClick={() => copyCode(league.join_code)}>
-                    {copying ? '✓ CODE COPIED' : 'COPY CODE'}
-                  </button>
-                  <button className="llh-invite-link-btn" onClick={() => setShowInvite(true)}>
-                    INVITE LINK
-                  </button>
+              {/* Invite card — pregame only */}
+              {league.phase === 'pregame' && (
+                <div className="llh-invite-card">
+                  <div className="llh-invite-card-label">INVITE PLAYERS</div>
+                  <div className="llh-invite-code">{league.join_code}</div>
+                  <div className="llh-invite-hint">Share code or link with friends</div>
+                  <div className="llh-invite-btns">
+                    <button className="llh-copy-code-btn" onClick={() => copyCode(league.join_code)}>
+                      {copying ? '✓ CODE COPIED' : 'COPY CODE'}
+                    </button>
+                    <button className="llh-invite-link-btn" onClick={() => setShowInvite(true)}>
+                      INVITE LINK
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* ── Right col — standings ── */}
@@ -700,6 +722,8 @@ if (lg && lg.phase !== 'pregame' && lg.phase !== 'complete') {
         .llh-advance-btn{width:100%;background:rgba(255,140,0,.1);border:1.5px solid rgba(255,140,0,.3);color:#ff8c00;border-radius:8px;padding:.7rem;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:.1em;cursor:pointer;transition:.2s}
         .llh-advance-btn:hover:not(:disabled){background:rgba(255,140,0,.2);border-color:#ff8c00}
         .llh-advance-btn:disabled{opacity:.5;cursor:default}
+        .llh-advance-btn.llh-advance-champion{background:linear-gradient(135deg,#6a4000,#c8a020,#ffd700);border-color:#ffd700;color:#1a0800 !important}
+        .llh-advance-btn.llh-advance-champion:hover:not(:disabled){background:linear-gradient(135deg,#8a5000,#e0b830,#ffe040);border-color:#ffe040}
         .llh-advance-msg{font-size:.72rem;color:#ff8c00;margin-top:.3rem;text-align:center;font-family:'Rajdhani',sans-serif;font-weight:600}
 
         /* Responsive */

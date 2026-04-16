@@ -100,14 +100,15 @@ export default function TeamViewPage() {
         setDraft(draftRow ?? null);
       }
 
-      if (user.id === memberId && lg.phase === 'regular') {
-        const { data: currentRow } = await supabase
-          .from('league_drafts').select('*')
-          .eq('league_id', leagueId).eq('user_id', memberId)
-          .eq('week_number', lg.current_week).eq('phase', 'regular').single();
-        setCurrentDraft(currentRow ?? null);
-        if (currentRow?.locked_this_week) setLockDone(true);
-      }
+      const activePhasesForCurrentDraft = ['regular', 'gauntlet', 'finals'];
+if (user.id === memberId && activePhasesForCurrentDraft.includes(lg.phase)) {
+  const { data: currentRow } = await supabase
+    .from('league_drafts').select('*')
+    .eq('league_id', leagueId).eq('user_id', memberId)
+    .eq('week_number', lg.current_week).eq('phase', lg.phase).single();
+  setCurrentDraft(currentRow ?? null);
+  if (currentRow?.locked_this_week) setLockDone(true);
+}
 
       setLoading(false);
     })();
@@ -138,20 +139,29 @@ export default function TeamViewPage() {
   const isMe = myUserId === memberId;
   const chem = draft?.chemistry ?? null;
 
-  // Slot players for left column
-  const leftSlots = isMe && currentDraft
-    ? mapToSlots(currentDraft.roster ?? [])
-    : mapToSlots(draft?.roster ?? []);
+  const isPlayoff = league.phase === 'gauntlet' || league.phase === 'finals';
+  const slotPlayers: (Player | null)[] = mapToSlots(draft?.roster ?? []);
+  const currentSlotPlayers: (Player | null)[] = mapToSlots(currentDraft?.roster ?? []);
 
-  // Locked players mapped to slots for right column
+  // Left col: regular = private current week (if available) else revealed; playoff = revealed
+  const leftSlots: (Player | null)[] = isPlayoff
+    ? slotPlayers
+    : (isMe && currentDraft ? currentSlotPlayers : slotPlayers);
+
+  // Right col: regular = locked players; playoff = this week's private draft
   const lockSlots: (Player | null)[] = Array(11).fill(null);
-  const allRoster: Player[] = [...(currentDraft?.roster ?? []), ...(draft?.roster ?? [])];
-  const seen = new Set<string>();
-  const lockedList = allRoster.filter(p => { if (lockedIds.includes(p.id) && !seen.has(p.id)) { seen.add(p.id); return true; } return false; });
-  lockedList.forEach(lp => {
-    const si = SLOTS.findIndex((slot, idx) => slot.pos === lp.pos && lockSlots[idx] === null);
-    if (si !== -1) lockSlots[si] = lp;
-  });
+  if (!isPlayoff) {
+    const allRoster: Player[] = [...(currentDraft?.roster ?? []), ...(draft?.roster ?? [])];
+    const seen = new Set<string>();
+    allRoster.filter(p => { if (lockedIds.includes(p.id) && !seen.has(p.id)) { seen.add(p.id); return true; } return false; })
+      .forEach(lp => {
+        const si = SLOTS.findIndex((slot, idx) => slot.pos === lp.pos && lockSlots[idx] === null);
+        if (si !== -1) lockSlots[si] = lp;
+      });
+  }
+  const rightSlots: (Player | null)[] = isPlayoff
+    ? (isMe ? currentSlotPlayers : Array(11).fill(null))
+    : lockSlots;
 
   const pickRoster: Player[] = (currentDraft?.roster ?? draft?.roster ?? []) as Player[];
   const displayTitle = teamName ? teamName : isMe ? 'YOUR LINEUP' : `${username}'s LINEUP`;
@@ -214,7 +224,7 @@ export default function TeamViewPage() {
             )}
 
             {/* Lock picker — self only */}
-            {isMe && currentDraft && !lockDone && (
+            {isMe && currentDraft && !lockDone && league.phase === 'regular' && (
               <div className="ltv-lock-section">
                 <div className="ltv-lock-eyebrow">PICK YOUR LOCKED PLAYER FOR NEXT WEEK</div>
                 <div className="ltv-lock-sub">Only you see this. Pick one player to carry forward. <strong>Cannot be changed once locked.</strong></div>
@@ -249,7 +259,7 @@ export default function TeamViewPage() {
                 )}
               </div>
             )}
-            {isMe && lockDone && <div className="ltv-lock-done">🔒 Player locked for next week.</div>}
+            {isMe && lockDone && league.phase === 'regular' && <div className="ltv-lock-done">🔒 Player locked for next week.</div>}
 
             {/* Dual columns */}
             <div className="ltv-dual-cols">
@@ -257,7 +267,9 @@ export default function TeamViewPage() {
               <div className="ltv-dual-col">
                 <div className="ltv-col-hdr">
                   <span className="ltv-col-hdr-dot" style={{ background: '#ff8c00' }} />
-                  {isMe && currentDraft ? 'THIS WEEK (PRIVATE)' : `WEEK ${draft?.week_number ?? ''} LINEUP`}
+                  {isPlayoff
+                    ? `LAST WEEKS ${draft?.week_number ?? ''} LINEUP`
+                    : isMe && currentDraft ? 'THIS WEEKS (PRIVATE)' : `WEEKS ${draft?.week_number ?? ''} LINEUP`}
                 </div>
                 {SLOTS.map((slot, idx) => {
                   const player = leftSlots[idx];
@@ -285,19 +297,23 @@ export default function TeamViewPage() {
                 })}
               </div>
 
-              {/* Right — locked players */}
+              {/* Right — locked players (regular) or this week's draft (playoffs) */}
               <div className="ltv-dual-col">
                 <div className="ltv-col-hdr">
-                  <span className="ltv-col-hdr-dot" style={{ background: '#28dc78' }} />
-                  LOCKED IN
+                  <span className="ltv-col-hdr-dot" style={{ background: isPlayoff ? '#ff8c00' : '#28dc78' }} />
+                  {isPlayoff
+                    ? (isMe && currentDraft ? 'THIS WEEKS (PRIVATE)' : 'CURRENT WEEKS')
+                    : 'LOCKED IN'}
                 </div>
                 {SLOTS.map((slot, idx) => {
-                  const player = lockSlots[idx];
+                  const player = rightSlots[idx];
                   const rc = player ? RC[player.rarity] ?? RC.common : null;
                   const imgSrc = player ? imageMap[player.name] : undefined;
+                  const emptyClass = isPlayoff ? ' empty' : ' empty lock-open';
+                  const filledClass = isPlayoff ? '' : ' locked-slot';
                   return (
                     <div key={slot.key}
-                      className={`ltv-row${!player ? ' empty lock-open' : ' locked-slot'}`}
+                      className={`ltv-row${!player ? emptyClass : filledClass}`}
                       style={player ? { '--rc': rc!.color, '--art': rc!.art } as React.CSSProperties : undefined}>
                       <div className="ltv-row-pos">{slot.key}</div>
                       {player ? <>
@@ -309,8 +325,8 @@ export default function TeamViewPage() {
                           <div className="ltv-row-meta">{player.team} · {player.rarity.toUpperCase()}</div>
                         </div>
                         <div className="ltv-row-score" style={{ color: rc!.color }}>{player.score.toLocaleString()}</div>
-                        <div className="ltv-row-lock">🔒</div>
-                      </> : <div className="ltv-row-empty open">OPEN</div>}
+                        {!isPlayoff && <div className="ltv-row-lock">🔒</div>}
+                      </> : <div className="ltv-row-empty open">{isPlayoff ? '—' : 'OPEN'}</div>}
                     </div>
                   );
                 })}
