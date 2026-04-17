@@ -5,27 +5,39 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
+// ─── Icons (matching home page stroke style) ──────────────────────────────────
+
 const UserIcon = () => (
-  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
     <circle cx="12" cy="7" r="4"/>
   </svg>
 );
 
 const LogOutIcon = () => (
-  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
     <polyline points="16 17 21 12 16 7"/>
     <line x1="21" y1="12" x2="9" y2="12"/>
   </svg>
 );
 
+// Newspaper-style bell — clean, editorial, matches the site's stroke weight
+const BellIcon = () => (
+  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+  </svg>
+);
+
+// ─── Notification Bell ────────────────────────────────────────────────────────
+
 function NotificationBell({ userId }: { userId: string }) {
   const supabase = createClient();
   const router   = useRouter();
-  const [unread, setUnread]   = useState(0);
-  const [open, setOpen]       = useState(false);
-  const [notifs, setNotifs]   = useState<any[]>([]);
+  const [unread, setUnread] = useState(0);
+  const [open, setOpen]     = useState(false);
+  const [notifs, setNotifs] = useState<any[]>([]);
 
   const load = async () => {
     const { data } = await supabase
@@ -65,23 +77,52 @@ function NotificationBell({ userId }: { userId: string }) {
       <button
         onClick={handleOpen}
         title="Notifications"
-        className="w-8 h-8 rounded-full flex items-center justify-center border border-transparent transition-all duration-200"
         style={{
-          background: unread > 0 ? 'rgba(255,215,0,.08)' : 'transparent',
-          borderColor: unread > 0 ? 'rgba(255,215,0,.25)' : 'transparent',
-          color: unread > 0 ? '#ffd700' : '#52525b',
+          width: 34,
+          height: 34,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: unread > 0 ? 'rgba(232,168,75,0.08)' : 'transparent',
+          border: `1px solid ${unread > 0 ? 'rgba(232,168,75,0.3)' : 'var(--line, #3a3630)'}`,
+          borderRadius: '2px',
+          color: unread > 0 ? 'var(--amber, #e8a84b)' : 'var(--ink-mute, #7d7463)',
+          cursor: 'pointer',
           position: 'relative',
+          transition: 'all 0.2s',
+        }}
+        onMouseEnter={e => {
+          if (unread === 0) {
+            (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(232,168,75,0.3)';
+            (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-soft, #bfb5a0)';
+          }
+        }}
+        onMouseLeave={e => {
+          if (unread === 0) {
+            (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--line, #3a3630)';
+            (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-mute, #7d7463)';
+          }
         }}
       >
-        🔔
+        <BellIcon />
         {unread > 0 && (
           <span style={{
-            position: 'absolute', top: -3, right: -3,
-            background: '#ef4444', color: '#fff',
-            borderRadius: '50%', width: 15, height: 15,
-            fontSize: 8, fontWeight: 700,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            border: '1.5px solid #09090b',
+            position: 'absolute',
+            top: -4,
+            right: -4,
+            background: 'var(--rust, #c04820)',
+            color: 'var(--ink, #f4ebd8)',
+            borderRadius: '2px',
+            width: 15,
+            height: 15,
+            fontSize: 8,
+            fontWeight: 700,
+            fontFamily: "'JetBrains Mono', monospace",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            border: '1.5px solid var(--bg, #141311)',
+            letterSpacing: 0,
           }}>
             {unread > 9 ? '9+' : unread}
           </span>
@@ -95,73 +136,177 @@ function NotificationBell({ userId }: { userId: string }) {
             style={{ position: 'fixed', inset: 0, zIndex: 40 }}
             onClick={() => setOpen(false)}
           />
-          {/* Dropdown */}
+          {/* Dropdown — newspaper card style */}
           <div style={{
-            position: 'absolute', right: 0, top: 40, zIndex: 50,
-            background: '#18181b', border: '1px solid #27272a',
-            borderRadius: 14, width: 300, boxShadow: '0 8px 32px rgba(0,0,0,.6)',
+            position: 'absolute',
+            right: 0,
+            top: 42,
+            zIndex: 50,
+            background: 'var(--bg-card, #201e1a)',
+            border: '1px solid var(--line, #3a3630)',
+            borderTop: '2px solid var(--amber, #e8a84b)',
+            width: 300,
+            boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
             overflow: 'hidden',
           }}>
-            <div style={{ padding: '10px 14px', borderBottom: '1px solid #27272a', fontSize: 11, fontWeight: 700, color: '#52525b', letterSpacing: '.1em' }}>
-              NOTIFICATIONS
+            {/* Header */}
+            <div style={{
+              padding: '8px 14px',
+              borderBottom: '1px solid var(--line, #3a3630)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+              <span style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 10,
+                fontWeight: 700,
+                color: 'var(--amber, #e8a84b)',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+              }}>
+                Dispatches
+              </span>
+              {unread === 0 && (
+                <span style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 9,
+                  color: 'var(--ink-mute, #7d7463)',
+                  letterSpacing: '0.1em',
+                }}>
+                  All clear
+                </span>
+              )}
             </div>
+
             {notifs.length === 0 ? (
-              <div style={{ padding: '24px 14px', textAlign: 'center', color: '#52525b', fontSize: 13 }}>
-                All caught up!
+              <div style={{
+                padding: '28px 14px',
+                textAlign: 'center',
+                fontFamily: "'DM Serif Display', serif",
+                fontStyle: 'italic',
+                color: 'var(--ink-mute, #7d7463)',
+                fontSize: 14,
+              }}>
+                Nothing new to report.
               </div>
             ) : (
               notifs.map(n => (
                 <div key={n.id} style={{
-                  display: 'flex', gap: 10, padding: '11px 14px',
-                  borderBottom: '1px solid #27272a',
-                  background: n.read ? 'transparent' : 'rgba(255,215,0,.03)',
+                  display: 'flex',
+                  gap: 10,
+                  padding: '11px 14px',
+                  borderBottom: '1px solid var(--line, #3a3630)',
+                  background: n.read ? 'transparent' : 'rgba(232,168,75,0.04)',
                   alignItems: 'flex-start',
                 }}>
-                  <span style={{ fontSize: 15, flexShrink: 0, marginTop: 1 }}>
-                    {n.type === 'friend_request' ? '👋' : n.type === 'challenge_invite' ? '⚔️' : '🔔'}
-                  </span>
+                  {/* Type marker */}
+                  <div style={{
+                    width: 3,
+                    alignSelf: 'stretch',
+                    background: n.type === 'friend_request'
+                      ? 'var(--amber, #e8a84b)'
+                      : n.type === 'challenge_invite'
+                      ? 'var(--rust, #c04820)'
+                      : 'var(--ink-mute, #7d7463)',
+                    flexShrink: 0,
+                    borderRadius: 1,
+                  }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 12, color: '#d4d4d8', lineHeight: 1.4, marginBottom: 4 }}>
+                    <div style={{
+                      fontSize: 12,
+                      color: 'var(--ink-soft, #bfb5a0)',
+                      lineHeight: 1.45,
+                      marginBottom: 5,
+                      fontFamily: "'Space Grotesk', sans-serif",
+                    }}>
                       {n.type === 'friend_request' && (
-                        <><strong style={{ color: '#34d399' }}>@{n.from_username}</strong> sent you a friend request</>
+                        <><strong style={{ color: 'var(--amber, #e8a84b)' }}>@{n.from_username}</strong> sent you a friend request</>
                       )}
                       {n.type === 'challenge_invite' && (
-                        <><strong style={{ color: '#ffd700' }}>@{n.from_username}</strong> challenged you to a Versus Draft!</>
+                        <><strong style={{ color: 'var(--rust, #c04820)' }}>@{n.from_username}</strong> challenged you to a Versus Draft!</>
                       )}
                       {n.type === 'match_result' && (
-                        <>Match result ready</>
+                        <>Match result is ready</>
                       )}
                     </div>
                     {n.type === 'challenge_invite' && n.data?.challenge_id && (
                       <button
                         onClick={() => { setOpen(false); router.push(`/games/pack-empire/offense/versus/draft?challenge=${n.data.challenge_id}`); }}
-                        style={{ background: 'linear-gradient(135deg,#20a050,#34d399)', border: 'none', borderRadius: 6, color: '#fff', fontSize: 11, fontWeight: 700, padding: '4px 10px', cursor: 'pointer' }}
+                        style={{
+                          background: 'transparent',
+                          border: '1px solid var(--rust, #c04820)',
+                          color: 'var(--rust, #c04820)',
+                          borderRadius: '2px',
+                          fontSize: 10,
+                          fontWeight: 700,
+                          fontFamily: "'JetBrains Mono', monospace",
+                          letterSpacing: '0.12em',
+                          textTransform: 'uppercase',
+                          padding: '3px 8px',
+                          cursor: 'pointer',
+                        }}
                       >
-                        Accept Challenge →
+                        Accept →
                       </button>
                     )}
                     {n.type === 'friend_request' && (
                       <button
                         onClick={() => { setOpen(false); router.push('/profile?tab=friends'); }}
-                        style={{ background: 'none', border: '1px solid #27272a', borderRadius: 6, color: '#60a5fa', fontSize: 11, fontWeight: 700, padding: '4px 10px', cursor: 'pointer' }}
+                        style={{
+                          background: 'transparent',
+                          border: '1px solid var(--amber, #e8a84b)',
+                          color: 'var(--amber, #e8a84b)',
+                          borderRadius: '2px',
+                          fontSize: 10,
+                          fontWeight: 700,
+                          fontFamily: "'JetBrains Mono', monospace",
+                          letterSpacing: '0.12em',
+                          textTransform: 'uppercase',
+                          padding: '3px 8px',
+                          cursor: 'pointer',
+                        }}
                       >
-                        View request →
+                        View →
                       </button>
                     )}
                   </div>
                   {!n.read && (
-                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#ffd700', flexShrink: 0, marginTop: 4 }} />
+                    <div style={{
+                      width: 5,
+                      height: 5,
+                      borderRadius: '50%',
+                      background: 'var(--amber, #e8a84b)',
+                      flexShrink: 0,
+                      marginTop: 5,
+                    }} />
                   )}
                 </div>
               ))
             )}
+
             <button
               onClick={() => { setOpen(false); router.push('/profile?tab=friends'); }}
-              style={{ width: '100%', padding: '10px 14px', background: 'none', border: 'none', borderTop: '1px solid #27272a', color: '#52525b', fontSize: 12, cursor: 'pointer', textAlign: 'center', transition: 'color .15s' }}
-              onMouseEnter={e => (e.currentTarget.style.color = '#d4d4d8')}
-              onMouseLeave={e => (e.currentTarget.style.color = '#52525b')}
+              style={{
+                width: '100%',
+                padding: '9px 14px',
+                background: 'none',
+                border: 'none',
+                borderTop: '1px solid var(--line, #3a3630)',
+                color: 'var(--ink-mute, #7d7463)',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                textAlign: 'center',
+                transition: 'color 0.15s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--amber, #e8a84b)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--ink-mute, #7d7463)')}
             >
-              View all in Profile →
+              View all dispatches →
             </button>
           </div>
         </>
@@ -170,10 +315,12 @@ function NotificationBell({ userId }: { userId: string }) {
   );
 }
 
+// ─── Main UserButton ──────────────────────────────────────────────────────────
+
 export default function UserButton() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser]     = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
+  const router  = useRouter();
   const supabase = createClient();
 
   useEffect(() => {
@@ -191,21 +338,51 @@ export default function UserButton() {
   };
 
   if (loading) {
-    return <div className="w-36 h-10 bg-zinc-800 rounded-full animate-pulse" />;
+    return (
+      <div style={{
+        width: 140,
+        height: 36,
+        background: 'var(--bg-card, #201e1a)',
+        border: '1px solid var(--line, #3a3630)',
+        borderRadius: '2px',
+        animation: 'pulse 1.5s ease-in-out infinite',
+      }} />
+    );
   }
 
   if (!user) {
     return (
       <Link
         href="/login"
-        className="group relative inline-flex items-center gap-2.5 bg-zinc-900 border border-zinc-700 hover:border-emerald-500/60 rounded-full pl-3 pr-5 py-2.5 text-sm font-bold transition-all duration-200 hover:bg-zinc-800"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 8,
+          padding: '7px 14px 7px 10px',
+          background: 'transparent',
+          border: '1px solid var(--line, #3a3630)',
+          borderRadius: '2px',
+          color: 'var(--ink-soft, #bfb5a0)',
+          textDecoration: 'none',
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+          transition: 'all 0.2s',
+        }}
+        onMouseEnter={e => {
+          (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--amber, #e8a84b)';
+          (e.currentTarget as HTMLAnchorElement).style.color = 'var(--amber, #e8a84b)';
+        }}
+        onMouseLeave={e => {
+          (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--line, #3a3630)';
+          (e.currentTarget as HTMLAnchorElement).style.color = 'var(--ink-soft, #bfb5a0)';
+        }}
       >
-        {/* Icon circle */}
-        <span className="w-6 h-6 rounded-full bg-zinc-800 border border-zinc-700 group-hover:border-emerald-500/40 group-hover:bg-emerald-500/10 flex items-center justify-center text-zinc-500 group-hover:text-emerald-400 transition-all duration-200">
-          <UserIcon />
-        </span>
-        <span className="text-zinc-300 group-hover:text-white transition-colors">Login</span>
-        <span className="text-zinc-600 group-hover:text-emerald-500 transition-colors text-xs">→</span>
+        <span style={{ color: 'var(--ink-mute, #7d7463)' }}><UserIcon /></span>
+        Sign in
+        <span style={{ color: 'var(--amber, #e8a84b)', fontSize: 10 }}>→</span>
       </Link>
     );
   }
@@ -216,32 +393,100 @@ export default function UserButton() {
     'Player';
 
   return (
-<div className="flex items-center gap-3">
-  {/* Notification bell */}
-  <NotificationBell userId={user.id} />
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      {/* Bell */}
+      <NotificationBell userId={user.id} />
 
-  <Link
+      {/* Profile link — editorial card style */}
+      <Link
         href="/profile"
-        className="group flex items-center gap-3 bg-zinc-900 border border-zinc-700 hover:border-emerald-500/50 rounded-2xl px-4 py-2.5 transition-all duration-200 hover:bg-zinc-800"
->
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 9,
+          padding: '5px 12px 5px 7px',
+          background: 'var(--bg-card, #201e1a)',
+          border: '1px solid var(--line, #3a3630)',
+          borderRadius: '2px',
+          textDecoration: 'none',
+          transition: 'border-color 0.2s',
+        }}
+        onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(232,168,75,0.4)'}
+        onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--line, #3a3630)'}
+      >
         {/* Initial avatar */}
-<div className="w-7 h-7 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-[11px] font-black text-emerald-400">
+        <div style={{
+          width: 26,
+          height: 26,
+          background: 'rgba(232,168,75,0.1)',
+          border: '1px solid rgba(232,168,75,0.25)',
+          borderRadius: '2px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: 11,
+          fontWeight: 700,
+          color: 'var(--amber, #e8a84b)',
+          flexShrink: 0,
+        }}>
           {displayName.charAt(0).toUpperCase()}
-</div>
-<div>
-<div className="text-xs font-bold leading-tight">Hi, {displayName}</div>
-<div className="text-[10px] text-emerald-500 group-hover:text-emerald-400 transition-colors mt-0.5">
-            View Profile →
-</div>
-</div>
-</Link>
-<button
+        </div>
+
+        <div>
+          <div style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 12,
+            fontWeight: 700,
+            color: 'var(--ink, #f4ebd8)',
+            lineHeight: 1.2,
+          }}>
+            {displayName}
+          </div>
+          <div style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: 9,
+            fontWeight: 700,
+            color: 'var(--amber, #e8a84b)',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            marginTop: 1,
+          }}>
+            Profile →
+          </div>
+        </div>
+      </Link>
+
+      {/* Sign out */}
+      <button
         onClick={handleSignOut}
         title="Sign out"
-        className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-600 hover:text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all duration-200"
->
-<LogOutIcon />
-</button>
-</div>
+        style={{
+          width: 34,
+          height: 34,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'transparent',
+          border: '1px solid var(--line, #3a3630)',
+          borderRadius: '2px',
+          color: 'var(--ink-mute, #7d7463)',
+          cursor: 'pointer',
+          transition: 'all 0.2s',
+        }}
+        onMouseEnter={e => {
+          (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(192,72,32,0.4)';
+          (e.currentTarget as HTMLButtonElement).style.color = 'var(--rust, #c04820)';
+          (e.currentTarget as HTMLButtonElement).style.background = 'rgba(192,72,32,0.06)';
+        }}
+        onMouseLeave={e => {
+          (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--line, #3a3630)';
+          (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-mute, #7d7463)';
+          (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
+        }}
+      >
+        <LogOutIcon />
+      </button>
+    </div>
   );
 }
