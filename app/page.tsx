@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import UserButton from '@/components/UserButton';
+import SiteWelcomeGate from '@/components/SiteWelcomeGate';
 
 // ─── ICONS ────────────────────────────────────────────────────────────────────
 
@@ -26,21 +27,21 @@ const FootballIcon  = () => <svg className="w-7 h-7" viewBox="0 0 24 24" fill="n
 // ─── DATA ─────────────────────────────────────────────────────────────────────
 
 const games = [
-  { id: 'career-path',      title: 'Career Path',      icon: RouteIcon,   desc: 'Guess the player from their team journey',         color: 'from-blue-600 to-cyan-500',      tag: 'Trivia'   },
-  { id: 'stat-shadow',      title: 'Stat Shadow',       icon: ChartIcon,   desc: 'Reveal clues to identify the mystery player',      color: 'from-purple-600 to-pink-500',    tag: 'Trivia'   },
-  { id: 'timeline-builder', title: 'Timeline Builder',  icon: ClockIcon,   desc: 'Sort 8 players in order of their rookie season',   color: 'from-amber-500 to-orange-500',   tag: 'History'  },
-  { id: 'play-sim',         title: 'Play Simulator',    icon: TargetIcon,  desc: 'Call plays, drive the field, find the end zone',   color: 'from-green-600 to-lime-500',     tag: 'Strategy' },
-  { id: 'penalty-flag',     title: 'Penalty Flag',      icon: FlagIcon,    desc: 'Spot the foul buried in real play descriptions',   color: 'from-red-600 to-rose-500',       tag: 'Rules'    },
-  { id: 'rivalry-chain',    title: 'Rivalry Chain',     icon: LinkIcon,    desc: 'Build the longest rival connection chain',         color: 'from-emerald-600 to-teal-500',   tag: 'History'  },
-  { id: 'draft-room',       title: 'Draft Room',        icon: StarIcon,    desc: 'Guess the draft pick from combine stats alone',    color: 'from-violet-600 to-fuchsia-500', tag: 'History'  },
-  { id: 'pack-empire',      title: 'Pack Empire',       icon: GridIcon,    desc: 'Build your own team with random packs',    color: 'from-violet-600 to-green-500', tag: 'Strategy'  },
-  { id: 'nfl-redraft',      title: 'NFL Redraft',       icon: FootballIcon, desc: 'Redraft ....',    color: 'from-violet-600 to-green-500', tag: 'Strategy'  },
+  { id: 'career-path',      title: 'Career Path',       icon: RouteIcon,    desc: 'Guess the player from their team journey',       tag: 'Trivia'   },
+  { id: 'stat-shadow',      title: 'Stat Shadow',       icon: ChartIcon,    desc: 'Reveal clues to identify the mystery player',    tag: 'Trivia'   },
+  { id: 'timeline-builder', title: 'Timeline Builder',  icon: ClockIcon,    desc: 'Sort 8 players in order of their rookie season', tag: 'History'  },
+  { id: 'play-sim',         title: 'Play Simulator',    icon: TargetIcon,   desc: 'Call plays, drive the field, find the end zone', tag: 'Strategy' },
+  { id: 'penalty-flag',     title: 'Penalty Flag',      icon: FlagIcon,     desc: 'Spot the foul buried in real play descriptions', tag: 'Rules'    },
+  { id: 'rivalry-chain',    title: 'Rivalry Chain',     icon: LinkIcon,     desc: 'Build the longest rival connection chain',       tag: 'History'  },
+  { id: 'draft-room',       title: 'Draft Room',        icon: StarIcon,     desc: 'Guess the draft pick from combine stats alone',  tag: 'History'  },
+  { id: 'pack-empire',      title: 'Pack Empire',       icon: GridIcon,     desc: 'Build your own team with random packs',          tag: 'Strategy' },
+  { id: 'nfl-redraft',      title: 'NFL Redraft',       icon: FootballIcon, desc: 'Redo history — pick better than the pros',       tag: 'Strategy' },
 ];
 
 const DAILY_CHALLENGES = [
-  { icon: ClockIcon,  label: "Today's Timeline",       detail: '8 players · Hard mode', id: 'timeline-builder', color: 'amber'  },
-  { icon: ChartIcon,  label: "Today's Mystery Player",  detail: '3 clues remaining',     id: 'stat-shadow',      color: 'purple' },
-  { icon: RouteIcon,  label: "Today's Career Path",     detail: 'Unsolved',              id: 'career-path',      color: 'blue'   },
+  { icon: ClockIcon, label: "Today's Timeline",       detail: '8 players · Hard mode', id: 'timeline-builder' },
+  { icon: ChartIcon, label: "Today's Mystery Player", detail: '3 clues remaining',     id: 'stat-shadow'      },
+  { icon: RouteIcon, label: "Today's Career Path",    detail: 'Unsolved',              id: 'career-path'      },
 ];
 
 const TAGS = ['All', 'Trivia', 'Strategy', 'History', 'Rules'];
@@ -114,329 +115,746 @@ export default function Home() {
 
   const filtered = activeTag === 'All' ? games : games.filter(g => g.tag === activeTag);
 
-  const colorChip: Record<string, string> = {
-    amber:    'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    purple:   'bg-purple-500/15 text-purple-400 border-purple-500/30',
-    blue:     'bg-blue-500/15 text-blue-400 border-blue-500/30',
-    Trivia:   'bg-violet-500/15 text-violet-400 border-violet-500/30',
-    Strategy: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-    History:  'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    Rules:    'bg-rose-500/15 text-rose-400 border-rose-500/30',
-  };
-
-  const iconColor: Record<string, string> = {
-    amber:  'text-amber-400',
-    purple: 'text-purple-400',
-    blue:   'text-blue-400',
-  };
-
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <>
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
-      {/* ── HERO ─────────────────────────────────────────────────────────────── */}
-      <div className="relative overflow-hidden border-b border-zinc-800">
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 39px, #fff 39px, #fff 40px)' }}
+        :root {
+          --bg: #141311;
+          --bg-soft: #1c1b18;
+          --bg-card: #201e1a;
+          --ink: #f4ebd8;
+          --ink-soft: #bfb5a0;
+          --ink-mute: #7d7463;
+          --amber: #e8a84b;
+          --amber-bright: #f4c06a;
+          --amber-deep: #a87420;
+          --rust: #c04820;
+          --line: #3a3630;
+        }
+
+        html, body {
+          background: var(--bg);
+          color: var(--ink);
+          font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .ticker-track {
+    animation: scroll 40s linear infinite;
+  }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+    
+      `}</style>
+
+      <div className="min-h-screen relative" style={{ background: 'var(--bg)', color: 'var(--ink)' }}>
+        <SiteWelcomeGate />
+
+        {/* Grain + glow backdrop */}
+        <div
+          className="fixed inset-0 pointer-events-none z-0"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle at 15% 20%, rgba(232, 168, 75, 0.05) 0%, transparent 45%), radial-gradient(circle at 85% 80%, rgba(192, 72, 32, 0.03) 0%, transparent 50%)',
+          }}
+        />
+        <div
+          className="fixed inset-0 pointer-events-none z-0 opacity-60"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='0.85' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 0.92 0 0 0 0 0.8 0 0 0 0.04 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>\")",
+          }}
         />
 
-        <div className="max-w-7xl mx-auto px-6 pt-8 pb-12">
-          {/* Nav */}
-          <div className="flex justify-between items-center mb-8">
-            <div className="flex items-center gap-3">
-              <span className="text-zinc-500"><FootballIcon /></span>
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-zinc-500">NFL MiniGames Hub</span>
+        {/* ═══ TICKER ═══ */}
+        <div
+          className="relative z-10 h-[38px] overflow-hidden flex items-center"
+          style={{ background: 'var(--amber)', color: 'var(--bg)', borderBottom: '3px solid var(--bg)' }}
+        >
+          <div className="flex gap-12 whitespace-nowrap pl-12 ticker-track">
+            {[...Array(2)].map((_, i) => (
+              <div key={i} className="flex gap-12">
+                <span className="font-mono text-[0.72rem] font-bold tracking-[0.2em] uppercase flex items-center gap-2">
+                  <span style={{ color: 'var(--rust)' }}>★</span> DAILY CHALLENGES LIVE
+                </span>
+                <span className="font-mono text-[0.72rem] font-bold tracking-[0.2em] uppercase flex items-center gap-2">
+                  <span style={{ color: 'var(--rust)' }}>★</span> 9 GAMES · ONE HUB
+                </span>
+                <span className="font-mono text-[0.72rem] font-bold tracking-[0.2em] uppercase flex items-center gap-2">
+                  <span style={{ color: 'var(--rust)' }}>★</span> PACK EMPIRE — NOW OPEN
+                </span>
+                <span className="font-mono text-[0.72rem] font-bold tracking-[0.2em] uppercase flex items-center gap-2">
+                  <span style={{ color: 'var(--rust)' }}>★</span> BUILD YOUR STREAK
+                </span>
+                <span className="font-mono text-[0.72rem] font-bold tracking-[0.2em] uppercase flex items-center gap-2">
+                  <span style={{ color: 'var(--rust)' }}>★</span> FREE TO PLAY
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 pt-8 pb-20">
+
+          {/* ═══ MASTHEAD / NAV ═══ */}
+          <div className="flex justify-between items-start pb-6 mb-10" style={{ borderBottom: '1px solid var(--line)' }}>
+            <div className="flex items-center gap-4">
+              <span style={{ color: 'var(--amber)' }}><FootballIcon /></span>
+              <div>
+                <div className="font-mono text-[0.72rem] font-bold tracking-[0.24em] uppercase" style={{ color: 'var(--amber)' }}>
+                  NFL MINIGAMES HUB
+                </div>
+                <div className="font-mono text-[0.65rem] tracking-[0.18em] uppercase mt-1" style={{ color: 'var(--ink-mute)' }}>
+                  The Almanac — Vol. 01 · Daily Edition
+                </div>
+              </div>
             </div>
             <UserButton />
           </div>
 
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
-            {/* Headline */}
-            <div>
-              <div className="flex items-center gap-2 mb-5">
-                <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[11px] font-bold tracking-widest uppercase text-zinc-500">Daily challenges live now</span>
-              </div>
-              <h1 className="text-5xl sm:text-6xl font-black tracking-tight leading-[1.05] mb-4">
-                The only NFL<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
-                  trivia hub
-                </span>{' '}
-                you need.
-              </h1>
-              <p className="text-zinc-400 text-lg max-w-xl">
-                7 games. Daily challenges. Real NFL history. Built for fans who know their stuff — and want to prove it.
+          {/* ═══ HERO ═══ */}
+          <section className="mb-20">
+            <div className="inline-flex items-center gap-2 mb-8 px-3 py-1.5 rounded-sm"
+              style={{ background: 'rgba(232, 168, 75, 0.08)', border: '1px solid rgba(232, 168, 75, 0.25)' }}>
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'var(--rust)' }} />
+              <span className="font-mono text-[0.7rem] font-bold tracking-[0.3em] uppercase" style={{ color: 'var(--amber)' }}>
+                Daily challenges live now
+              </span>
+            </div>
+
+            <h1
+              className="mb-8"
+              style={{
+                fontFamily: "'DM Serif Display', serif",
+                fontSize: 'clamp(3.5rem, 9vw, 8rem)',
+                lineHeight: 0.92,
+                letterSpacing: '-0.025em',
+                color: 'var(--ink)',
+              }}
+            >
+              The only NFL<br />
+              <span style={{ fontStyle: 'italic', color: 'var(--amber)' }}>trivia hub</span><br />
+              you&apos;ll ever need.
+            </h1>
+
+            <div className="grid md:grid-cols-2 gap-10 pt-8" style={{ borderTop: '1px solid var(--line)' }}>
+              <p
+                className="text-lg leading-relaxed italic"
+                style={{ fontFamily: "'DM Serif Display', serif", color: 'var(--ink-soft)' }}
+              >
+                <span style={{ fontSize: '2.2em', float: 'left', lineHeight: 0.9, paddingRight: '0.12em', color: 'var(--amber)', fontStyle: 'normal' }}>
+                  N
+                </span>
+                ine games. Daily puzzles. Real NFL history. Built for fans who know their stuff —
+                and for everyone still learning the sport.
               </p>
-            </div>
 
-            {/* Live stats — real Supabase data, skeleton while loading */}
-            <div className="flex gap-3 flex-wrap lg:flex-nowrap">
-              {mounted && siteStats ? (
-                <>
-                  <div className="bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 min-w-[130px]">
-                    <div className="flex items-center gap-1.5 mb-1 text-zinc-600"><ActivityIcon /><span className="text-[10px] uppercase tracking-wider font-bold">Today</span></div>
-                    <div className="text-2xl font-black text-white">{siteStats.games.toLocaleString()}</div>
-                    <div className="text-xs text-zinc-500 mt-0.5">Games played</div>
-                  </div>
-                  <div className="bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 min-w-[130px]">
-                    <div className="flex items-center gap-1.5 mb-1 text-zinc-600"><UsersIcon /><span className="text-[10px] uppercase tracking-wider font-bold">Active</span></div>
-                    <div className="text-2xl font-black text-white">{siteStats.players.toLocaleString()}</div>
-                    <div className="text-xs text-zinc-500 mt-0.5">Players this week</div>
-                  </div>
-                  <div className="bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 min-w-[130px]">
-                    <div className="flex items-center gap-1.5 mb-1 text-zinc-600"><TrophyIconSm /><span className="text-[10px] uppercase tracking-wider font-bold">Record</span></div>
-                    <div className="text-2xl font-black text-white">{siteStats.topStreak}d</div>
-                    <div className="text-xs text-zinc-500 mt-0.5">Top streak</div>
-                  </div>
-                </>
-              ) : (
-                [0, 1, 2].map(i => (
-                  <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 min-w-[130px] h-[96px] animate-pulse" />
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-10 space-y-14">
-
-        {/* ── DAILY CHALLENGES ─────────────────────────────────────────────── */}
-        <section>
-          <div className="flex items-center justify-between mb-5">
-            <div>
-              <h2 className="text-2xl font-black">Daily Challenges</h2>
-              <p className="text-zinc-500 text-sm mt-0.5">Fresh puzzles every day at midnight ET</p>
-            </div>
-            {mounted && userStreak > 0 && (
-              <div className="flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 rounded-full px-4 py-2">
-                <span className="text-orange-400"><FlameIconSm /></span>
-                <span className="text-orange-400 font-bold text-sm">{userStreak} day streak</span>
+              <div className="flex gap-3 self-end flex-wrap md:flex-nowrap">
+                {mounted && siteStats ? (
+                  <>
+                    <StatCard icon={<ActivityIcon />} label="Games today" value={siteStats.games.toLocaleString()} />
+                    <StatCard icon={<UsersIcon />} label="Active players" value={siteStats.players.toLocaleString()} />
+                    <StatCard icon={<TrophyIconSm />} label="Top streak" value={`${siteStats.topStreak}d`} />
+                  </>
+                ) : (
+                  [0, 1, 2].map(i => (
+                    <div key={i} className="animate-pulse" style={{
+                      background: 'var(--bg-card)',
+                      border: '1px solid var(--line)',
+                      minWidth: '130px',
+                      height: '96px',
+                    }} />
+                  ))
+                )}
               </div>
-            )}
-          </div>
+            </div>
+          </section>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {DAILY_CHALLENGES.map((c) => {
-              const Icon = c.icon;
-              return (
-                <Link key={c.id} href={`/games/${c.id}`}
-                  className="group relative overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-600 rounded-2xl p-5 transition-all duration-200 hover:scale-[1.02]"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <span className={iconColor[c.color]}><Icon /></span>
-                    <span className={`text-[11px] font-bold px-2 py-1 rounded-full border ${colorChip[c.color]}`}>
-                      Daily
+          {/* ═══ DAILY CHALLENGES ═══ */}
+          <section className="mb-20">
+            <SectionHeader
+              number="§ 01 · Daily"
+              title="Fresh puzzles, midnight ET —"
+              meta={mounted && userStreak > 0 ? `${userStreak}d active streak` : 'Resets every 24h'}
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {DAILY_CHALLENGES.map((c) => {
+                const Icon = c.icon;
+                return (
+                  <Link
+                    key={c.id}
+                    href={`/games/${c.id}`}
+                    className="group relative p-6 transition-all duration-300"
+                    style={{
+                      background: 'var(--bg-card)',
+                      border: '1px solid var(--line)',
+                    }}
+                  >
+                    <div
+                      className="absolute top-0 left-0 h-full w-1 transition-all duration-300 group-hover:w-1.5"
+                      style={{ background: 'var(--amber)' }}
+                    />
+                    <div className="flex items-start justify-between mb-5">
+                      <span style={{ color: 'var(--amber)' }}><Icon /></span>
+                      <span className="font-mono text-[0.6rem] font-bold tracking-[0.2em] uppercase px-2 py-1"
+                        style={{ color: 'var(--rust)', border: '1px solid var(--rust)', borderRadius: '2px' }}>
+                        Daily
+                      </span>
+                    </div>
+                    <div
+                      className="mb-1"
+                      style={{
+                        fontFamily: "'DM Serif Display', serif",
+                        fontSize: '1.5rem',
+                        lineHeight: 1.1,
+                        color: 'var(--ink)',
+                      }}
+                    >
+                      {c.label}
+                    </div>
+                    <div className="text-sm" style={{ color: 'var(--ink-mute)' }}>{c.detail}</div>
+                    <div
+                      className="mt-6 font-mono text-[0.7rem] font-bold tracking-[0.2em] uppercase transition-colors"
+                      style={{ color: 'var(--amber)' }}
+                    >
+                      Play today&apos;s →
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* ═══ PACK EMPIRE FEATURE ═══ */}
+          <section className="mb-20">
+            <SectionHeader
+              number="§ 02 · Cover Story"
+              title="The flagship —"
+              meta="Est. 2025"
+            />
+
+            <Link href="/games/pack-empire" className="block group">
+              <div
+                className="grid md:grid-cols-[1.1fr_1fr] gap-10 p-8 sm:p-10 transition-all duration-500"
+                style={{
+                  background: 'linear-gradient(160deg, var(--bg-card) 0%, var(--bg-soft) 100%)',
+                  border: '1px solid var(--line)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                <div
+                  className="absolute top-0 right-0 w-[240px] h-[240px] pointer-events-none opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(232, 168, 75, 0.2) 0%, transparent 70%)',
+                  }}
+                />
+
+                {/* Left — big typographic card */}
+                <div className="relative flex flex-col" style={{ minHeight: '380px' }}>
+                  <div className="flex justify-between mb-4">
+                    <span className="font-mono text-[0.62rem] tracking-[0.3em] uppercase" style={{ color: 'var(--amber)' }}>
+                      ★ PACK EMPIRE ★
+                    </span>
+                    <span className="font-mono text-[0.62rem] tracking-[0.3em] uppercase" style={{ color: 'var(--amber)' }}>
+                      № 01
                     </span>
                   </div>
-                  <div className="font-bold text-base mb-1">{c.label}</div>
-                  <div className="text-zinc-500 text-xs">{c.detail}</div>
-                  <div className="mt-4 text-emerald-400 text-xs font-bold group-hover:text-emerald-300 transition">
-                    Play Today's →
+                  <div
+                    className="my-auto"
+                    style={{
+                      fontFamily: "'DM Serif Display', serif",
+                      fontSize: 'clamp(2.8rem, 6vw, 4.5rem)',
+                      lineHeight: 0.95,
+                      letterSpacing: '-0.02em',
+                      color: 'var(--ink)',
+                    }}
+                  >
+                    Pack<br />
+                    <span style={{ fontStyle: 'italic', color: 'var(--amber)' }}>Empire.</span>
                   </div>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
+                  <div className="grid grid-cols-2 gap-2 mt-6">
+                    {[
+                      { name: 'Empire Builder', desc: 'Solo draft' },
+                      { name: 'Versus',         desc: 'Head-to-head' },
+                      { name: 'Mega Draft',     desc: 'Full rounds' },
+                      { name: 'League',         desc: 'Full season' },
+                    ].map(m => (
+                      <div
+                        key={m.name}
+                        className="px-3 py-2"
+                        style={{
+                          background: 'rgba(232, 168, 75, 0.06)',
+                          borderLeft: '2px solid var(--amber)',
+                        }}
+                      >
+                        <div className="font-bold text-[0.78rem]" style={{ color: 'var(--ink)' }}>{m.name}</div>
+                        <div className="font-mono text-[0.56rem] tracking-[0.08em] uppercase" style={{ color: 'var(--ink-mute)' }}>
+                          {m.desc}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-        {/* ── ALL GAMES ────────────────────────────────────────────────────── */}
-        <section>
-          <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
-            <h2 className="text-2xl font-black">All Games</h2>
-            <div className="flex gap-2 flex-wrap">
+                {/* Right — editorial article */}
+                <div className="flex flex-col gap-5 relative">
+                  <div className="font-mono text-[0.65rem] font-bold tracking-[0.25em] uppercase" style={{ color: 'var(--rust)' }}>
+                    ★ Cover Feature · The Main Event
+                  </div>
+                  <h2
+                    style={{
+                      fontFamily: "'DM Serif Display', serif",
+                      fontSize: 'clamp(1.9rem, 3.2vw, 2.6rem)',
+                      lineHeight: 1.05,
+                      letterSpacing: '-0.015em',
+                      color: 'var(--ink)',
+                      margin: 0,
+                    }}
+                  >
+                    A card collector&apos;s world, <span style={{ fontStyle: 'italic', color: 'var(--amber)' }}>built inside an NFL trivia hub.</span>
+                  </h2>
+                  <p style={{ color: 'var(--ink-soft)', lineHeight: 1.65 }}>
+                    The deepest game on the site — and the one that rewards coming back. Rip packs, pull rarities
+                    from Common up to Immortal, and build a roster that actually scores against real NFL stats.
+                  </p>
+                  <p style={{ color: 'var(--ink-soft)', lineHeight: 1.65 }}>
+                    Play solo, challenge a friend, run a Mega Draft, or commit to League play. Four modes, one
+                    collector&apos;s obsession.
+                  </p>
+                  <div
+                    className="inline-flex items-center gap-2 pt-3 mt-2 self-start font-mono text-[0.75rem] font-bold tracking-[0.18em] uppercase transition-transform group-hover:translate-x-1"
+                    style={{ color: 'var(--amber)', borderTop: '1px solid var(--line)', width: '100%' }}
+                  >
+                    <span>Enter Pack Empire</span>
+                    <span>→</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </section>
+
+          {/* ═══ ALL GAMES ═══ */}
+          <section className="mb-20">
+            <SectionHeader
+              number="§ 03 · Full Index"
+              title="Every game in the hub —"
+              meta={`${filtered.length} showing`}
+            />
+
+            {/* Tag filter */}
+            <div className="flex gap-2 flex-wrap mb-8">
               {TAGS.map(tag => (
                 <button
                   key={tag}
                   onClick={() => setActiveTag(tag)}
-                  className={`text-xs font-bold px-4 py-1.5 rounded-full border transition ${
-                    activeTag === tag
-                      ? 'bg-white text-black border-white'
-                      : 'border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white'
-                  }`}
+                  className="font-mono text-[0.68rem] font-bold tracking-[0.2em] uppercase px-4 py-2 transition-all"
+                  style={{
+                    background: activeTag === tag ? 'var(--amber)' : 'transparent',
+                    color: activeTag === tag ? 'var(--bg)' : 'var(--ink-mute)',
+                    border: `1px solid ${activeTag === tag ? 'var(--amber)' : 'var(--line)'}`,
+                    borderRadius: '2px',
+                  }}
                 >
                   {tag}
                 </button>
               ))}
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filtered.map((game) => {
-              const Icon = game.icon;
-              return (
-                <Link
-                  key={game.id}
-                  href={`/games/${game.id}`}
-                  className="group relative overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-600 rounded-2xl p-5 flex flex-col transition-all duration-200 hover:scale-[1.02]"
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${game.color} opacity-0 group-hover:opacity-[0.07] transition-opacity duration-300`} />
-                  <div className="flex items-start justify-between mb-4">
-                    <span className="text-zinc-400 group-hover:text-white transition-colors duration-200">
-                      <Icon />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-0">
+              {filtered.map((game, idx) => {
+                const Icon = game.icon;
+                const num = String(idx + 1).padStart(2, '0');
+                return (
+                  <Link
+                    key={game.id}
+                    href={`/games/${game.id}`}
+                    className="group grid items-baseline gap-4 py-5 transition-all duration-300 hover:pl-2"
+                    style={{
+                      gridTemplateColumns: 'auto 1fr auto',
+                      borderBottom: '1px solid var(--line)',
+                    }}
+                  >
+                    <span className="font-mono text-[0.7rem] tracking-[0.12em] min-w-[2rem]" style={{ color: 'var(--ink-mute)' }}>
+                      {num} ·
                     </span>
-                    <span className={`text-[10px] font-bold px-3 py-1 rounded-full border ${colorChip[game.tag] || 'bg-zinc-800 text-zinc-500 border-zinc-700'}`}>
+                    <div className="flex flex-col gap-1">
+                      <div
+                        className="flex items-center gap-3 transition-colors"
+                        style={{
+                          fontFamily: "'DM Serif Display', serif",
+                          fontSize: '1.4rem',
+                          lineHeight: 1.1,
+                          letterSpacing: '-0.01em',
+                          color: 'var(--ink)',
+                        }}
+                      >
+                        <span className="transition-colors group-hover:text-[var(--amber)]" style={{ color: 'var(--ink-mute)' }}>
+                          <Icon />
+                        </span>
+                        <span className="group-hover:text-[var(--amber)] transition-colors">{game.title}</span>
+                      </div>
+                      <div className="text-sm" style={{ color: 'var(--ink-mute)', lineHeight: 1.4 }}>
+                        {game.desc}
+                      </div>
+                    </div>
+                    <span
+                      className="font-mono text-[0.58rem] font-bold tracking-[0.15em] uppercase px-2.5 py-1"
+                      style={{
+                        color: 'var(--ink-soft)',
+                        border: '1px solid var(--line)',
+                        borderRadius: '2px',
+                      }}
+                    >
                       {game.tag}
                     </span>
-                  </div>
-                  <div className="font-bold text-base mb-1">{game.title}</div>
-                  <p className="text-zinc-500 text-sm flex-1 leading-snug">{game.desc}</p>
-                  <div className="mt-4 text-sm font-bold text-zinc-400 group-hover:text-emerald-400 transition">
-                    Play Now →
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-        <section>
-          <div className="mb-6">
-            <h2 className="text-2xl font-black">How It Works</h2>
-            <p className="text-zinc-500 text-sm mt-0.5">New here? Here's the format.</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              { num: '01', title: 'Pick a game',     desc: 'Choose from 7 distinct NFL trivia formats, each testing a different slice of your football knowledge.' },
-              { num: '02', title: 'Play daily',      desc: 'Three games reset every midnight ET with fresh challenges. Your streak grows each day you play.' },
-              { num: '03', title: 'Earn points',     desc: 'Score for correct answers. Speed bonuses, daily multipliers, and streak rewards can triple your haul.' },
-              { num: '04', title: 'Climb the board', desc: 'Your cumulative score is public. See exactly where you stand against every player on the platform.' },
-            ].map(step => (
-              <div key={step.num} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
-                <div className="text-4xl font-black text-zinc-800 mb-3">{step.num}</div>
-                <div className="font-bold text-sm mb-2">{step.title}</div>
-                <p className="text-zinc-500 text-xs leading-relaxed">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── LEADERBOARD + SIDEBAR ─────────────────────────────────────────── */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-          {/* Leaderboard */}
-          <div className="lg:col-span-2 bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
-            <div className="px-6 py-5 border-b border-zinc-800 flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-black">Leaderboard</h2>
-                <p className="text-zinc-500 text-xs mt-0.5">All-time top players this season</p>
-              </div>
-              <div className="flex items-center gap-1.5 text-[10px] text-zinc-600 font-bold uppercase tracking-widest">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Live
-              </div>
+                  </Link>
+                );
+              })}
             </div>
-            <div className="divide-y divide-zinc-800">
-              {leaderboard.length > 0 ? (
-                leaderboard.map((entry, index) => (
-                  <div key={index} className={`flex items-center gap-4 px-6 py-3.5 ${index < 3 ? 'bg-zinc-800/40' : ''}`}>
-                    <div className={`text-sm font-black w-6 text-center ${
-                      index === 0 ? 'text-yellow-400' :
-                      index === 1 ? 'text-zinc-300' :
-                      index === 2 ? 'text-amber-600' : 'text-zinc-600'
-                    }`}>{index + 1}</div>
-                    <div className="w-7 h-7 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[11px] font-black text-zinc-400 shrink-0">
-                      {(entry.display_name || 'P').charAt(0).toUpperCase()}
-                    </div>
-                    <div className="flex-1 font-bold text-sm">
-                      {entry.display_name || `Player ${entry.user_id?.slice(0, 6)}`}
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-black text-white">{entry.total_score.toLocaleString()}</div>
-                      <div className="text-[10px] text-zinc-600">{entry.streak_count}d streak</div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="px-6 py-12 text-center text-zinc-500">No scores yet — be the first!</div>
-              )}
-            </div>
-          </div>
+          </section>
 
-          {/* Sidebar */}
-          <div className="space-y-4">
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
-              <h3 className="font-black text-base mb-4">How Points Work</h3>
-              <div className="space-y-3">
-                {[
-                  { label: 'Correct answer',  pts: '+100',      color: 'text-emerald-400' },
-                  { label: 'Daily challenge', pts: '2× points', color: 'text-yellow-400'  },
-                  { label: 'Streak bonus',    pts: '+50 / day', color: 'text-orange-400'  },
-                  { label: 'Speed bonus',     pts: 'up to +50', color: 'text-cyan-400'    },
-                  { label: 'Wrong answer',    pts: '−25',       color: 'text-red-400'     },
-                ].map(row => (
-                  <div key={row.label} className="flex items-center justify-between text-sm">
-                    <span className="text-zinc-400">{row.label}</span>
-                    <span className={`font-black ${row.color}`}>{row.pts}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* ═══ HOW IT WORKS ═══ */}
+          <section className="mb-20">
+            <SectionHeader
+              number="§ 04 · Primer"
+              title="How the hub works —"
+              meta="New here? Start here."
+            />
 
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
-              <h3 className="font-black text-base mb-1">Coming Soon</h3>
-              <p className="text-zinc-600 text-xs mb-4">Next drops</p>
-              <div className="space-y-4">
-                {[
-                  { icon: HandshakeIcon, title: 'Head to Head',    desc: 'Challenge a friend in real time' },
-                  { icon: GridIcon,      title: 'Immaculate Grid',  desc: 'Classic 3×3 crossword format'   },
-                  { icon: CalendarIcon,  title: 'Draft Simulator',  desc: 'Build your all-time roster'      },
-                ].map(item => {
-                  const Icon = item.icon;
-                  return (
-                    <div key={item.title} className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-500 shrink-0">
-                        <Icon />
-                      </div>
-                      <div>
-                        <div className="text-sm font-bold text-zinc-300">{item.title}</div>
-                        <div className="text-[11px] text-zinc-600">{item.desc}</div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── CTA BANNER ────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden bg-zinc-900 border border-zinc-800 rounded-3xl px-8 py-12 text-center">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/10 via-transparent to-cyan-600/10 pointer-events-none rounded-3xl" />
-          <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-32 bg-emerald-500/10 blur-3xl rounded-full pointer-events-none" />
-          <div className="relative">
-            <div className="inline-flex items-center gap-2 mb-5 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-3.5 py-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[11px] font-bold text-emerald-400 tracking-widest uppercase">Free to play</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-black mb-3">Think you know the NFL?</h2>
-            <p className="text-zinc-400 mb-7 max-w-md mx-auto text-sm leading-relaxed">
-              Create a free account to save your streak, track progress across all 7 games, and appear on the leaderboard.
-            </p>
-            <Link
-              href="/login"
-              className="inline-flex items-center gap-2 bg-white text-black font-black text-sm px-8 py-3.5 rounded-full hover:bg-zinc-100 transition-colors"
+            <div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+              style={{ borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}
             >
-              Start playing free →
-            </Link>
-          </div>
-        </section>
+              {[
+                { num: 'I.',   title: 'Pick a game',      desc: 'Choose from 9 distinct NFL trivia formats, each testing a different slice of football knowledge.' },
+                { num: 'II.',  title: 'Play daily',       desc: 'Three games reset every midnight ET with fresh challenges. Your streak grows each day you play.' },
+                { num: 'III.', title: 'Earn points',      desc: 'Score for correct answers. Speed bonuses, daily multipliers, and streak rewards can triple your haul.' },
+                { num: 'IV.',  title: 'Climb the board',  desc: 'Your cumulative score is public. See exactly where you stand against every player on the platform.' },
+              ].map((step, i, arr) => (
+                <div
+                  key={step.num}
+                  className="p-6 flex flex-col gap-2"
+                  style={{
+                    borderRight: i < arr.length - 1 ? '1px solid var(--line)' : 'none',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "'DM Serif Display', serif",
+                      fontStyle: 'italic',
+                      fontSize: '2.4rem',
+                      lineHeight: 1,
+                      color: 'var(--amber)',
+                      letterSpacing: '-0.02em',
+                    }}
+                  >
+                    {step.num}
+                  </div>
+                  <div className="font-bold mt-2" style={{ color: 'var(--ink)' }}>{step.title}</div>
+                  <p className="text-sm" style={{ color: 'var(--ink-mute)', lineHeight: 1.55 }}>{step.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
 
-        {/* ── FOOTER ───────────────────────────────────────────────────────── */}
-        <footer className="border-t border-zinc-800 pt-8 pb-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-zinc-600 text-xs">
-          <div className="flex items-center gap-2">
-            <span className="text-zinc-700"><FootballIcon /></span>
-            <span className="font-bold text-zinc-500">NFL MiniGames</span>
-            <span>· All free · New daily challenges</span>
-          </div>
-          <div className="flex gap-6">
-            <span className="hover:text-zinc-400 cursor-pointer transition">About</span>
-            <span className="hover:text-zinc-400 cursor-pointer transition">Submit a game idea</span>
-            <span className="hover:text-zinc-400 cursor-pointer transition">Twitter / X</span>
-          </div>
-        </footer>
+          {/* ═══ LEADERBOARD + SIDEBAR ═══ */}
+          <section className="mb-20 grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            {/* Leaderboard */}
+            <div className="lg:col-span-2" style={{ background: 'var(--bg-card)', border: '1px solid var(--line)' }}>
+              <div className="px-6 py-5 flex items-center justify-between" style={{ borderBottom: '1px solid var(--line)' }}>
+                <div>
+                  <div className="font-mono text-[0.65rem] font-bold tracking-[0.2em] uppercase mb-1" style={{ color: 'var(--amber)' }}>
+                    § 05 · Standings
+                  </div>
+                  <h2 style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    fontSize: '1.75rem',
+                    fontStyle: 'italic',
+                    color: 'var(--ink)',
+                    lineHeight: 1,
+                  }}>
+                    The Leaderboard
+                  </h2>
+                </div>
+                <div className="flex items-center gap-2 font-mono text-[0.62rem] font-bold uppercase tracking-[0.2em]" style={{ color: 'var(--ink-mute)' }}>
+                  <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'var(--rust)' }} />
+                  Live
+                </div>
+              </div>
+              <div>
+                {leaderboard.length > 0 ? (
+                  leaderboard.map((entry, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-4 px-6 py-4"
+                      style={{
+                        borderBottom: index < leaderboard.length - 1 ? '1px solid var(--line)' : 'none',
+                        background: index < 3 ? 'rgba(232, 168, 75, 0.04)' : 'transparent',
+                      }}
+                    >
+                      <div
+                        className="w-8 text-center"
+                        style={{
+                          fontFamily: "'DM Serif Display', serif",
+                          fontSize: '1.6rem',
+                          fontStyle: 'italic',
+                          lineHeight: 1,
+                          color: index === 0 ? 'var(--amber)' : index === 1 ? 'var(--ink-soft)' : index === 2 ? 'var(--amber-deep)' : 'var(--ink-mute)',
+                        }}
+                      >
+                        {index + 1}
+                      </div>
+                      <div
+                        className="w-8 h-8 flex items-center justify-center text-[11px] font-black shrink-0"
+                        style={{
+                          background: 'var(--bg-soft)',
+                          border: '1px solid var(--line)',
+                          color: 'var(--ink-soft)',
+                          borderRadius: '2px',
+                        }}
+                      >
+                        {(entry.display_name || 'P').charAt(0).toUpperCase()}
+                      </div>
+                      <div className="flex-1 font-bold text-sm" style={{ color: 'var(--ink)' }}>
+                        {entry.display_name || `Player ${entry.user_id?.slice(0, 6)}`}
+                      </div>
+                      <div className="text-right">
+                        <div
+                          style={{
+                            fontFamily: "'DM Serif Display', serif",
+                            fontSize: '1.15rem',
+                            lineHeight: 1,
+                            color: 'var(--ink)',
+                          }}
+                        >
+                          {entry.total_score.toLocaleString()}
+                        </div>
+                        <div className="font-mono text-[0.58rem] tracking-[0.1em] uppercase mt-1" style={{ color: 'var(--ink-mute) '}}>
+                          {entry.streak_count}d streak
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="px-6 py-16 text-center italic" style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.1rem', color: 'var(--ink-mute)' }}>
+                    No scores yet — be the first to sign the ledger.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Sidebar */}
+            <div className="flex flex-col gap-5">
+              {/* How points work */}
+              <div className="p-6" style={{ background: 'var(--bg-card)', border: '1px solid var(--line)' }}>
+                <div className="font-mono text-[0.6rem] font-bold tracking-[0.25em] uppercase mb-1" style={{ color: 'var(--amber)' }}>
+                  ★ Scoring
+                </div>
+                <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.35rem', fontStyle: 'italic', color: 'var(--ink)', marginBottom: '1rem' }}>
+                  How points work
+                </h3>
+                <div className="flex flex-col gap-3">
+                  {[
+                    { label: 'Correct answer',  pts: '+100',      accent: 'var(--amber)' },
+                    { label: 'Daily challenge', pts: '2× points', accent: 'var(--rust)' },
+                    { label: 'Streak bonus',    pts: '+50 / day', accent: 'var(--amber)' },
+                    { label: 'Speed bonus',     pts: 'up to +50', accent: 'var(--amber-bright)' },
+                    { label: 'Wrong answer',    pts: '−25',       accent: 'var(--ink-mute)' },
+                  ].map(row => (
+                    <div key={row.label} className="flex items-center justify-between text-sm py-2" style={{ borderBottom: '1px dashed var(--line)' }}>
+                      <span style={{ color: 'var(--ink-soft)' }}>{row.label}</span>
+                      <span className="font-mono text-[0.78rem] font-bold tracking-wide" style={{ color: row.accent }}>{row.pts}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Coming soon */}
+              <div className="p-6" style={{ background: 'var(--bg-card)', border: '1px solid var(--line)' }}>
+                <div className="font-mono text-[0.6rem] font-bold tracking-[0.25em] uppercase mb-1" style={{ color: 'var(--rust)' }}>
+                  ★ In Development
+                </div>
+                <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.35rem', fontStyle: 'italic', color: 'var(--ink)', marginBottom: '1rem' }}>
+                  Coming soon
+                </h3>
+                <div className="flex flex-col gap-4">
+                  {[
+                    { icon: HandshakeIcon, title: 'Head to Head',   desc: 'Challenge a friend in real time' },
+                    { icon: GridIcon,      title: 'Immaculate Grid', desc: 'Classic 3×3 crossword format' },
+                    { icon: CalendarIcon,  title: 'Draft Simulator', desc: 'Build your all-time roster' },
+                  ].map(item => {
+                    const Icon = item.icon;
+                    return (
+                      <div key={item.title} className="flex items-center gap-3">
+                        <div
+                          className="w-9 h-9 flex items-center justify-center shrink-0"
+                          style={{ background: 'var(--bg-soft)', border: '1px solid var(--line)', color: 'var(--amber)', borderRadius: '2px' }}
+                        >
+                          <Icon />
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm" style={{ color: 'var(--ink)' }}>{item.title}</div>
+                          <div className="text-[0.72rem]" style={{ color: 'var(--ink-mute)' }}>{item.desc}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ═══ CTA BANNER ═══ */}
+          <section
+            className="relative px-8 sm:px-12 py-14 sm:py-16 text-center mb-20 overflow-hidden"
+            style={{
+              background: 'linear-gradient(160deg, var(--bg-card) 0%, var(--bg-soft) 100%)',
+              border: '1px solid var(--line)',
+            }}
+          >
+            <div
+              className="absolute -top-20 left-1/2 -translate-x-1/2 w-[400px] h-[200px] pointer-events-none"
+              style={{ background: 'radial-gradient(ellipse, rgba(232, 168, 75, 0.15) 0%, transparent 70%)' }}
+            />
+            <div className="relative">
+              <div
+                className="inline-flex items-center gap-2 mb-5 px-3 py-1.5"
+                style={{ background: 'rgba(232, 168, 75, 0.08)', border: '1px solid rgba(232, 168, 75, 0.25)', borderRadius: '2px' }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'var(--rust)' }} />
+                <span className="font-mono text-[0.68rem] font-bold tracking-[0.25em] uppercase" style={{ color: 'var(--amber)' }}>
+                  Free to play · Always
+                </span>
+              </div>
+              <h2
+                style={{
+                  fontFamily: "'DM Serif Display', serif",
+                  fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)',
+                  lineHeight: 1.05,
+                  letterSpacing: '-0.015em',
+                  color: 'var(--ink)',
+                  marginBottom: '1rem',
+                }}
+              >
+                Think you <span style={{ fontStyle: 'italic', color: 'var(--amber)' }}>know</span> the NFL?
+              </h2>
+              <p
+                className="mx-auto mb-8 text-base leading-relaxed italic"
+                style={{ fontFamily: "'DM Serif Display', serif", color: 'var(--ink-soft)', maxWidth: '36ch' }}
+              >
+                Create a free account to save your streak, track progress across all 9 games, and appear on the leaderboard.
+              </p>
+              <Link
+                href="/login"
+                className="inline-flex items-center gap-3 px-8 py-4 font-bold transition-all hover:-translate-y-0.5"
+                style={{
+                  background: 'var(--amber)',
+                  color: 'var(--bg)',
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '0.95rem',
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                  borderRadius: '2px',
+                  boxShadow: '0 10px 25px rgba(232, 168, 75, 0.15)',
+                }}
+              >
+                <span>Start playing free</span>
+                <span>→</span>
+              </Link>
+            </div>
+          </section>
+
+          {/* ═══ FOOTER ═══ */}
+          <footer
+            className="pt-8 pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+            style={{ borderTop: '1px solid var(--line)' }}
+          >
+            <div className="flex items-center gap-3">
+              <span style={{ color: 'var(--amber)' }}><FootballIcon /></span>
+              <div>
+                <div className="font-mono text-[0.68rem] font-bold tracking-[0.22em] uppercase" style={{ color: 'var(--ink-soft)' }}>
+                  NFL MINIGAMES HUB
+                </div>
+                <div className="font-mono text-[0.6rem] tracking-[0.15em] uppercase mt-0.5" style={{ color: 'var(--ink-mute)' }}>
+                  All free · New daily challenges
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-8 font-mono text-[0.68rem] font-bold tracking-[0.18em] uppercase" style={{ color: 'var(--ink-mute)' }}>
+              <span className="cursor-pointer transition-colors hover:text-[var(--amber)]">About</span>
+              <span className="cursor-pointer transition-colors hover:text-[var(--amber)]">Submit an idea</span>
+              <span className="cursor-pointer transition-colors hover:text-[var(--amber)]">Twitter / X</span>
+            </div>
+          </footer>
+        </div>
 
       </div>
+    </>
+  );
+}
+
+// ─── SUBCOMPONENTS ────────────────────────────────────────────────────────────
+
+function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+  return (
+    <div
+      className="px-5 py-4 min-w-[130px]"
+      style={{
+        background: 'var(--bg-card)',
+        border: '1px solid var(--line)',
+        borderTop: '2px solid var(--amber)',
+      }}
+    >
+      <div className="flex items-center gap-1.5 mb-1" style={{ color: 'var(--ink-mute)' }}>
+        {icon}
+        <span className="font-mono text-[0.58rem] uppercase tracking-[0.2em] font-bold">{label}</span>
+      </div>
+      <div
+        style={{
+          fontFamily: "'DM Serif Display', serif",
+          fontSize: '2rem',
+          lineHeight: 1,
+          color: 'var(--ink)',
+          letterSpacing: '-0.02em',
+          marginTop: '0.3rem',
+        }}
+      >
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function SectionHeader({ number, title, meta }: { number: string; title: string; meta: string }) {
+  return (
+    <div
+      className="flex flex-wrap justify-between items-baseline gap-3 pb-4 mb-8"
+      style={{ borderBottom: '3px double var(--line)' }}
+    >
+      <span className="font-mono text-[0.7rem] font-bold tracking-[0.2em] uppercase" style={{ color: 'var(--amber)' }}>
+        {number}
+      </span>
+      <h2
+        style={{
+          fontFamily: "'DM Serif Display', serif",
+          fontStyle: 'italic',
+          fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+          letterSpacing: '-0.01em',
+          color: 'var(--ink)',
+          margin: 0,
+        }}
+      >
+        {title}
+      </h2>
+      <span className="font-mono text-[0.68rem] tracking-[0.18em] uppercase" style={{ color: 'var(--ink-mute)' }}>
+        {meta}
+      </span>
     </div>
   );
 }

@@ -20,7 +20,7 @@ export default function WelcomeGate() {
     try {
       const seen = sessionStorage.getItem('packempire_welcome_seen');
       if (!seen) {
-        router.replace('/welcome');
+        router.replace('/games/pack-empire/welcome');
         return;
       }
     } catch (e) {

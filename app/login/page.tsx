@@ -243,7 +243,6 @@ router.refresh();
             disabled={loading}
             className="w-full mt-6 flex items-center justify-center gap-3 border border-zinc-700 hover:border-zinc-500 py-4 rounded-2xl font-medium transition text-lg"
           >
-            <span className="text-xl">🔵</span>
             Continue with Google
           </button>
         </div>
