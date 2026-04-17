@@ -1,12 +1,14 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import PackEmpireWelcomeGate from '@/components/WelcomeGate';
 
 export default function PackEmpireHub() {
   const [showModeSelector, setShowModeSelector] = useState(false);
 
   return (
     <>
+    <PackEmpireWelcomeGate />
       <style dangerouslySetInnerHTML={{ __html: STYLES }} />
       <div className="pe-hub-root">
 
